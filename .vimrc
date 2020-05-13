@@ -42,9 +42,9 @@ filetype plugin indent on    " required
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Remap Keys
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-"Remap ESC to ii
+"Remap ESC to ww
 "Nobody uses ww in Romanian and English exept www.
-imap ii <Esc>
+imap ww <Esc>
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Powerline
