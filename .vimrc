@@ -33,7 +33,7 @@ Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
 " wiki
 Plug 'vimwiki/vimwiki'
 
-Plugin 'ap/vim-css-color'
+Plug 'ap/vim-css-color'
 Plug 'tpope/vim-surround'
 
 "Plugin 'klen/python-mode'
