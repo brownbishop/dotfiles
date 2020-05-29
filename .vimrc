@@ -3,48 +3,57 @@
 " => Vim-plug For Managing Plugins
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-set nocompatible              " be iMproved, required
-filetype off                  " required
+" required
+set nocompatible
+filetype off
 
 call plug#begin()
 
-"Plug 'crusoexia/vim-monokai'
-" my theme
+" theme
+Plug 'crusoexia/vim-monokai'
 Plug 'mcmartelle/vim-monokai-bold'
+
+" autocompletion
 " Use release branch :(Recommend)
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
+
+" prolog syntax
 Plug 'mxw/vim-prolog'
-" cpp syntax
-Plug 'vim-airline/vim-airline'					" Airline
-Plug 'vim-airline/vim-airline-themes'				" Airline Themes
-Plug 'scrooloose/nerdtree'						" added nerdtree
+
+" airline
+Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
+
+" nerdtree
+Plug 'scrooloose/nerdtree'
 Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
-Plug 'severin-lemaignan/vim-minimap'
-Plug 'vimwiki/vimwiki'                            " Vim wiki
-"Plugin 'ap/vim-css-color'                           " Color previews for CSS
-Plug 'tpope/vim-surround'                         " Change surrounding marks
-"Plugin 'klen/python-mode'                          " Python Mode
+
+"Plug 'severin-lemaignan/vim-minimap'
+
+" wiki
+Plug 'vimwiki/vimwiki'
+
+Plugin 'ap/vim-css-color'
+Plug 'tpope/vim-surround'
+
+"Plugin 'klen/python-mode'
+
 call plug#end()
 
 filetype plugin indent on    " required
 " To ignore plugin indent changes, instead use:
 " filetype plugin on
 
-" Brief help
-" :PluginList       - lists configured plugins
-" :PluginInstall    - installs plugins; append `!` to update or just :PluginUpdate
-" :PluginSearch foo - searches for foo; append `!` to refresh local cache
-" :PluginClean      - confirms removal of unused plugins; append `!` to auto-approve removal
-
-" see :h vundle for more details or wiki for FAQ
-" Put your non-Plugin stuff after this line
-
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Remap Keys
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-"Remap ESC to ww
-"Nobody uses ww in Romanian and English exept www.
-imap ww <Esc>
+" Control + y - yank
+nnoremap <C-y> "+y
+vnoremap <C-y> "+y
+
+" Control + p - paste
+nnoremap <C-p> "+gP
+vnoremap <C-p> "+gP
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Powerline
@@ -58,6 +67,7 @@ set laststatus=2
 
 syntax enable
 set relativenumber
+
 let g:rehash256 = 1
 let g:Powerline_symbols='unicode'
 let g:Powerline_theme='long'
@@ -82,6 +92,13 @@ set smarttab
 set shiftwidth=4
 set tabstop=4
 
+set autoindent
+
+" Delete trailing whitespaces on save
+autocmd BufWritePre * %s/\s\+$//e
+
+syntax on
+
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => NERDTree
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -99,6 +116,7 @@ let NERDTreeMinimalUI = 1
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " colo default
 
+colorscheme monokai-bold
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Mouse Scrolling
@@ -132,24 +150,14 @@ set guioptions-=L  "remove left-hand scroll bar
 set ttymouse=sgr
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => Custom settings
+" => Copy and paste
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-set autoindent
-
-nnoremap <C-y> "+y
-vnoremap <C-y> "+y
-nnoremap <C-p> "+gP
-vnoremap <C-p> "+gP
-
-"set bg=dark
-set go=a
 set clipboard+=unnamedplus
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Line number
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 set number relativenumber
-colorscheme monokai-bold
-
-" => Delete trailing whitespaces on save
-
-autocmd BufWritePre * %s/\s\+$//e
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "  => coc.vim settings
