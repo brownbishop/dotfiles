@@ -48,7 +48,7 @@ Plug 'tpope/vim-surround'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 
 " indent
-Plug 'lukas-reineke/indent-blankline.nvim'
+"Plug 'lukas-reineke/indent-blankline.nvim'
 
 " misc
 Plug 'tpope/vim-rhubarb' " required by fugitive to :Gbrowse
@@ -103,8 +103,8 @@ set fileencoding=utf-8
 set fileencodings=utf-8
 
 
-"" Fix backspace indent
-set backspace=indent,eol,start
+"" Fix backspace indent ; nvim set by default
+"set backspace=indent,eol,start
 
 "" Tabs. May be overridden by autocmd rules
 set tabstop=4
@@ -113,19 +113,13 @@ set shiftwidth=4
 set expandtab
 
 "" Indentation settings
-set autoindent
+"set autoindent
 set smartindent
 set cindent 
 
-"" Map leader to ,
-"let mapleader=','
-
-"" Enable hidden buffers
-set hidden
-
 "" Searching
-set hlsearch
-set incsearch
+"set hlsearch
+"set incsearch
 set ignorecase
 set smartcase
 
@@ -155,28 +149,12 @@ set t_Co=256
 
 set mouse=a          "" nicr
 
-set wildmenu					" Display all matches when tab complete.
-set incsearch
-
-"" Disable the blinking cursor.
-"set gcr=a:blinkon0
-
 au TermEnter * setlocal scrolloff=0
 au TermLeave * setlocal scrolloff=;
 
 
 "" Status bar
-set laststatus=2
-
-"" Use modeline overrides
-"set modeline
-"set modelines=10
-
-set title
-set titleold="Terminal"
-set titlestring=%F
-
-set statusline=%F%m%r%h%w%=(%{&ff}/%Y)\ (line\ %l\/%L,\ col\ %c)\
+"set laststatus=2
 
 " Search mappings: These will make it so that going to the next one in a
 " search will center on the line it's found in.
@@ -211,9 +189,6 @@ cnoreabbrev WQ wq
 cnoreabbrev W w
 cnoreabbrev Q q
 cnoreabbrev Qall qall
-
-" terminal emulation
-nnoremap <silent> <leader>sh :terminal<CR>
 
 
 "*****************************************************************************
