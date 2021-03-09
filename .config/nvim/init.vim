@@ -1,31 +1,12 @@
-" vim-bootstrap 2021-01-08 15:11:17
-
-"*****************************************************************************
-"" Vim-Plug core
-"*****************************************************************************
-let vimplug_exists=expand('~/.config/nvim/autoload/plug.vim')
-if has('win32')&&!has('win64')
-  let curl_exists=expand('C:\Windows\Sysnative\curl.exe')
-else
-  let curl_exists=expand('curl')
-endif
-
 " Disable language server protocol in ale
 "let g:ale_disable_lsp = 1
 
+filetype plugin on    " required
+" To ignore plugin indent changes, instead use:
+" filetype plugin on
 
-if !filereadable(vimplug_exists)
-  if !executable(curl_exists)
-    echoerr "You have to install curl or first install vim-plug yourself!"
-    execute "q!"
-  endif
-  echo "Installing Vim-Plug..."
-  echo ""
-  silent exec "!"curl_exists" -fLo " . shellescape(vimplug_exists) . " --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim"
-  let g:not_finish_vimplug = "yes"
-
-  autocmd VimEnter * PlugInstall
-endif
+set nocompatible " required by vim-polyglot
+let g:polyglot_disabled = ['autoindent', 'sensible']
 
 " Required:
 call plug#begin(expand('~/.config/nvim/plugged'))
@@ -41,6 +22,8 @@ Plug 'vim-airline/vim-airline-themes'
 
 " parentheses
 Plug 'tpope/vim-surround'
+" syntax highlight
+Plug 'sheerun/vim-polyglot'
 
 " autocompletion and lsp
 "Plug 'dense-analysis/ale'
@@ -55,7 +38,7 @@ Plug 'tpope/vim-rhubarb' " required by fugitive to :Gbrowse
 
 " themes
 Plug 'crusoexia/vim-monokai'
-Plug 'morhetz/gruvbox'
+Plug 'gruvbox-community/gruvbox'
 Plug 'severij/vadelma'
 Plug 'ntk148v/vim-horizon'
 
@@ -63,8 +46,6 @@ Plug 'ntk148v/vim-horizon'
 Plug 'chrisbra/Colorizer'
 Plug 'ap/vim-css-color'
 
-" syntax highlight
-Plug 'sheerun/vim-polyglot'
 "Plug 'bfrg/vim-cpp-modern'
 
 " html
@@ -73,26 +54,10 @@ Plug 'mattn/emmet-vim'
 " markdown
 Plug 'suan/vim-instant-markdown', {'for': 'markdown'}
 
-"*****************************************************************************
-"" Custom bundles
-"*****************************************************************************
-
-"*****************************************************************************
-"*****************************************************************************
-
-"" Include user's extra bundle
-if filereadable(expand("~/.config/nvim/local_bundles.vim"))
-  source ~/.config/nvim/local_bundles.vim
-endif
+" embed in browser
+Plug 'glacambre/firenvim', { 'do': { _ -> firenvim#install(0) } }
 
 call plug#end()
-
-" Required:
-filetype plugin indent on
-" To ignore plugin indent changes, instead use:
-" filetype plugin on
-
-set nocompatible " required by vim-polyglot
 
 "*****************************************************************************
 "" Basic Setup
@@ -102,9 +67,8 @@ set encoding=utf-8
 set fileencoding=utf-8
 set fileencodings=utf-8
 
-
-"" Fix backspace indent ; nvim set by default
-"set backspace=indent,eol,start
+" custom rc
+set exrc
 
 "" Tabs. May be overridden by autocmd rules
 set tabstop=4
@@ -113,15 +77,20 @@ set shiftwidth=4
 set expandtab
 
 "" Indentation settings
-"set autoindent
 set smartindent
-set cindent 
+set autoindent
 
 "" Searching
-"set hlsearch
-"set incsearch
+set hlsearch
+set incsearch
 set ignorecase
-set smartcase
+
+" extra buffers
+set hidden
+
+set noerrorbells
+
+set colorcolumn=80
 
 set fileformats=unix,dos,mac
 
@@ -139,7 +108,7 @@ syntax on
 set number relativenumber
 
 "let no_buffers_menu=1
-colorscheme monokai
+colorscheme gruvbox
 set background=dark
 
 set mousemodel=popup
@@ -166,7 +135,7 @@ if exists("*fugitive#statusline")
 endif
 
 " vim-airline
-let g:airline_theme = 'zenburn'
+let g:airline_theme = 'gruvbox'
 let g:airline#extensions#branch#enabled = 1
 let g:airline#extensions#coc#enabled = 1
 "let g:airline#extensions#ale#enabled = 1
@@ -198,24 +167,16 @@ cnoreabbrev Qall qall
 command! FixWhitespace :%s/\s\+$//e
 
 "*****************************************************************************
-"" Functions
-"*****************************************************************************
-if !exists('*s:setupWrapping')
-  function s:setupWrapping()
-    set wrap
-    set wm=2
-    set textwidth=79
-  endfunction
-endif
-
-"*****************************************************************************
 "" Autocmd Rules
 "*****************************************************************************
+
+" Delete trailing whitespaces on save
+autocmd BufWritePre * %s/\s\+$//e
 "" The PC is fast enough, do syntax highlight syncing from start unless 200 lines
-augroup vimrc-sync-fromstart
-  autocmd!
-  autocmd BufEnter * :syntax sync maxlines=200
-augroup END
+"augroup vimrc-sync-fromstart
+"  autocmd!
+"  autocmd BufEnter * :syntax sync maxlines=200
+"augroup END
 
 """ Remember cursor position
 "augroup vimrc-remember-cursor-position
@@ -224,41 +185,23 @@ augroup END
 "augroup END
 
 "" txt
-augroup vimrc-wrapping
-  autocmd!
-  autocmd BufRead,BufNewFile *.txt call s:setupWrapping()
-augroup END
+"augroup vimrc-wrapping
+"  autocmd!
+"  autocmd BufRead,BufNewFile *.txt call s:setupWrapping()
+"augroup END
 
 "" make/cmake
-augroup vimrc-make-cmake
-  autocmd!
-  autocmd FileType make setlocal noexpandtab
-  autocmd BufNewFile,BufRead CMakeLists.txt setlocal filetype=cmake
-augroup END
+"augroup vimrc-make-cmake
+"  autocmd!
+"  autocmd FileType make setlocal noexpandtab
+"  autocmd BufNewFile,BufRead CMakeLists.txt setlocal filetype=cmake
+"augroup END
 
-set autoread
+"set autoread
 
 "*****************************************************************************
 "" Mappings
 "*****************************************************************************
-
-"" Split
-"noremap <Leader>h :<C-u>split<CR>
-"noremap <Leader>v :<C-u>vsplit<CR>
-
-"" Tabs
-"nnoremap <Tab> gt
-"nnoremap <S-Tab> gT
-"nnoremap <silent> <S-t> :tabnew<CR>
-"
-""" Set working directory
-"nnoremap <leader>. :lcd %:p:h<CR>
-"
-""" Opens an edit command with the path of the currently edited file filled in
-"noremap <Leader>e :e <C-R>=expand("%:p:h") . "/" <CR>
-"
-""" Opens a tab edit command with the path of the currently edited file filled
-"noremap <Leader>te :tabe <C-R>=expand("%:p:h") . "/" <CR>
 
 " ale
 let g:ale_linters = {}

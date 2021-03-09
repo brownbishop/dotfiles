@@ -1,29 +1,3 @@
-# Copyright (c) 2010 Aldo Cortesi
-# Copyright (c) 2010, 2014 dequis
-# Copyright (c) 2012 Randall Ma
-# Copyright (c) 2012-2014 Tycho Andersen
-# Copyright (c) 2012 Craig Barnes
-# Copyright (c) 2013 horsik
-# Copyright (c) 2013 Tao Sauvage
-#
-# Permission is hereby granted, free of charge, to any person obtaining a copy
-# of this software and associated documentation files (the "Software"), to deal
-# in the Software without restriction, including without limitation the rights
-# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-# copies of the Software, and to permit persons to whom the Software is
-# furnished to do so, subject to the following conditions:
-#
-# The above copyright notice and this permission notice shall be included in
-# all copies or substantial portions of the Software.
-#
-# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-# SOFTWARE.
-
 import os
 import re
 import psutil
@@ -38,48 +12,15 @@ from typing import List  # noqa: F401
 
 # set mod key to mod(also known as the Windows key)
 mod = "mod4"
-myTerm = "alacritty"
+# set terminal emulator
+myTerm = "kitty"
 
 keys = [
-    # Switch between windows in current stack pane
-    Key([mod], "k", lazy.layout.down()),
-    Key([mod], "j", lazy.layout.up()),
-
-    # Move windows up or down in current stack
-    Key([mod, "shift"], "k", lazy.layout.shuffle_down()),
-    Key([mod, "shift"], "j", lazy.layout.shuffle_up()),
-
-    # Switch window focus to other pane(s) of stack
-    Key([mod], "space", lazy.layout.next()),
-
-    # Swap panes of split stack
-    Key([mod, "shift"], "space", lazy.layout.rotate()),
-
-    # Toggle between split and unsplit sides of stack.
-    # Split = all windows displayed
-    # Unsplit = 1 window displayed, like Max layout, but still with
-    # multiple stack panes
-    Key([mod, "shift"], "Return", lazy.layout.toggle_split()),
+    # Launch terminal emulator
     Key([mod], "Return", lazy.spawn(myTerm)),
 
     # Toggle between different layouts as defined below
     Key([mod], "Tab", lazy.next_layout()),
-    Key([mod], "q", lazy.window.kill()),
-
-    # Layout navigation (Vim like bindings)
-    #Key([mod], "h", lazy.layout.left()),
-    #Key([mod], "l", lazy.layout.right()),
-    #Key([mod, "shift"], "h", lazy.layout.swap_left()),
-    #Key([mod, "shift"], "l", lazy.layout.swap_right()),
-    #Key([mod, "shift"], "j", lazy.layout.shuffle_down()),
-    #Key([mod, "shift"], "k", lazy.layout.shuffle_up()),
-    #Key([mod], "i", lazy.layout.grow()),
-    #Key([mod], "m", lazy.layout.shrink()),
-    #Key([mod], "n", lazy.layout.normalize()),
-    #Key([mod], "o", lazy.layout.maximize()),
-    Key([mod, "shift"], "space", lazy.layout.flip()),
-    Key([mod, "control"], "h", lazy.layout.increase_ratio()),
-    Key([mod, "control"], "l", lazy.layout.decrease_ratio()),
 
     # Restart WM
     Key([mod, "shift"], "r", lazy.restart()),
@@ -87,13 +28,20 @@ keys = [
     # Quit WM
     Key([mod, "shift"], "q", lazy.shutdown()),
 
+    # qtile built in launcher
     Key([mod], "r", lazy.spawncmd()),
 
-    # dmenu
-    Key([mod], "d", lazy.spawn("rofi-dmenu")),
+    # launcher
+    Key([mod], "p", lazy.spawn("dmenu_run")),
 
-    #Toggle bar
+    # Toggle status bar
     Key([mod], "b", lazy.hide_show_bar("top")),
+
+    # Web browser shortcut
+    Key([mod], "w", lazy.spawn("chromium")),
+
+    # Toggle screensaver
+    Key([mod], "s", lazy.spawn("i3lock-fancy-rapid 5 4")),
 
     # Toggle fullscreen for selected window
     Key([mod], "f", lazy.window.toggle_fullscreen()),
@@ -101,27 +49,81 @@ keys = [
     # Toggle floating for selected window
     Key([mod], "t", lazy.window.toggle_floating()),
 
-    # Web browser shortcut
-    Key([mod], "w", lazy.spawn("chromium")),
+    # Close focused window
+    Key([mod], "q", lazy.window.kill()),
 
-    # Lockscreen
-    Key([mod], "s", lazy.spawn("i3lock-fancy-rapid 5 4")),
-
-    # Sound
+    Key([mod], "k",
+        lazy.layout.down(),
+        desc='Move focus down in current stack pane'
+        ),
+    Key([mod], "j",
+        lazy.layout.up(),
+        desc='Move focus up in current stack pane'
+        ),
+    Key([mod, "shift"], "k",
+        lazy.layout.shuffle_down(),
+        desc='Move windows down in current stack'
+        ),
+    Key([mod, "shift"], "j",
+        lazy.layout.shuffle_up(),
+        desc='Move windows up in current stack'
+        ),
+    Key([mod], "h",
+        lazy.layout.grow(),
+        lazy.layout.increase_nmaster(),
+        desc='Expand window (MonadTall), increase number in master pane (Tile)'
+        ),
+    Key([mod], "l",
+        lazy.layout.shrink(),
+        lazy.layout.decrease_nmaster(),
+        desc='Shrink window (MonadTall), decrease number in master pane (Tile)'
+        ),
+    Key([mod], "n",
+        lazy.layout.normalize(),
+        desc='normalize window size ratios'
+        ),
+    Key([mod], "m",
+        lazy.layout.maximize(),
+        desc='toggle window between minimum and maximum sizes'
+        ),
+    Key([mod, "shift"], "f",
+        lazy.window.toggle_floating(),
+        desc='toggle floating'
+        ),
+    Key([mod, "shift"], "m",
+        lazy.window.toggle_fullscreen(),
+        desc='toggle fullscreen'
+        ),
+    ### Stack controls
+    Key([mod, "shift"], "space",
+        lazy.layout.rotate(),
+        lazy.layout.flip(),
+        desc='Switch which side main pane occupies (XmonadTall)'
+        ),
+    Key([mod], "space",
+        lazy.layout.next(),
+        desc='Switch window focus to other pane(s) of stack'
+        ),
+    Key([mod, "control"], "Return",
+        lazy.layout.toggle_split(),
+        desc='Toggle between split and unsplit sides of stack'
+        ),
+    # Volume controls
     Key([], "XF86AudioMute", lazy.spawn("pamixer -t")),
     Key([], "XF86AudioLowerVolume", lazy.spawn(
         "pamixer -d 5")),
     Key([], "XF86AudioRaiseVolume", lazy.spawn(
         "pamixer -i 5")),
 
-    # Brightness
-    Key([], "XF86MonBrightnessUp", lazy.spawn("brightnessctl set +10%")),
-    Key([], "XF86MonBrightnessDown", lazy.spawn("brightnessctl set 10%-")),
-
     # Music
     Key([], "XF86AudioPlay", lazy.spawn("audacious -t")),
     Key([], "XF86AudioNext", lazy.spawn("audacious -f")),
     Key([], "XF86AudioPrev", lazy.spawn("audacious -r")),
+
+
+    # Brightness
+    Key([], "XF86MonBrightnessUp", lazy.spawn("brightnessctl set +10%")),
+    Key([], "XF86MonBrightnessDown", lazy.spawn("brightnessctl set 10%-")),
 
     # Screenshot
     Key([], "Print", lazy.spawn("gnome-screenshot"))
@@ -236,6 +238,11 @@ screens = [
                     background=colors[0],
                     padding=0
                 ),
+                #widget.OpenWeather(
+                #    coordinates={"longitude": "45.1833", "latitude": "23.8"},
+                #    background=colors[0],
+                #    foreground=colors[4],
+                #),
                 widget.KeyboardLayout(
                     background=colors[0],
                     foreground=colors[3],
