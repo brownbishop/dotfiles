@@ -5,8 +5,10 @@ filetype plugin on    " required
 " To ignore plugin indent changes, instead use:
 " filetype plugin on
 
-set nocompatible " required by vim-polyglot
-let g:polyglot_disabled = ['autoindent', 'sensible']
+set termguicolors
+
+"set nocompatible " required by vim-polyglot
+"let g:polyglot_disabled = ['autoindent', 'sensible']
 
 " Required:
 call plug#begin(expand('~/.config/nvim/plugged'))
@@ -14,6 +16,13 @@ call plug#begin(expand('~/.config/nvim/plugged'))
 "*****************************************************************************
 "" Plug install packages
 "*****************************************************************************
+
+" fix CursorHold performance
+Plug 'antoinemadec/FixCursorHold.nvim'
+
+" misc
+Plug 'tpope/vim-rhubarb' " required by fugitive to :Gbrowse
+
 " git integration
 Plug 'tpope/vim-fugitive'
 " airline
@@ -22,19 +31,18 @@ Plug 'vim-airline/vim-airline-themes'
 
 " parentheses
 Plug 'tpope/vim-surround'
+
 " syntax highlight
-Plug 'sheerun/vim-polyglot'
+Plug 'jaxbot/semantic-highlight.vim'
 
 " autocompletion and lsp
 "Plug 'dense-analysis/ale'
 " Use release branch :(Recommend)
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 
-" indent
-"Plug 'lukas-reineke/indent-blankline.nvim'
-
-" misc
-Plug 'tpope/vim-rhubarb' " required by fugitive to :Gbrowse
+" file explorer
+" fuzzy finder
+Plug 'cloudhead/neovim-fuzzy'
 
 " themes
 Plug 'crusoexia/vim-monokai'
@@ -48,6 +56,10 @@ Plug 'ap/vim-css-color'
 
 "Plug 'bfrg/vim-cpp-modern'
 
+Plug 'lambdalisue/fern.vim'
+Plug 'lambdalisue/nerdfont.vim'
+Plug 'lambdalisue/fern-renderer-nerdfont.vim'
+
 " html
 Plug 'mattn/emmet-vim'
 
@@ -58,6 +70,7 @@ Plug 'suan/vim-instant-markdown', {'for': 'markdown'}
 Plug 'glacambre/firenvim', { 'do': { _ -> firenvim#install(0) } }
 
 call plug#end()
+
 
 "*****************************************************************************
 "" Basic Setup
@@ -91,6 +104,7 @@ set hidden
 set noerrorbells
 
 set colorcolumn=80
+
 
 set fileformats=unix,dos,mac
 
@@ -261,12 +275,22 @@ noremap <silent> <C-Down> :resize -2<CR>
 " set jj to esc, no language I know uses jj
 :imap jj <Esc>
 
-" coc-explorer
-nmap <space>e :CocCommand explorer<CR>
+" Fuzzy
+nnoremap <C-p> :FuzzyOpen<CR>
+
+" highlight
+nnoremap <Leader>s :SemanticHighlightToggle<cr>
+
+" explorer
+"nmap <space>e :CocCommand explorer<CR>
+nmap <space>e :Fern . -drawer <CR>
 
 "*****************************************************************************
 "" Convenience variables
 "*****************************************************************************
+
+" Fern
+let g:fern#renderer = "nerdfont"
 
 " vim-airline
 if !exists('g:airline_symbols')
@@ -327,6 +351,7 @@ endfunction
 
 inoremap <silent><expr> <Tab>
       \ pumvisible() ? "\<C-n>" :
+      \ coc#expandableOrJumpable() ? "\<C-r>=coc#rpc#request('doKeymap', ['snippets-expand-jump',''])\<CR>" :
       \ <SID>check_back_space() ? "\<Tab>" :
       \ coc#refresh()
 " Use <c-space> to trigger completion.
@@ -351,10 +376,8 @@ nmap <silent> gy <Plug>(coc-type-definition)
 nmap <silent> gi <Plug>(coc-implementation)
 nmap <silent> gr <Plug>(coc-references)
 
-""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => Alacritty fixes Vim only
-""""""""""""""""""""""""""""""""""""""""""""""""""""
+let g:coc_snippet_next = '<tab>'
 
-if !has('nvim')
-    set ttymouse=sgr
-endif
+" Use <leader>x for convert visual selected code to snippet
+xmap <leader>x  <Plug>(coc-convert-snippet)
+
