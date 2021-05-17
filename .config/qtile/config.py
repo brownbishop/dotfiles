@@ -4,7 +4,7 @@ import psutil
 import socket
 import subprocess
 
-from libqtile.config import Key, Screen, Group, Drag, Click
+from libqtile.config import Key, Screen, Group, Drag, Click, Match
 from libqtile.lazy import lazy
 from libqtile import layout, bar, widget, hook
 
@@ -13,7 +13,7 @@ from typing import List  # noqa: F401
 # set mod key to mod(also known as the Windows key)
 mod = "mod4"
 # set terminal emulator
-myTerm = "kitty"
+myTerm = "kitty --single-instance"
 
 keys = [
     # Launch terminal emulator
@@ -38,7 +38,7 @@ keys = [
     Key([mod], "b", lazy.hide_show_bar("top")),
 
     # Web browser shortcut
-    Key([mod], "w", lazy.spawn("chromium")),
+    Key([mod], "w", lazy.spawn("brave")),
 
     # Toggle screensaver
     Key([mod], "s", lazy.spawn("i3lock-fancy-rapid 5 4")),
@@ -165,13 +165,23 @@ layouts = [
     layout.Floating(**layout_theme)
 ]
 
-colors = [["#282828", "#282828"], # panel background
-          ["#434758", "#434758"], # background for current screen tab
-          ["#ebdbb2", "#ebdbb2"], # font color for group names
-          ["#cc241d", "#cc241d"], # border line color for current tab
-          ["#98971a", "#98971a"], # border line color for other tab and odd widgets
-          ["#458588", "#458588"], # color for the even widgets
-          ["#d79921", "#d79921"]] # window name
+# colors = [["#282828", "#282828"], # panel background
+#           ["#434758", "#434758"], # background for current screen tab
+#           ["#ebdbb2", "#ebdbb2"], # font color for group names
+#           ["#cc241d", "#cc241d"], # border line color for current tab
+#           ["#98971a", "#98971a"], # border line color for other tab and odd widgets
+#           ["#458588", "#458588"], # color for the even widgets
+#           ["#d79921", "#d79921"]] # window name
+
+# colors Gruvbox
+colors = [[ "#282828", "#282828" ], # black
+          [ "#a89983", "#a89983" ], # white
+          [ "#cc231c", "#cc231c" ], # red
+          [ "#989719", "#989719" ], # green
+          [ "#d79920", "#d79920" ], # yellow
+          [ "#448488", "#448488" ], # blue
+          [ "#b16185", "#b16185" ], # magenta
+          [ "#689d69", "#689d69" ]] # cyan
 
 prompt = "{0}@{1}: ".format(os.environ["USER"], socket.gethostname())
 
@@ -188,12 +198,12 @@ screens = [
     Screen(
         top=bar.Bar(
             [
-                widget.Sep(
-                    linewidth=0,
-                    padding=3,
-                    foreground=colors[0],
-                    background=colors[0],
-                ),
+                # widget.Sep(
+                #     linewidth=0,
+                #     padding=3,
+                #     foreground=colors[0],
+                #     background=colors[0],
+                # ),
                 widget.Image(
                     filename="~/.config/qtile/icons/python.png",
                     mouse_callbacks={
@@ -201,31 +211,30 @@ screens = [
                     background=colors[0]
                 ),
                 widget.GroupBox(
-                    font="JetBrains Mono Nerd Font",
-                    fontsize=11,
-                    margin_y=3,
-                    margin_x=0,
-                    padding_y=5,
-                    padding_x=3,
-                    borderwidth=3,
-                    active=colors[2],
-                    inactive=colors[2],
-                    rounded=False,
-                    highlight_color=colors[1],
-                    highlight_method="line",
-                    this_current_screen_border=colors[3],
-                    this_screen_border=colors[4],
-                    other_current_screen_border=colors[0],
-                    other_screen_border=colors[0],
-                    foreground=colors[3],
-                    background=colors[0]
-                ),
-                widget.Prompt(
+                       font = "Ubuntu Bold",
+                       fontsize = 11,
+                       margin_y = 3,
+                       margin_x = 0,
+                       padding_y = 5,
+                       padding_x = 3,
+                       borderwidth = 3,
+                       active = colors[2],
+                       inactive = colors[2],
+                       rounded = False,
+                       highlight_color = colors[5],
+                       highlight_method = "line",
+                       this_current_screen_border = colors[6],
+                       this_screen_border = colors [4],
+                       other_current_screen_border = colors[6],
+                       other_screen_border = colors[4],
+                       foreground = colors[2],
+                       background = colors[0]
+                       ),                widget.Prompt(
                     prompt=prompt,
                     font="JetBrains Mono Nerd Font",
                     padding=10,
-                    foreground=colors[3],
-                    background=colors[1]
+                    foreground=colors[5],
+                    background=colors[0]
                 ),
                 widget.Sep(
                     linewidth=0,
@@ -234,47 +243,53 @@ screens = [
                     background=colors[0]
                 ),
                 widget.WindowName(
-                    foreground=colors[6],
+                    foreground=colors[3],
                     background=colors[0],
                     padding=0
                 ),
-                #widget.OpenWeather(
-                #    coordinates={"longitude": "45.1833", "latitude": "23.8"},
-                #    background=colors[0],
-                #    foreground=colors[4],
-                #),
-                widget.KeyboardLayout(
+                widget.WidgetBox(
                     background=colors[0],
-                    foreground=colors[3],
-                    configured_keyboards=['us','ro'],
-                ),
-                widget.Backlight(
-                    backlight_name="intel_backlight",
-                    format=' {percent:2.0%}',
-                    foreground=colors[6],
-                    background=colors[0],
-                ),
-                widget.TextBox(
-                    text=" 🌡",
-                    padding=2,
-                    foreground=colors[5],
-                    background=colors[0],
-                    fontsize=11
-                ),
-                widget.ThermalSensor(
-                    foreground=colors[5],
-                    background=colors[0],
-                    threshold=90,
-                    padding=5
-                ),
-                widget.CPU(
-                    background=colors[0],
-                    foreground=colors[3],
-                    format=' {freq_current}GHz {load_percent}%',
-                    padding=5
+                    foreground=colors[4],
+                    widgets= [
+                        # widget.OpenWeather(
+                        #     coordinates={"longitude": "45.1833", "latitude": "23.8"},
+                        #     background=colors[0],
+                        #     foreground=colors[4],
+                        # ),
+                        widget.KeyboardLayout(
+                            background=colors[0],
+                            foreground=colors[5],
+                            configured_keyboards=['us','ro'],
+                        ),
+                        widget.Backlight(
+                            backlight_name="intel_backlight",
+                            format=' {percent:2.0%}',
+                            foreground=colors[6],
+                            background=colors[0],
+                        ),
+                        widget.TextBox(
+                            text=" 🌡",
+                            padding=2,
+                            foreground=colors[7],
+                            background=colors[0],
+                            fontsize=11
+                        ),
+                        widget.ThermalSensor(
+                            foreground=colors[2],
+                            background=colors[0],
+                            threshold=90,
+                            padding=5
+                        ),
+                        widget.CPU(
+                            background=colors[0],
+                            foreground=colors[3],
+                            format=' {freq_current}GHz {load_percent}%',
+                            padding=5
+                        ),
+                    ],
                 ),
                 widget.Memory(
-                    foreground=colors[6],
+                    foreground=colors[4],
                     background=colors[0],
                     format=' {MemUsed}M/{MemTotal}M',
                     mouse_callbacks={
@@ -284,7 +299,7 @@ screens = [
                 widget.Net(
                     interface="wlp2s0",
                     format=' {down} {up}',
-                    foreground=colors[4],
+                    foreground=colors[6],
                     background=colors[0],
                     padding=5
                 ),
@@ -296,30 +311,30 @@ screens = [
                 ),
                 widget.CurrentLayoutIcon(
                     # custom_icon_paths=[os.path.expanduser("~/.config/qtile/icons")],
-                    foreground=colors[2],
+                    foreground=colors[7],
                     background=colors[0],
                     padding=0,
                     scale=0.7
                 ),
                 widget.CurrentLayout(
-                    foreground=colors[2],
+                    foreground=colors[1],
                     background=colors[0],
                     padding=5
                 ),
                 widget.Clock(
-                    foreground=colors[4],
+                    foreground=colors[3],
                     background=colors[0],
                     format=" %d:%m:%Y  %H:%M",
                     font="Mononoki Nerd Font"
                 ),
                 widget.Sep(
                     linewidth=0,
-                    padding=10,
-                    foreground=colors[2],
+                    padding=2,
+                    foreground=colors[4],
                     background=colors[0]
                 ),
                 widget.Battery(
-                    foreground=colors[6],
+                    foreground=colors[2],
                     background=colors[0],
                     format='{char} {percent:2.0%}',
                     charge_char='',
@@ -348,32 +363,26 @@ mouse = [
     Click([mod], "Button2", lazy.window.bring_to_front())
 ]
 
+
 dgroups_key_binder = None
 dgroups_app_rules = []  # type: List
-main = None
+main = None  # WARNING: this is deprecated and will be removed soon
 follow_mouse_focus = True
 bring_front_click = False
 cursor_warp = False
+
 floating_layout = layout.Floating(float_rules=[
-    # Run the u;lktility of `xprop` to see the wm class and name of an X client.
-    {'wmclass': 'confirm'},
-    {'wmclass': 'dialog'},
-    {'wmclass': 'download'},
-    {'wmclass': 'error'},
-    {'wmclass': 'file_progress'},
-    {'wmclass': 'notification'},
-    {'wmclass': 'splash'},
-    {'wmclass': 'toolbar'},
-    {'wmclass': 'confirmreset'},  # gitk
-    {'wmclass': 'makebranch'},  # gitk
-    {'wmclass': 'maketag'},  # gitk
-    {'wname': 'branchdialog'},  # gitk
-    {'wname': 'pinentry'},  # GPG key password entry
-    {'wmclass': 'ssh-askpass'},  # ssh-askpass
+    # Run the utility of `xprop` to see the wm class and name of an X client.
+    # default_float_rules include: utility, notification, toolbar, splash, dialog,
+    # file_progress, confirm, download and error.
+    *layout.Floating.default_float_rules,
+    Match(title='Confirmation'),  # tastyworks exit box
+    Match(title='Qalculate!'),  # qalculate-gtk
+    Match(wm_class='kdenlive'),  # kdenlive
+    Match(wm_class='pinentry-gtk-2'),  # GPG key password entry
 ])
 auto_fullscreen = True
 focus_on_window_activation = "smart"
-
 # hooks
 
 
