@@ -207,7 +207,8 @@ screens = [
                 widget.Image(
                     filename="~/.config/qtile/icons/python.png",
                     mouse_callbacks={
-                        'Button1': lambda qtile: qtile.cmd_spawn('dmenu_run')},
+                        'Button1': lambda: lazy.spawncmd()
+                    },
                     background=colors[0]
                 ),
                 widget.GroupBox(
@@ -268,14 +269,14 @@ screens = [
                             background=colors[0],
                         ),
                         widget.TextBox(
-                            text=" 🌡",
+                            text="",
                             padding=2,
                             foreground=colors[7],
                             background=colors[0],
-                            fontsize=11
+                            fontsize=13
                         ),
                         widget.ThermalSensor(
-                            foreground=colors[2],
+                            foreground=colors[7],
                             background=colors[0],
                             threshold=90,
                             padding=5
@@ -291,14 +292,14 @@ screens = [
                 widget.Memory(
                     foreground=colors[4],
                     background=colors[0],
-                    format=' {MemUsed}M/{MemTotal}M',
+                    format='{MemUsed: .0f}M/{MemTotal: .0f}M',
                     mouse_callbacks={
                         'Button1': lambda qtile: qtile.cmd_spawn(myTerm + ' -e htop')},
                     padding=5
                 ),
                 widget.Net(
                     interface="wlp2s0",
-                    format=' {down} {up}',
+                    format=' {down} {up}',
                     foreground=colors[6],
                     background=colors[0],
                     padding=5
@@ -306,7 +307,7 @@ screens = [
                 widget.Volume(
                     foreground=colors[5],
                     background=colors[0],
-                    fmt='🔈{}',
+                    fmt=' {}',
                     padding=5
                 ),
                 widget.CurrentLayoutIcon(
