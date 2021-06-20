@@ -1,5 +1,5 @@
 " Disable language server protocol in ale
-"let g:ale_disable_lsp = 1
+let g:ale_disable_lsp = 1
 
 filetype plugin on    " required
 " To ignore plugin indent changes, instead use:
@@ -9,6 +9,8 @@ set termguicolors
 
 "set nocompatible " required by vim-polyglot
 "let g:polyglot_disabled = ['autoindent', 'sensible']
+
+set guifont=Mononoki\ Nerd\ Font:h25
 
 " Required:
 call plug#begin(expand('~/.config/nvim/plugged'))
@@ -25,6 +27,7 @@ Plug 'tpope/vim-rhubarb' " required by fugitive to :Gbrowse
 
 " git integration
 Plug 'tpope/vim-fugitive'
+
 " airline
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
@@ -37,37 +40,40 @@ Plug 'jaxbot/semantic-highlight.vim'
 
 " autocompletion and lsp
 "Plug 'dense-analysis/ale'
+
 " Use release branch :(Recommend)
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 
-" file explorer
+" syntax
+"Plug 'sheerun/vim-polyglot'
+
 " fuzzy finder
-Plug 'cloudhead/neovim-fuzzy'
+Plug 'junegunn/fzf.vim'
 
 " themes
 Plug 'crusoexia/vim-monokai'
 Plug 'gruvbox-community/gruvbox'
 Plug 'severij/vadelma'
-Plug 'ntk148v/vim-horizon'
+"Plug 'ntk148v/vim-horizon'
+"Plug 'rktjmp/lush.nvim'
 
 " extra colors
-Plug 'chrisbra/Colorizer'
-Plug 'ap/vim-css-color'
+"Plug 'chrisbra/Colorizer'
+"Plug 'ap/vim-css-color'
 
 "Plug 'bfrg/vim-cpp-modern'
 
-"Plug 'lambdalisue/fern.vim'
-"Plug 'lambdalisue/nerdfont.vim'
-"Plug 'lambdalisue/fern-renderer-nerdfont.vim'
+" tree sitter
+"Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}  " We recommend updating the parsers on update
 
-" html
+" snippets
+Plug 'honza/vim-snippets'
+
+" html snippets
 Plug 'mattn/emmet-vim'
 
 " markdown
 Plug 'suan/vim-instant-markdown', {'for': 'markdown'}
-
-" embed in browser
-Plug 'glacambre/firenvim', { 'do': { _ -> firenvim#install(0) } }
 
 call plug#end()
 
@@ -132,8 +138,8 @@ set t_Co=256
 
 set mouse=a          "" nicr
 
-au TermEnter * setlocal scrolloff=0
-au TermLeave * setlocal scrolloff=;
+"au TermEnter * setlocal scrolloff=0
+"au TermLeave * setlocal scrolloff=;
 
 
 "" Status bar
@@ -154,7 +160,6 @@ let g:airline#extensions#branch#enabled = 1
 let g:airline#extensions#coc#enabled = 1
 "let g:airline#extensions#ale#enabled = 1
 let g:airline#extensions#tabline#enabled = 1
-let g:airline#extensions#tagbar#enabled = 1
 let g:airline_skip_empty_sections = 1
 let g:airline_powerline_fonts = 1
 
@@ -186,29 +191,11 @@ command! FixWhitespace :%s/\s\+$//e
 
 " Delete trailing whitespaces on save
 autocmd BufWritePre * %s/\s\+$//e
-"" The PC is fast enough, do syntax highlight syncing from start unless 200 lines
-"augroup vimrc-sync-fromstart
-"  autocmd!
-"  autocmd BufEnter * :syntax sync maxlines=200
-"augroup END
 
 """ Remember cursor position
 "augroup vimrc-remember-cursor-position
 "  autocmd!
 "  autocmd BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g`\"" | endif
-"augroup END
-
-"" txt
-"augroup vimrc-wrapping
-"  autocmd!
-"  autocmd BufRead,BufNewFile *.txt call s:setupWrapping()
-"augroup END
-
-"" make/cmake
-"augroup vimrc-make-cmake
-"  autocmd!
-"  autocmd FileType make setlocal noexpandtab
-"  autocmd BufNewFile,BufRead CMakeLists.txt setlocal filetype=cmake
 "augroup END
 
 "set autoread
@@ -218,7 +205,9 @@ autocmd BufWritePre * %s/\s\+$//e
 "*****************************************************************************
 
 " ale
-let g:ale_linters = {}
+let g:ale_linters = {
+  \     'javascript': ['eslint'],
+  \ }
 
 " Tagbar
 nmap <silent> <F4> :TagbarToggle<CR>
@@ -275,58 +264,17 @@ noremap <silent> <C-Down> :resize -2<CR>
 " set jj to esc, no language I know uses jj
 :imap jj <Esc>
 
-" Fuzzy
-nnoremap <C-p> :FuzzyOpen<CR>
-
 " highlight
 nnoremap <Leader>s :SemanticHighlightToggle<cr>
 
 " explorer
 nmap <space>e :CocCommand explorer<CR>
-"nmap <space>e :Fern . -drawer <CR>
 
-"*****************************************************************************
-"" Convenience variables
-"*****************************************************************************
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => fzf
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-" Fern
-let g:fern#renderer = "nerdfont"
-
-" vim-airline
-if !exists('g:airline_symbols')
-  let g:airline_symbols = {}
-endif
-
-if !exists('g:airline_powerline_fonts')
-  let g:airline#extensions#tabline#left_sep = ' '
-  let g:airline#extensions#tabline#left_alt_sep = '|'
-  let g:airline_left_sep          = '▶'
-  let g:airline_left_alt_sep      = '»'
-  let g:airline_right_sep         = '◀'
-  let g:airline_right_alt_sep     = '«'
-  let g:airline#extensions#branch#prefix     = '⤴' "➔, ➥, ⎇
-  let g:airline#extensions#readonly#symbol   = '⊘'
-  let g:airline#extensions#linecolumn#prefix = '¶'
-  let g:airline#extensions#paste#symbol      = 'ρ'
-  let g:airline_symbols.linenr    = '␊'
-  let g:airline_symbols.branch    = '⎇'
-  let g:airline_symbols.paste     = 'ρ'
-  let g:airline_symbols.paste     = 'Þ'
-  let g:airline_symbols.paste     = '∥'
-  let g:airline_symbols.whitespace = 'Ξ'
-else
-  let g:airline#extensions#tabline#left_sep = ''
-  let g:airline#extensions#tabline#left_alt_sep = ''
-
-  " powerline symbols
-  let g:airline_left_sep = ''
-  let g:airline_left_alt_sep = ''
-  let g:airline_right_sep = ''
-  let g:airline_right_alt_sep = ''
-  let g:airline_symbols.branch = ''
-  let g:airline_symbols.readonly = ''
-  let g:airline_symbols.linenr = ''
-endif
+nnoremap <C-p> :Files<Cr>
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "  => coc.vim settings
@@ -356,14 +304,18 @@ endif
 " other plugin before putting this into your config.
 inoremap <silent><expr> <TAB>
       \ pumvisible() ? "\<C-n>" :
+      \ coc#expandableOrJumpable() ? "\<C-r>=coc#rpc#request('doKeymap', ['snippets-expand-jump',''])\<CR>" :
       \ <SID>check_back_space() ? "\<TAB>" :
       \ coc#refresh()
+
 inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
 
 function! s:check_back_space() abort
   let col = col('.') - 1
   return !col || getline('.')[col - 1]  =~# '\s'
 endfunction
+
+let g:coc_snippet_next = '<tab>'
 
 " Use <c-space> to trigger completion.
 if has('nvim')
@@ -486,4 +438,28 @@ nnoremap <silent><nowait> <space>j  :<C-u>CocNext<CR>
 nnoremap <silent><nowait> <space>k  :<C-u>CocPrev<CR>
 " Resume latest coc list.
 nnoremap <silent><nowait> <space>p  :<C-u>CocListResume<CR>
+
+"lua <<EOF
+"require'nvim-treesitter.configs'.setup {
+"  ensure_installed = {"bash",
+"                      "java",
+"                      "javascript",
+"                      "html",
+"                      "json",
+"                      "css",
+"                      "c",
+"                      "python",
+"                      "cpp",
+"                      "toml",
+"                      "kotlin",
+"                      "dart"
+"                      },
+"  --"maintained", -- one of "all", "maintained" (parsers with maintainers), or a list of languages
+"  ignore_install = { }, -- List of parsers to ignore installing
+"  highlight = {
+"    enable = true,              -- false will disable the whole extension
+"    disable = { },  -- list of language that will be disabled
+"  },
+"}
+"EOF
 

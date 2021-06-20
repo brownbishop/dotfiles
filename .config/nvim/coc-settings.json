@@ -1,6 +1,6 @@
 {
-	"rust-analyzer.serverPath": "/usr/bin/rust-analyzer",
-	"rust-client.disableRustup": true,
+    "diagnostic.displayByAle": false,
+    "coc.preferences.colorSupport": true,
     "explorer.icon.enableNerdfont": true,
     "explorer.file.showHiddenFiles": true,
     "explorer.keyMappings.global": {
@@ -94,6 +94,7 @@
 	        }
 	      }
         }
-    }
+    },
+    "coc.preferences.extensionUpdateCheck": "daily"
 }
 
