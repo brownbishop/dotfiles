@@ -64,7 +64,7 @@ Plug 'severij/vadelma'
 "Plug 'bfrg/vim-cpp-modern'
 
 " tree sitter
-"Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}  " We recommend updating the parsers on update
+Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}  " We recommend updating the parsers on update
 
 " snippets
 Plug 'honza/vim-snippets'
@@ -340,12 +340,6 @@ nmap <silent> gy <Plug>(coc-type-definition)
 nmap <silent> gi <Plug>(coc-implementation)
 nmap <silent> gr <Plug>(coc-references)
 
-" Use K to show documentation in preview window.
-set keywordprg=:call\ CocActionAsync('doHover')
-augroup VimHelp
-  autocmd!
-  autocmd Filetype vim,help setlocal keywordprg=:help
-augroup END
 
 function! s:show_documentation()
   if (index(['vim','help'], &filetype) >= 0)
@@ -356,6 +350,13 @@ function! s:show_documentation()
     execute '!' . &keywordprg . " " . expand('<cword>')
   endif
 endfunction
+
+" Use K to show documentation in preview window.
+set keywordprg=:call\ <SID>show_documentation()
+augroup VimHelp
+    autocmd!
+    autocmd Filetype vim,help setlocal keywordprg=:help
+augroup END
 
 " Highlight the symbol and its references when holding the cursor.
 autocmd CursorHold * silent call CocActionAsync('highlight')
@@ -443,27 +444,27 @@ nnoremap <silent><nowait> <space>k  :<C-u>CocPrev<CR>
 " Resume latest coc list.
 nnoremap <silent><nowait> <space>p  :<C-u>CocListResume<CR>
 
-"lua <<EOF
-"require'nvim-treesitter.configs'.setup {
-"  ensure_installed = {"bash",
-"                      "java",
-"                      "javascript",
-"                      "html",
-"                      "json",
-"                      "css",
-"                      "c",
-"                      "python",
-"                      "cpp",
-"                      "toml",
-"                      "kotlin",
-"                      "dart"
-"                      },
-"  --"maintained", -- one of "all", "maintained" (parsers with maintainers), or a list of languages
-"  ignore_install = { }, -- List of parsers to ignore installing
-"  highlight = {
-"    enable = true,              -- false will disable the whole extension
-"    disable = { },  -- list of language that will be disabled
-"  },
-"}
-"EOF
+lua <<EOF
+require'nvim-treesitter.configs'.setup {
+  ensure_installed = {"bash",
+                      "java",
+                      "javascript",
+                      "html",
+                      "json",
+                      "css",
+                      "c",
+                      "python",
+                      "cpp",
+                      "toml",
+                      "kotlin",
+                      "dart"
+                      },
+  --"maintained", -- one of "all", "maintained" (parsers with maintainers), or a list of languages
+  ignore_install = { }, -- List of parsers to ignore installing
+  highlight = {
+    enable = true,              -- false will disable the whole extension
+    disable = { },  -- list of language that will be disabled
+  },
+}
+EOF
 
