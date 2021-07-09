@@ -1,6 +1,3 @@
-" Disable language server protocol in ale
-let g:ale_disable_lsp = 1
-
 filetype plugin on    " required
 " To ignore plugin indent changes, instead use:
 " filetype plugin on
@@ -38,17 +35,17 @@ Plug 'tpope/vim-surround'
 " syntax highlight
 Plug 'jaxbot/semantic-highlight.vim'
 
-" autocompletion and lsp
-"Plug 'dense-analysis/ale'
-
 " Use release branch :(Recommend)
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 
-" syntax
-"Plug 'sheerun/vim-polyglot'
-
 " fuzzy finder
 Plug 'junegunn/fzf.vim'
+
+" telescope
+Plug 'nvim-lua/popup.nvim'
+Plug 'nvim-lua/plenary.nvim'
+Plug 'nvim-telescope/telescope.nvim'
+Plug 'nvim-telescope/telescope-fzy-native.nvim'
 
 " themes
 Plug 'crusoexia/vim-monokai'
@@ -60,8 +57,6 @@ Plug 'severij/vadelma'
 " extra colors
 "Plug 'chrisbra/Colorizer'
 "Plug 'ap/vim-css-color'
-
-"Plug 'bfrg/vim-cpp-modern'
 
 " tree sitter
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}  " We recommend updating the parsers on update
@@ -274,11 +269,85 @@ nmap <space>e :CocCommand explorer<CR>
 " => fzf
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-nnoremap <C-p> :Files<Cr>
+"nnoremap <C-p> :Files<Cr>
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => telesope
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+lua <<EOF
+require('telescope').setup{
+    defaults = {
+        vimgrep_arguments = {
+            'rg',
+            '--color=never',
+            '--no-heading',
+            '--with-filename',
+            '--line-number',
+            '--column',
+            '--smart-case'
+        },
+        prompt_prefix = "> ",
+        selection_caret = "> ",
+        entry_prefix = "  ",
+        initial_mode = "insert",
+        selection_strategy = "reset",
+        sorting_strategy = "descending",
+        layout_strategy = "horizontal",
+        layout_config = {
+            horizontal = {
+                mirror = false,
+            },
+            vertical = {
+                mirror = false,
+            },
+        },
+        file_sorter =  require('telescope.sorters').get_fzy_sorter,
+        file_ignore_patterns = {},
+        generic_sorter =  require'telescope.sorters'.get_generic_fuzzy_sorter,
+        winblend = 0,
+        border = {},
+        borderchars = { '─', '│', '─', '│', '╭', '╮', '╯', '╰' },
+        color_devicons = true,
+        use_less = true,
+        path_display = {},
+        set_env = { ['COLORTERM'] = 'truecolor' }, -- default = nil,
+        file_previewer = require'telescope.previewers'.vim_buffer_cat.new,
+        grep_previewer = require'telescope.previewers'.vim_buffer_vimgrep.new,
+        qflist_previewer = require'telescope.previewers'.vim_buffer_qflist.new,
+
+        -- Developer configurations: Not meant for general override
+        buffer_previewer_maker = require'telescope.previewers'.buffer_previewer_maker
+    },
+    extensions = {
+        fzy_native = {
+            override_generic_sorter = false,
+            override_file_sorter = true,
+        }
+    }
+}
+require('telescope').load_extension('fzy_native')
+EOF
+
+" Find files using Telescope command-line sugar.
+nnoremap <leader>ff <cmd>Telescope find_files<cr>
+nnoremap <leader>fg <cmd>Telescope live_grep<cr>
+nnoremap <leader>fb <cmd>Telescope buffers<cr>
+nnoremap <leader>fh <cmd>Telescope help_tags<cr>
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "  => coc.vim settings
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+" Set internal encoding of vim, not needed on neovim, since coc.nvim using some
+" unicode characters in the file autoload/float.vim
+set encoding=utf-8
+
+" TextEdit might fail if hidden is not set.
+set hidden
+
+" Some servers have issues with backup files, see #649.
+set nobackup
+set nowritebackup
 
 " Give more space for displaying messages.
 set cmdheight=2
@@ -292,7 +361,7 @@ set shortmess+=c
 
 " Always show the signcolumn, otherwise it would shift the text each time
 " diagnostics appear/become resolved.
-if has("patch-8.1.1564")
+if has("nvim-0.5.0")
   " Recently vim can merge signcolumn and number column into one
   set signcolumn=number
 else
@@ -304,10 +373,8 @@ endif
 " other plugin before putting this into your config.
 inoremap <silent><expr> <TAB>
       \ pumvisible() ? "\<C-n>" :
-      \ coc#expandableOrJumpable() ? "\<C-r>=coc#rpc#request('doKeymap', ['snippets-expand-jump',''])\<CR>" :
       \ <SID>check_back_space() ? "\<TAB>" :
       \ coc#refresh()
-
 inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
 
 function! s:check_back_space() abort
@@ -315,14 +382,8 @@ function! s:check_back_space() abort
   return !col || getline('.')[col - 1]  =~# '\s'
 endfunction
 
-let g:coc_snippet_next = '<tab>'
-
 " Use <c-space> to trigger completion.
-if has('nvim')
-  inoremap <silent><expr> <c-space> coc#refresh()
-else
-  inoremap <silent><expr> <c-@> coc#refresh()
-endif
+inoremap <silent><expr> <c-space> coc#refresh()
 
 " Make <CR> auto-select the first completion item and notify coc.nvim to
 " format on enter, <cr> could be remapped by other vim plugin
@@ -340,19 +401,8 @@ nmap <silent> gy <Plug>(coc-type-definition)
 nmap <silent> gi <Plug>(coc-implementation)
 nmap <silent> gr <Plug>(coc-references)
 
-
-function! s:show_documentation()
-  if (index(['vim','help'], &filetype) >= 0)
-    execute 'h '.expand('<cword>')
-  elseif (coc#rpc#ready())
-    call CocActionAsync('doHover')
-  else
-    execute '!' . &keywordprg . " " . expand('<cword>')
-  endif
-endfunction
-
 " Use K to show documentation in preview window.
-set keywordprg=:call\ <SID>show_documentation()
+set keywordprg=:call\ CocActionAsync('doHover')
 augroup VimHelp
     autocmd!
     autocmd Filetype vim,help setlocal keywordprg=:help
@@ -424,13 +474,13 @@ command! -nargs=0 OR   :call     CocAction('runCommand', 'editor.action.organize
 " Add (Neo)Vim's native statusline support.
 " NOTE: Please see `:h coc-status` for integrations with external plugins that
 " provide custom statusline: lightline.vim, vim-airline.
-"set statusline^=%{coc#status()}%{get(b:,'coc_current_function','')}
+set statusline^=%{coc#status()}%{get(b:,'coc_current_function','')}
 
 " Mappings for CoCList
 " Show all diagnostics.
 nnoremap <silent><nowait> <space>a  :<C-u>CocList diagnostics<cr>
 " Manage extensions.
-" nnoremap <silent><nowait> <space>e  :<C-u>CocList extensions<cr>
+nnoremap <silent><nowait> <space>e  :<C-u>CocList extensions<cr>
 " Show commands.
 nnoremap <silent><nowait> <space>c  :<C-u>CocList commands<cr>
 " Find symbol of current document.
@@ -445,7 +495,7 @@ nnoremap <silent><nowait> <space>k  :<C-u>CocPrev<CR>
 nnoremap <silent><nowait> <space>p  :<C-u>CocListResume<CR>
 
 lua <<EOF
-require'nvim-treesitter.configs'.setup {
+require('nvim-treesitter.configs').setup {
   ensure_installed = {"bash",
                       "java",
                       "javascript",
