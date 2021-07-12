@@ -1,4 +1,5 @@
 {
+    "rust-client.disableRustup": true,
     "diagnostic.displayByAle": false,
     "coc.preferences.colorSupport": true,
     "explorer.icon.enableNerdfont": true,
