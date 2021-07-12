@@ -1,0 +1,36 @@
+#!/bin/sh
+
+# Use neovim for vim if present.
+if [ -x "$(command -v nvim)" ]
+then
+    alias vim="nvim" \
+        vimdiff="nvim -d" \
+        vi="nvim -u NORC"
+fi
+
+alias nvim="nvim"
+
+# Verbosity and settings that you pretty much just always are going to want.
+alias \
+	cp="cp -iv" \
+	mv="mv -iv" \
+	rm="rm -vI" \
+	mkd="mkdir -pv" \
+	yt="youtube-dl --add-metadata -i" \
+	yta="yt -x -f bestaudio/best"
+    # sudo="doas" \
+    # sudoedit="doas nvim" \
+
+# Colorize commands when possible.
+alias \
+	ls="ls -hN --color=auto --group-directories-first" \
+	grep="grep --color=auto" \
+	diff="diff --color=auto" \
+	ccat="highlight --out-format=ansi"
+
+alias objdump="objdump -M intel"
+alias vscode="code-oss"
+#alias ghci="stack exec ghci"
+#alias ghc="stack exec ghc"
+
+alias mhz='watch -n 1 "cat /proc/cpuinfo | grep MHz"'

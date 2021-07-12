@@ -102,8 +102,8 @@ autoload edit-command-line; zle -N edit-command-line
 bindkey '^e' edit-command-line
 
 
-TIMEFMT=$'real %E\nuser %U \nsystem %S\ncpu %P\n'
-PATH=$PATH:/home/catalin/.local/bin:/home/catalin/.cargo/bin
+#TIMEFMT=$'real %E\nuser %U \nsystem %S\ncpu %P\n'
+PATH=$PATH:/home/catalin/.local/bin:/home/catalin/.cargo/bin:/home/catalin/flutter/bin
 
 export EDITOR=nvim
 export VISUAL=nvim
@@ -129,13 +129,11 @@ export PATH=$PATH:$ANDROID_HOME/platform-tools
 # Use syntax highlighting
 source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
-source /usr/share/zsh-theme-powerlevel10k/powerlevel10k.zsh-theme
-
 # Load syntax highlighting; should be last.
 #source /usr/share/zsh/plugins/fast-syntax-highlighting/fast-syntax-highlighting.plugin.zsh 2>/dev/null
+
 source /usr/share/zsh-theme-powerlevel10k/powerlevel10k.zsh-theme
 
 # To customize prompt, run `p10k configure` or edit ~.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
-
-
+POWERLEVEL9K_DISABLE_GITSTATUS=true
