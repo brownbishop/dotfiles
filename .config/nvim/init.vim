@@ -243,7 +243,7 @@ noremap <silent> <C-Down> :resize -2<CR>
 " => telesope
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-luafile ./lua/telescope-config.lua
+lua require('telescope-config')
 
 " Find files using Telescope command-line sugar.
 nnoremap <leader>ff <cmd>Telescope find_files<cr>
@@ -254,22 +254,30 @@ nnoremap <leader>fh <cmd>Telescope help_tags<cr>
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => treesitter
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-luafile ./lua/treesitter-config.lua
+lua require('treesitter-config')
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => LSP settings
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-luafile ./lua/lsp-settings.lua
+lua require('lsp-settings')
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => completion
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-luafile ./lua/compe-config.lua
+lua require('compe-config')
 
 inoremap <silent><expr> <C-Space> compe#complete()
 inoremap <silent><expr> <CR>      compe#confirm('<CR>')
 inoremap <silent><expr> <C-e>     compe#close('<C-e>')
 inoremap <silent><expr> <C-f>     compe#scroll({ 'delta': +4 })
 inoremap <silent><expr> <C-d>     compe#scroll({ 'delta': -4 })
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => lsp_signature
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+lua require('lsp-signature-config')
+
+
