@@ -68,6 +68,9 @@ Plug 'suan/vim-instant-markdown', {'for': 'markdown'}
 Plug 'kyazdani42/nvim-web-devicons'
 Plug 'kyazdani42/nvim-tree.lua'
 
+" godot
+Plug 'clktmr/vim-gdscript3'
+
 call plug#end()
 
 
