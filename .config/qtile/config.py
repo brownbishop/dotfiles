@@ -212,7 +212,7 @@ screens = [
                     background=colors[0]
                 ),
                 widget.GroupBox(
-                       font = "Ubuntu Bold",
+                       font = "Mononoki Nerd Font Bold",
                        fontsize = 11,
                        margin_y = 3,
                        margin_x = 0,
@@ -230,9 +230,10 @@ screens = [
                        other_screen_border = colors[4],
                        foreground = colors[2],
                        background = colors[0]
-                       ),                widget.Prompt(
+                       ),
+                widget.Prompt(
                     prompt=prompt,
-                    font="JetBrains Mono Nerd Font",
+                    font="Mononoki Nerd Font",
                     padding=10,
                     foreground=colors[5],
                     background=colors[0]
@@ -325,7 +326,7 @@ screens = [
                 widget.Clock(
                     foreground=colors[3],
                     background=colors[0],
-                    format=" %d:%m:%Y  %H:%M",
+                    format=" %Y-%m-%d  %H:%M",
                     font="Mononoki Nerd Font"
                 ),
                 widget.Sep(
