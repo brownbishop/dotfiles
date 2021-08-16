@@ -55,13 +55,13 @@ capabilities.textDocument.completion.completionItem.resolveSupport = {
 -- map buffer local keybindings when the language server attaches
 local servers = { "bashls", "ccls", "pyright", "tsserver", "rust_analyzer","gdscript"}
 for _, lsp in ipairs(servers) do
-  nvim_lsp[lsp].setup {
+  nvim_lsp[lsp].setup({
     on_attach = on_attach,
     flags = {
       debounce_text_changes = 150,
     },
     capabilities = capabilities
-  }
+  })
 end
 
 local sumenko_root_path = "/usr/share/lua-language-server"
