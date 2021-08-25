@@ -27,14 +27,16 @@ Plug 'hoob3rt/lualine.nvim'
 Plug 'tpope/vim-surround'
 
 " lsp and autocompletion
-Plug 'neovim/nvim-lspconfig'
-"Plug 'hrsh7th/nvim-compe'
-Plug 'ms-jpq/coq_nvim', {'branch': 'coq'}
-Plug 'ray-x/lsp_signature.nvim'
+"Plug 'neovim/nvim-lspconfig'
+"Plug 'ray-x/lsp_signature.nvim'
+"Plug 'hrsh7th/nvim-cmp'
+"Plug 'hrsh7th/cmp-buffer'
+"Plug 'hrsh7th/cmp-vsnip'
+"Plug 'hrsh7th/cmp-path'
 
 " Keep it here in case I need it
 " Use release branch :(Recommend)
-"Plug 'neoclide/coc.nvim', {'branch': 'release'}
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
 
 " telescope
 Plug 'nvim-lua/popup.nvim'
@@ -59,11 +61,9 @@ Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}  " We recommend upda
 Plug 'mattn/emmet-vim'
 
 " snippets
-" 9000+ Snippets
-Plug 'ms-jpq/coq.artifacts', {'branch': 'artifacts'}
-"Plug 'hrsh7th/vim-vsnip'
-"Plug 'rafamadriz/friendly-snippets'
-"Plug 'honza/vim-snippets'
+Plug 'hrsh7th/vim-vsnip'
+Plug 'rafamadriz/friendly-snippets'
+Plug 'honza/vim-snippets'
 
 " markdown
 Plug 'suan/vim-instant-markdown', {'for': 'markdown'}
@@ -255,27 +255,19 @@ lua require('treesitter-config')
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => LSP settings
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-lua require('lsp-settings')
+"lua require('lsp-settings')
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => completion
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" load coq
-autocmd VimEnter * COQnow --shut-up
 
-"lua require('compe-config')
-
-"inoremap <silent><expr> <C-Space> compe#complete()
-"inoremap <silent><expr> <CR>      compe#confirm('<CR>')
-"inoremap <silent><expr> <C-e>     compe#close('<C-e>')
-"inoremap <silent><expr> <C-f>     compe#scroll({ 'delta': +4 })
-"inoremap <silent><expr> <C-d>     compe#scroll({ 'delta': -4 })
+"lua require('cmp-config')
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => lsp_signature
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-lua require('lsp-signature-config')
+"lua require('lsp-signature-config')
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => nvim-tree.lua
@@ -391,12 +383,7 @@ require'lualine'.setup {
   sections = {
     lualine_a = {'mode'},
     lualine_b = {'filename'},
-    lualine_c = {},--'g:coc_status'},
-    --  {
-    --    'diagnostics',
-    --    sources = { 'nvim_lsp' },
-    --  }
-    --},
+    lualine_c = {'g:coc_status'},
     lualine_x = {'encoding', 'fileformat', 'filetype'},
     lualine_y = {'progress'},
     lualine_z = {'location'}
@@ -418,5 +405,5 @@ EOF
 " => coc.nvim
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-"source ~/.config/nvim/coc-nvim-config.vim
+source ~/.config/nvim/coc-nvim-config.vim
 

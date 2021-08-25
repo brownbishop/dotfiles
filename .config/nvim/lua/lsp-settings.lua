@@ -53,7 +53,7 @@ capabilities.textDocument.completion.completionItem.resolveSupport = {
 
 -- Use a loop to conveniently call 'setup' on multiple servers and
 -- map buffer local keybindings when the language server attaches
-local servers = { "bashls", "ccls", "pyright", "tsserver", "rust_analyzer","gdscript"}
+local servers = { "bashls", "ccls", "pyright", "tsserver", "gopls" }
 for _, lsp in ipairs(servers) do
   nvim_lsp[lsp].setup({
     on_attach = on_attach,
@@ -63,6 +63,17 @@ for _, lsp in ipairs(servers) do
     capabilities = capabilities
   })
 end
+
+local pid = vim.fn.getpid()
+local omnisharp_bin = "/usr/bin/omnisharp"
+nvim_lsp.omnisharp.setup {
+    cmd = { omnisharp_bin, "--languageserver", "--hostPID", tostring(pid)},
+    on_attach = on_attach,
+    flags = {
+        debounce_text_changes = 150,
+    },
+    capabilities = capabilities
+}
 
 local sumenko_root_path = "/usr/share/lua-language-server"
 local sumenko_binary = "/usr/bin/lua-language-server"
