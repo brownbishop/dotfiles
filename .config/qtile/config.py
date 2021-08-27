@@ -41,7 +41,7 @@ keys = [
     Key([mod], "w", lazy.spawn("brave")),
 
     # Toggle screensaver
-    Key([mod], "s", lazy.spawn("i3lock-fancy-rapid 5 4")),
+    Key([mod], "s", lazy.spawn("i3lock -i ./wall.png")),
 
     # Toggle fullscreen for selected window
     Key([mod], "f", lazy.window.toggle_fullscreen()),
@@ -299,7 +299,7 @@ screens = [
                     padding=5
                 ),
                 widget.Net(
-                    interface="wlp2s0",
+                    interface="wlan0",
                     format=' {down} {up}',
                     foreground=colors[6],
                     background=colors[0],
