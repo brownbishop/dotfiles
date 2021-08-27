@@ -110,7 +110,7 @@ set noerrorbells
 
 set colorcolumn=80
 
-set completeopt=menuone,noselect
+"set completeopt=menuone,noselect
 
 set fileformats=unix,dos,mac
 
