@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 # Use neovim for vim if present.
 if [ -x "$(command -v nvim)" ]
@@ -8,8 +8,6 @@ then
         vi="nvim -u NORC"
 fi
 
-alias nvim="nvim"
-
 # Verbosity and settings that you pretty much just always are going to want.
 alias \
 	cp="cp -iv" \
@@ -18,8 +16,6 @@ alias \
 	mkd="mkdir -pv" \
 	yt="youtube-dl --add-metadata -i" \
 	yta="yt -x -f bestaudio/best"
-    # sudo="doas" \
-    # sudoedit="doas nvim" \
 
 # Colorize commands when possible.
 alias \
@@ -29,8 +25,4 @@ alias \
 	ccat="highlight --out-format=ansi"
 
 alias objdump="objdump -M intel"
-alias vscode="code-oss"
-#alias ghci="stack exec ghci"
-#alias ghc="stack exec ghc"
-
 alias mhz='watch -n 1 "cat /proc/cpuinfo | grep MHz"'
