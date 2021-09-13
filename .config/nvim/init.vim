@@ -1,8 +1,4 @@
-"filetype plugin on    " required
-" To ignore plugin indent changes, instead use:
-" filetype plugin on
-
-set termguicolors
+filetype plugin indent on
 
 " Required:
 call plug#begin(expand('~/.config/nvim/plugged'))
@@ -20,29 +16,36 @@ Plug 'tpope/vim-rhubarb' " required by fugitive to :Gbrowse
 " git integration
 Plug 'tpope/vim-fugitive'
 
-" lualine
-Plug 'hoob3rt/lualine.nvim'
+" status line
+"Plug 'famiu/feline.nvim'
+Plug 'tamton-aquib/staline.nvim'
 
 " parentheses
 Plug 'tpope/vim-surround'
-
-" lsp and autocompletion
-"Plug 'neovim/nvim-lspconfig'
-"Plug 'ray-x/lsp_signature.nvim'
-"Plug 'hrsh7th/nvim-cmp'
-"Plug 'hrsh7th/cmp-buffer'
-"Plug 'hrsh7th/cmp-vsnip'
-"Plug 'hrsh7th/cmp-path'
-
-" Keep it here in case I need it
-" Use release branch :(Recommend)
-Plug 'neoclide/coc.nvim', {'branch': 'release'}
 
 " telescope
 Plug 'nvim-lua/popup.nvim'
 Plug 'nvim-lua/plenary.nvim'
 Plug 'nvim-telescope/telescope.nvim'
 Plug 'nvim-telescope/telescope-fzy-native.nvim'
+
+" lsp and autocompletion
+Plug 'neovim/nvim-lspconfig'
+Plug 'ray-x/lsp_signature.nvim'
+Plug 'hrsh7th/nvim-cmp'
+Plug 'hrsh7th/cmp-buffer'
+Plug 'hrsh7th/cmp-vsnip'
+Plug 'hrsh7th/cmp-path'
+
+" snippets
+Plug 'hrsh7th/vim-vsnip'
+Plug 'rafamadriz/friendly-snippets'
+
+" pairs
+
+" Keep it here in case I need it
+" Use release branch :(Recommend)
+"Plug 'neoclide/coc.nvim', {'branch': 'release'}
 
 " themes
 Plug 'crusoexia/vim-monokai'
@@ -52,18 +55,13 @@ Plug 'severij/vadelma'
 "Plug 'rktjmp/lush.nvim'
 
 " extra colors
-Plug 'rrethy/vim-hexokinase', { 'do': 'make hexokinase' }
+"Plug 'rrethy/vim-hexokinase', { 'do': 'make hexokinase' }
 
 " tree sitter
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}  " We recommend updating the parsers on update
 
 " html snippets
-Plug 'mattn/emmet-vim'
-
-" snippets
-Plug 'hrsh7th/vim-vsnip'
-Plug 'rafamadriz/friendly-snippets'
-Plug 'honza/vim-snippets'
+" Plug 'mattn/emmet-vim'
 
 " markdown
 Plug 'suan/vim-instant-markdown', {'for': 'markdown'}
@@ -72,13 +70,17 @@ Plug 'suan/vim-instant-markdown', {'for': 'markdown'}
 Plug 'kyazdani42/nvim-web-devicons'
 Plug 'kyazdani42/nvim-tree.lua'
 
+" games
+Plug 'ThePrimeagen/vim-be-good'
 call plug#end()
 
 "*****************************************************************************
 "" Basic Setup
 "*****************************************************************************"
 
-set autoread
+set termguicolors
+set wildmode=longest,list,full
+set wildmenu
 
 "" Encoding
 set encoding=utf-8
@@ -90,12 +92,11 @@ set exrc
 
 "" Tabs. May be overridden by autocmd rules
 set tabstop=4
-set softtabstop=0
+set softtabstop=4
 set shiftwidth=4
 set expandtab
 
 "" Indentation settings
-set autoindent
 set smartindent
 
 "" Searching
@@ -103,38 +104,24 @@ set hlsearch
 set incsearch
 set ignorecase
 
-" extra buffers
 set hidden
-
 set noerrorbells
-
 set colorcolumn=80
-
-"set completeopt=menuone,noselect
-
 set fileformats=unix,dos,mac
-
-if exists('$SHELL')
-    set shell=$SHELL
-else
-    set shell=/bin/sh
-endif
 
 "*****************************************************************************
 "" Visual Settings
 "*****************************************************************************
-syntax on
+syntax enable
 set ruler
-set number relativenumber
+set number " relativenumber
 
 "let no_buffers_menu=1
 colorscheme gruvbox
 set background=dark
 
 set mousemodel=popup
-set t_Co=256
-
-set mouse=a          "" nicr
+set mouse=a
 
 "" Status bar
 "set laststatus=2
@@ -210,20 +197,11 @@ noremap <leader>c :bd<CR>
 "" Clean search (highlight)
 nnoremap <silent> <leader><space> :noh<cr>
 
-"" Switching windows
+"" Swenuitching windows
 noremap <C-j> <C-w>j
 noremap <C-k> <C-w>k
 noremap <C-l> <C-w>l
 noremap <C-h> <C-w>h
-
-"" Vmap for maintain Visual Mode after shifting > and <
-vmap < <gv
-vmap > >gv
-
-"" Move visual block
-vnoremap J :m '>+1<CR>gv=gv
-vnoremap K :m '<-2<CR>gv=gv
-
 
 " Make adjusing split sizes a bit more friendly
 noremap <silent> <C-Left> :vertical resize +2<CR>
@@ -255,19 +233,19 @@ lua require('treesitter-config')
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => LSP settings
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-"lua require('lsp-settings')
+lua require('lsp-settings')
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => completion
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-"lua require('cmp-config')
+lua require('cmp-config')
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => lsp_signature
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-"lua require('lsp-signature-config')
+lua require('lsp-signature-config')
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => nvim-tree.lua
@@ -359,7 +337,6 @@ nnoremap <leader>r :NvimTreeRefresh<CR>
 nnoremap <leader>n :NvimTreeFindFile<CR>
 " NvimTreeOpen and NvimTreeClose are also available if you need them
 
-set termguicolors " this variable must be enabled for colors to be applied properly
 
 " a list of groups can be found at `:help nvim_tree_highlight`
 highlight NvimTreeFolderIcon guibg=blue
@@ -369,35 +346,19 @@ nnoremap <space>e :NvimTreeOpen<CR>
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => lualine
+" => staline
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 lua << EOF
-require'lualine'.setup {
-  options = {
-    icons_enabled = true,
-    theme = 'gruvbox',
-    component_separators = {'', ''},
-    section_separators = {'', ''},
-    disabled_filetypes = {}
-  },
-  sections = {
-    lualine_a = {'mode'},
-    lualine_b = {'filename'},
-    lualine_c = {'g:coc_status'},
-    lualine_x = {'encoding', 'fileformat', 'filetype'},
-    lualine_y = {'progress'},
-    lualine_z = {'location'}
-  },
-  inactive_sections = {
-    lualine_a = {},
-    lualine_b = {},
-    lualine_c = {'filename'},
-    lualine_x = {'location'},
-    lualine_y = {},
-    lualine_z = {}
-  },
-  tabline = {},
-  extensions = {'nvim-tree'}
+local gruvbox = {
+    n = "#a89985",
+    i = "#84a598",
+    c = "#8fbf7f",
+    v = "#fc802d",    -- etc...
+}
+
+-- Assign this table as mode_colors
+require('staline').setup{
+	mode_colors = gruvbox
 }
 EOF
 
@@ -405,5 +366,5 @@ EOF
 " => coc.nvim
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-source ~/.config/nvim/coc-nvim-config.vim
+"source ~/.config/nvim/coc-nvim-config.vim
 

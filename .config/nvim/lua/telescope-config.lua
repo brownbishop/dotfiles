@@ -1,4 +1,5 @@
-require('telescope').setup{
+local telescope = require('telescope')
+telescope.setup{
     defaults = {
         vimgrep_arguments = {
             'rg',
@@ -48,5 +49,4 @@ require('telescope').setup{
         }
     }
 }
-require('telescope').load_extension('fzy_native')
-
+telescope.load_extension('fzy_native')

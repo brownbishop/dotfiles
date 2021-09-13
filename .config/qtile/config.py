@@ -13,7 +13,7 @@ from typing import List  # noqa: F401
 # set mod key to mod(also known as the Windows key)
 mod = "mod4"
 # set terminal emulator
-myTerm = "kitty --single-instance"
+myTerm = "wezterm"
 
 keys = [
     # Launch terminal emulator
