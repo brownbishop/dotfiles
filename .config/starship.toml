@@ -1,0 +1,38 @@
+# Don't print a new line at the start of the prompt
+add_newline = false
+
+# Use custom format
+format = """\
+$username\
+$hostname\
+$directory\
+$battery\
+$character"""
+
+[username]
+format = "[$user](fg:yellow)"
+show_always = true
+disabled = false
+
+[hostname]
+format = "[@](fg:purple)[$hostname]($style) "
+style = "fg:cyan"
+ssh_only = false
+disabled = false
+
+[directory]
+disabled = false
+style = "bold red"
+
+[character]
+disabled = false
+
+[battery]
+disabled = false
+full_symbol = "🔋"
+charging_symbol = "🔌"
+discharging_symbol = "⚡"
+
+[[battery.display]]
+threshold = 30
+style = "bold red"
