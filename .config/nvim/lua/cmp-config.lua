@@ -1,16 +1,10 @@
 local cmp = require('cmp')
 
-local tab_func = function(fallback)
-    if vim.fn.pumvisible() == 1 then
-        vim.fn.feedkeys(vim.api.nvim_replace_termcodes('<C-n>', true, true, true), 'n')
-    elseif vim.fn['vsnip#available']() == 1 then
-        vim.fn.feedkeys(vim.api.nvim_replace_termcodes('<Plug>(vsnip-expand-or-jump)', true, true, true), '')
-    else
-      fallback()
-    end
-end
-
 cmp.setup {
+   completion = {
+       completeopt = 'menu,menuone,noselect'
+   },
+
    snippet = {
         expand = function(args)
             -- You must install `vim-vsnip` if you use the following as-is.
@@ -30,13 +24,27 @@ cmp.setup {
             behavior = cmp.ConfirmBehavior.Insert,
             select = true,
         }),
-        ['<Tab>'] = tab_func,
+        ["<Tab>"] = function(fallback)
+           if cmp.visible() then
+             cmp.select_next_item()
+           else
+             fallback()
+           end
+         end,
+         ["<S-Tab>"] = function(fallback)
+           if cmp.visible() then
+             cmp.select_prev_item()
+           else
+             fallback()
+           end
+         end,
     },
 
 -- You should specify your *installed* sources.
     sources = {
-      { name = 'buffer' },
+      { name = 'nvim_lsp' },
       { name = 'vsnip' },
+      { name = 'buffer' },
       { name = 'path' },
     }
 }

@@ -6,14 +6,20 @@ import subprocess
 
 from libqtile.config import Key, Screen, Group, Drag, Click, Match
 from libqtile.lazy import lazy
-from libqtile import layout, bar, widget, hook
+from libqtile import qtile, layout, bar, widget, hook
 
 from typing import List  # noqa: F401
 
 # set mod key to mod(also known as the Windows key)
 mod = "mod4"
+
 # set terminal emulator
-myTerm = "wezterm"
+if qtile.core.name == "x11":
+    myTerm = "wezterm"
+    dmenu_command = "dmenu_run"
+elif qtile.core.name == "wayland":
+    myTerm = "gnome-terminal"
+    dmenu_command = "cage dmenu_run"
 
 keys = [
     # Launch terminal emulator
@@ -32,7 +38,7 @@ keys = [
     Key([mod], "r", lazy.spawncmd()),
 
     # launcher
-    Key([mod], "p", lazy.spawn("dmenu_run")),
+    Key([mod], "p", lazy.spawn(dmenu_command)),
 
     # Toggle status bar
     Key([mod], "b", lazy.hide_show_bar("top")),
@@ -343,6 +349,7 @@ screens = [
                     discharge_char='',
                     full_char='',
                     empty_char='',
+                    update_interval=5,
                 ),
                 widget.Systray(
                         foreground=colors[2],
