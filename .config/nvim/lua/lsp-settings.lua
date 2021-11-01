@@ -67,40 +67,6 @@ for _, lsp in ipairs(servers) do
   })
 end
 
-local sumneko_binary = "/usr/bin/lua-language-server"
-
-local runtime_path = vim.split(package.path, ';')
-table.insert(runtime_path, "lua/?.lua")
-table.insert(runtime_path, "lua/?/init.lua")
-
-require'lspconfig'.sumneko_lua.setup {
-  cmd = {sumneko_binary, "-E", "/usr/share/lua-language-server/main.lua"};
-  settings = {
-    Lua = {
-      runtime = {
-        -- Tell the language server which version of Lua you're using (most likely LuaJIT in the case of Neovim)
-        version = 'LuaJIT',
-        -- Setup your lua path
-        path = runtime_path,
-      },
-      diagnostics = {
-        -- Get the language server to recognize the `vim` global
-        globals = {'vim'},
-      },
-      workspace = {
-        -- Make the server aware of Neovim runtime files
-        library = {
-            vim.api.nvim_get_runtime_file("", true),
-            "${3rd}/love2d/library",
-        },
-      },
-      -- Do not send telemetry data containing a randomized but unique identifier
-      telemetry = {
-        enable = false,
-      },
-    },
-  },
-}
 
 -- alternatively you can override the default configs
 require("flutter-tools").setup {
@@ -149,3 +115,74 @@ require("flutter-tools").setup {
     capabilities = capabilities -- e.g. lsp_status capabilities
   }
 }
+
+-- JDTLS
+local root_pattern = nvim_lsp.util.root_pattern
+nvim_lsp.jdtls.setup {
+    cmd = { "jdtls" },
+    root_dir = root_pattern(".git"),
+    on_attach = on_attach,
+    capabilities = capabilities,
+    --settings = {
+
+	--	completion = {
+    --        -- Defines the type filters.
+    --        -- All types whose fully qualified name matches the selected filter strings will be ignored in content assist
+    --        -- or quick fix proposals and when organizing imports.
+    --        -- For example 'java.awt.*' will hide all types from the awt packages.
+    --        filteredTypes = {
+    --            "antlr.*",
+    --            "bitronix.*",
+    --            "com.docusign.*",
+    --            "com.lowagi.*",
+    --            "com.sun.*",
+    --            "org.apache.xmlbeans.*"
+    --        },
+
+    --        -- When set to true, method arguments are guessed when a method is selected from as list of code assist proposals.
+    --        guessMethodArguments = true,
+    --    },
+
+    --    configuration = {
+    --        -- Controls whether to exclude extension-generated project settings files (.project, .classpath, .factorypath, .settings/)
+    --        -- from the file explorer.
+    --        checkProjectSettingsExclusions = false,
+    --    },
+
+    --    format = {
+    --        settings = {
+    --            -- Optional formatter profile name from the Eclipse formatter settings.
+    --            profile = "GoogleStyle",
+
+    --            -- Specifies the url or file path to the Eclipse formatter xml settings.
+    --            url = "https://raw.githubusercontent.com/google/styleguide/gh-pages/eclipse-java-google-style.xml",
+    --        },
+    --    },
+
+    --    -- Enable/disable the implementations code lens.
+    --    implementationsCodeLens = {
+    --        enabled = false,
+    --    },
+
+    --    maven = {
+    --        -- Enable/disable download of Maven source artifacts as part of importing Maven projects.
+    --        downloadSources = true,
+    --    },
+
+    --    -- Enable/disable the references code lens.
+    --    referencesCodeLens = {
+    --        enabled = true,
+    --    },
+
+    --    -- Automatically show build status on startup.
+    --    showBuildStatusOnStart = {
+    --        enabled = true,
+    --    },
+
+    --    -- Enable/disable the signature help.
+    --    signatureHelp = {
+    --        enabled = true,
+    --    },
+	--}
+}
+

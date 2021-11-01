@@ -29,10 +29,10 @@ disabled = false
 
 [battery]
 disabled = false
-full_symbol = "🔋"
-charging_symbol = "🔌"
-discharging_symbol = "⚡"
+full_symbol = " "
+charging_symbol = " "
+discharging_symbol = " "
 
 [[battery.display]]
-threshold = 30
+threshold = 35
 style = "bold red"
