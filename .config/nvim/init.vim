@@ -17,7 +17,7 @@ Plug 'tpope/vim-rhubarb' " required by fugitive to :Gbrowse
 Plug 'tpope/vim-fugitive'
 
 " status line
-Plug 'nvim-lualine/lualine.nvim'
+Plug 'itchyny/lightline.vim'
 
 " parentheses
 Plug 'tpope/vim-surround'
@@ -29,16 +29,16 @@ Plug 'nvim-telescope/telescope.nvim'
 Plug 'nvim-telescope/telescope-fzy-native.nvim'
 
 " lsp and autocompletion
-Plug 'neovim/nvim-lspconfig'
-Plug 'ray-x/lsp_signature.nvim'
-Plug 'hrsh7th/nvim-cmp'
-Plug 'hrsh7th/cmp-nvim-lsp'
-Plug 'hrsh7th/cmp-buffer'
-Plug 'hrsh7th/cmp-vsnip'
-Plug 'hrsh7th/cmp-path'
+"Plug 'neovim/nvim-lspconfig'
+"Plug 'ray-x/lsp_signature.nvim'
+"Plug 'hrsh7th/nvim-cmp'
+"Plug 'hrsh7th/cmp-nvim-lsp'
+"Plug 'hrsh7th/cmp-buffer'
+"Plug 'hrsh7th/cmp-vsnip'
+"Plug 'hrsh7th/cmp-path'
 
 " flutter
-Plug 'akinsho/flutter-tools.nvim'
+"Plug 'akinsho/flutter-tools.nvim'
 
 " snippets
 Plug 'hrsh7th/vim-vsnip'
@@ -48,7 +48,7 @@ Plug 'rafamadriz/friendly-snippets'
 
 " Keep it here in case I need it
 " Use release branch :(Recommend)
-"Plug 'neoclide/coc.nvim', {'branch': 'release'}
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
 
 " themes
 Plug 'crusoexia/vim-monokai'
@@ -234,58 +234,40 @@ lua require('treesitter-config')
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => LSP settings
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-lua require('lsp-settings')
+"lua require('lsp-settings')
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => completion
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-lua require('cmp-config')
+"lua require('cmp-config')
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => lsp_signature
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-lua require('lsp-signature-config')
+"lua require('lsp-signature-config')
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => status line
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-lua << EOF
-require('lualine').setup {
-  options = {
-    icons_enabled = true,
-    theme = 'gruvbox',
-    component_separators = { left = '', right = ''},
-    section_separators = { left = '', right = ''},
-    disabled_filetypes = {},
-    always_divide_middle = true,
-  },
-  sections = {
-    lualine_a = {'mode'},
-    lualine_b = {'branch', 'diff',
-                  {'diagnostics', sources={'coc', 'nvim_lsp'}}},
-    lualine_c = {'filename', 'lsp_progress'},
-    lualine_x = {'encoding', 'fileformat', 'filetype'},
-    lualine_y = {'progress'},
-    lualine_z = {'location'}
-  },
-  inactive_sections = {
-    lualine_a = {},
-    lualine_b = {},
-    lualine_c = {'filename'},
-    lualine_x = {'location'},
-    lualine_y = {},
-    lualine_z = {}
-  },
-  tabline = {},
-  extensions = {}
-}
-EOF
+let g:lightline = {
+    \ 'colorscheme': 'gruvbox',
+    \ 'active': {
+	\   'left': [ [ 'mode', 'paste' ],
+	\             [ 'cocstatus', 'readonly', 'filename', 'modified' ] ]
+	\ },
+	\ 'component_function': {
+	\   'cocstatus': 'coc#status'
+	\ },
+	\ }
+
+  " Use autocmd to force lightline update.
+  autocmd User CocStatusChange,CocDiagnosticChange call lightline#update()
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => coc.nvim
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-"source ~/.config/nvim/coc-nvim-config.vim
+source ~/.config/nvim/coc-nvim-config.vim
 
