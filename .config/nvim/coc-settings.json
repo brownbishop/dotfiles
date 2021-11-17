@@ -2,23 +2,9 @@
     "rust-analyzer.server.path": "/usr/bin/rust-analyzer",
     "diagnostic.displayByAle": false,
     "coc.preferences.colorSupport": true,
-	"languageserver": {
-	  "ccls": {
-	    "command": "ccls",
-	    "filetypes": ["c", "cc", "cpp", "c++", "objc", "objcpp"],
-	    "rootPatterns": [".ccls", "compile_commands.json", ".git/", ".hg/"],
-	    "initializationOptions": {
-	        "cache": {
-	          "directory": "/tmp/ccls"
-	        }
-	      }
-        },
-        "godot": {
-            "host": "127.0.0.1",
-            "filetypes": ["gd", "gdscript3"],
-            "port": 6008
-        }
-    },
-    "coc.preferences.extensionUpdateCheck": "weekly"
+    "coc.preferences.extensionUpdateCheck": "weekly",
+    "java.errors.incompleteClasspath.severity": "ignore",
+    "java.home": "/usr/lib/jvm/default/"
 }
+
 

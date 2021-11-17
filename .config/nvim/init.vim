@@ -29,16 +29,17 @@ Plug 'nvim-telescope/telescope.nvim'
 Plug 'nvim-telescope/telescope-fzy-native.nvim'
 
 " lsp and autocompletion
-"Plug 'neovim/nvim-lspconfig'
-"Plug 'ray-x/lsp_signature.nvim'
-"Plug 'hrsh7th/nvim-cmp'
-"Plug 'hrsh7th/cmp-nvim-lsp'
-"Plug 'hrsh7th/cmp-buffer'
-"Plug 'hrsh7th/cmp-vsnip'
-"Plug 'hrsh7th/cmp-path'
+Plug 'neovim/nvim-lspconfig'
+Plug 'ray-x/lsp_signature.nvim'
+Plug 'hrsh7th/nvim-cmp'
+Plug 'hrsh7th/cmp-nvim-lsp'
+Plug 'hrsh7th/cmp-buffer'
+Plug 'hrsh7th/cmp-vsnip'
+Plug 'hrsh7th/cmp-path'
+Plug 'josa42/nvim-lightline-lsp'
 
 " flutter
-"Plug 'akinsho/flutter-tools.nvim'
+Plug 'akinsho/flutter-tools.nvim'
 
 " snippets
 Plug 'hrsh7th/vim-vsnip'
@@ -48,7 +49,7 @@ Plug 'rafamadriz/friendly-snippets'
 
 " Keep it here in case I need it
 " Use release branch :(Recommend)
-Plug 'neoclide/coc.nvim', {'branch': 'release'}
+"Plug 'neoclide/coc.nvim', {'branch': 'release'}
 
 " themes
 Plug 'crusoexia/vim-monokai'
@@ -80,7 +81,7 @@ call plug#end()
 "*****************************************************************************"
 
 set termguicolors
-set wildmode=longest,list,full
+set wildmode=list,full
 set wildmenu
 
 "" Encoding
@@ -101,9 +102,7 @@ set expandtab
 set smartindent
 
 "" Searching
-set hlsearch
 set incsearch
-set ignorecase
 
 set hidden
 set noerrorbells
@@ -115,6 +114,7 @@ set fileformats=unix,dos,mac
 "*****************************************************************************
 syntax enable
 set ruler
+set number
 set relativenumber
 
 "let no_buffers_menu=1
@@ -137,11 +137,6 @@ endif
 if has('unnamedplus')
   set clipboard=unnamed,unnamedplus
 endif
-
-if exists("*fugitive#statusline")
-  set statusline+=%{fugitive#statusline()}
-endif
-
 
 "*****************************************************************************
 "" Abbreviations
@@ -234,40 +229,64 @@ lua require('treesitter-config')
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => LSP settings
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-"lua require('lsp-settings')
+lua require('lsp-settings')
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => completion
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-"lua require('cmp-config')
+lua require('cmp-config')
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => lsp_signature
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-"lua require('lsp-signature-config')
+lua require('lsp-signature-config')
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => status line
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"let g:lightline = {
+"    \ 'colorscheme': 'gruvbox',
+"    \ 'active': {
+"	\   'left': [ [ 'mode', 'paste' ],
+"	\             [ 'cocstatus', 'readonly', 'filename', 'modified' ] ]
+"	\ },
+"	\ 'component_function': {
+"	\   'cocstatus': 'coc#status'
+"	\ },
+"	\ }
+"
+"  " Use autocmd to force lightline update.
+"  autocmd User CocStatusChange,CocDiagnosticChange call lightline#update()
+"
 let g:lightline = {
-    \ 'colorscheme': 'gruvbox',
-    \ 'active': {
-	\   'left': [ [ 'mode', 'paste' ],
-	\             [ 'cocstatus', 'readonly', 'filename', 'modified' ] ]
-	\ },
-	\ 'component_function': {
-	\   'cocstatus': 'coc#status'
-	\ },
-	\ }
+  \ 'colorscheme': 'gruvbox',
+  \   'active': {
+  \     'left': [['mode', 'paste'],
+  \              [  'lsp_info', 'lsp_hints', 'lsp_errors', 'lsp_warnings', 'lsp_ok', 'readonly', 'filename', 'modified' ],
+  \              [ 'lsp_status' ]]
+  \   }
+  \ }
 
-  " Use autocmd to force lightline update.
-  autocmd User CocStatusChange,CocDiagnosticChange call lightline#update()
+" register compoments:
+call lightline#lsp#register()
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => coc.nvim
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-source ~/.config/nvim/coc-nvim-config.vim
+"source ~/.config/nvim/coc-nvim-config.vim
 
+" Jump forward or backward
+imap <expr> <M-n> vsnip#jumpable(1) ? '<Plug>(vsnip-jump-next)' : '<Tab>'
+smap <expr> <M-n>   vsnip#jumpable(1) ? '<Plug>(vsnip-jump-next)' : '<Tab>'
+imap <expr> <M-p> vsnip#jumpable(-1)  ? '<Plug>(vsnip-jump-prev)' : '<S-Tab>'
+smap <expr> <M-p> vsnip#jumpable(-1)  ? '<Plug>(vsnip-jump-prev)' : '<S-Tab>'
+
+" Select or cut text to use as $TM_SELECTED_TEXT in the next snippet.
+" See https://github.com/hrsh7th/vim-vsnip/pull/50
+nmap  s   <Plug>(vsnip-select-text)
+xmap  s   <Plug>(vsnip-select-text)
+nmap  S   <Plug>(vsnip-cut-text)
+xmap  S   <Plug>(vsnip-cut-text)
