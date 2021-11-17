@@ -24,6 +24,8 @@ export PATH=$PATH:$ANDROID_HOME/tools
 export PATH=$PATH:$ANDROID_HOME/tools/bin
 export PATH=$PATH:$ANDROID_HOME/platform-tools
 export PATH="$PATH:$HOME/flutter/bin"
+export IDEA_JDK="/home/catalin/jbr/jbr_jcef-11_0_12-linux-x64-b1504.27"
+export JAVA_HOME="/usr/lib/jvm/default"
 
 eval "$(starship init bash)"
 
