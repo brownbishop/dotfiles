@@ -237,6 +237,10 @@ lua require('lsp-settings')
 
 lua require('cmp-config')
 
+" Expand or jump for snippets
+imap <expr> <C-l>   vsnip#available(1)  ? '<Plug>(vsnip-expand-or-jump)' : '<C-l>'
+smap <expr> <C-l>   vsnip#available(1)  ? '<Plug>(vsnip-expand-or-jump)' : '<C-l>'
+
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => lsp_signature
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -278,15 +282,3 @@ call lightline#lsp#register()
 
 "source ~/.config/nvim/coc-nvim-config.vim
 
-" Jump forward or backward
-imap <expr> <M-n> vsnip#jumpable(1) ? '<Plug>(vsnip-jump-next)' : '<Tab>'
-smap <expr> <M-n>   vsnip#jumpable(1) ? '<Plug>(vsnip-jump-next)' : '<Tab>'
-imap <expr> <M-p> vsnip#jumpable(-1)  ? '<Plug>(vsnip-jump-prev)' : '<S-Tab>'
-smap <expr> <M-p> vsnip#jumpable(-1)  ? '<Plug>(vsnip-jump-prev)' : '<S-Tab>'
-
-" Select or cut text to use as $TM_SELECTED_TEXT in the next snippet.
-" See https://github.com/hrsh7th/vim-vsnip/pull/50
-nmap  s   <Plug>(vsnip-select-text)
-xmap  s   <Plug>(vsnip-select-text)
-nmap  S   <Plug>(vsnip-cut-text)
-xmap  S   <Plug>(vsnip-cut-text)
