@@ -117,14 +117,14 @@ keys = [
         "pamixer -i 5")),
 
     # Music
-    Key([], "XF86AudioPlay", lazy.spawn("audacious -t")),
-    Key([], "XF86AudioNext", lazy.spawn("audacious -f")),
-    Key([], "XF86AudioPrev", lazy.spawn("audacious -r")),
+    Key([], "XF86AudioPlay", lazy.spawn("playerctl play-pause")),
+    Key([], "XF86AudioNext", lazy.spawn("playerctl next")),
+    Key([], "XF86AudioPrev", lazy.spawn("playerctl prev")),
 
 
     # Brightness
-    Key([], "XF86MonBrightnessUp", lazy.spawn("brightnessctl set +10%")),
-    Key([], "XF86MonBrightnessDown", lazy.spawn("brightnessctl set 10%-")),
+    Key([], "XF86MonBrightnessUp", lazy.spawn("brightnessctl set +5%")),
+    Key([], "XF86MonBrightnessDown", lazy.spawn("brightnessctl set 5%-")),
 
     # Screenshot
     Key([], "Print", lazy.spawn("gnome-screenshot"))
@@ -145,7 +145,7 @@ for i in groups:
         # Key([mod, "shift"], i.name, lazy.window.togroup(i.name)),
     ])
 layout_theme = {"border_width": 2,
-                "margin": 6,
+                "margin": 3,
                 "border_focus": "e1acff",
                 "border_normal": "1D2330"
                 }
