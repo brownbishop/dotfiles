@@ -3,7 +3,7 @@ bat_stat() {
     local capacity=`cat /sys/class/power_supply/BAT0/capacity`
     local icon=""
 
-    if [[ status == "Charging" ]] ; then
+    if [ $status == "Charging" ] ; then
         icon=""
     else
         if [ $capacity -ge 75 ] ; then
