@@ -12,8 +12,8 @@ XTerm*loginshell: true
 XTerm.termName: xterm-256color
 XTerm.vt100.locale: true
 XTerm.vt100.utf8: true
-XTerm*faceName: xft:Mononoki Nerd Font Mono:size=15
-XTerm*faceSize: 13
+XTerm*faceName: xft:Iosevka Nerd Font Mono:size=14
+XTerm*faceSize: 14
 XTerm.vt100.backarrowKey: false
 XTerm.ttyModes: erase ^?
 XTerm.vt100.metaSendsEscape: true

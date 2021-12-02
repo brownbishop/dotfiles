@@ -6,11 +6,11 @@ bat_stat() {
     if [ $status == "Charging" ] ; then
         icon=""
     else
-        if [ $capacity -ge 75 ] ; then
-            icon=""
-        fi
         if [ $capacity -ge 30 ] ; then
             icon=""
+        fi
+        if [ $capacity -ge 75 ] ; then
+            icon=""
         fi
     fi
 
@@ -25,7 +25,7 @@ __ps1() {
     PS1="$r[$y\u$g@$c\h $p\W $b\[$(bat_stat)\]$r]$y\$ $x"
 }
 
-PROMPT_COMMAND=__ps1
+#PROMPT_COMMAND=__ps1
 
 shopt -s cdspell
 
@@ -54,5 +54,5 @@ export PATH="$PATH:$HOME/flutter/bin"
 export IDEA_JDK="/home/catalin/jbr/jbr_jcef-11_0_12-linux-x64-b1504.27"
 export JAVA_HOME="/usr/lib/jvm/default"
 
-#eval "$(starship init bash)"
+eval "$(starship init bash)"
 
