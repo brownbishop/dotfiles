@@ -171,33 +171,23 @@ autocmd BufWritePre * %s/\s\+$//e
 "" Mappings
 "*****************************************************************************
 
+" Moving text
+vnoremap J :m '>+1<CR>gv=gv
+vnoremap K :m '<-2<CR>gv=gv
+inoremap <C-j> <esc>:m .+1<CR>==
+inoremap <C-k> <esc>:m .-2<CR>==
+nnoremap <leader>k :m .-2<CR>==
+nnoremap <leader>j :m .+1<CR>==
+
+nnoremap Y y$
+
 " Search mappings: These will make it so that going to the next one in a
 " search will center on the line it's found in.
 nnoremap n nzzzv
 nnoremap N Nzzzv
 
-
-noremap YY "+y<CR>
-noremap <leader>p "+gP<CR>
-noremap XX "+x<CR>
-
-"" Buffer nav
-noremap <leader>z :bp<CR>
-noremap <leader>q :bp<CR>
-noremap <leader>x :bn<CR>
-noremap <leader>w :bn<CR>
-
-"" Close buffer
-noremap <leader>c :bd<CR>
-
 "" Clean search (highlight)
 nnoremap <silent> <leader><space> :noh<cr>
-
-"" Swenuitching windows
-noremap <C-j> <C-w>j
-noremap <C-k> <C-w>k
-noremap <C-l> <C-w>l
-noremap <C-h> <C-w>h
 
 " Make adjusing split sizes a bit more friendly
 noremap <silent> <C-Left> :vertical resize +2<CR>
@@ -206,7 +196,7 @@ noremap <silent> <C-Up> :resize +2<CR>
 noremap <silent> <C-Down> :resize -2<CR>
 
 " set jj to esc, no language I know uses jj
-:imap jj <Esc>
+imap jj <Esc>
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -263,7 +253,7 @@ lua require('lsp-signature-config')
 "
 "  " Use autocmd to force lightline update.
 "  autocmd User CocStatusChange,CocDiagnosticChange call lightline#update()
-"
+
 let g:lightline = {
   \ 'colorscheme': 'gruvbox',
   \   'active': {
