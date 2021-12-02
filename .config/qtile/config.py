@@ -10,7 +10,7 @@ from typing import List
 
 # set mod key to mod(also known as the Windows key)
 mod = "mod4"
-myTerm = "xterm"
+myTerm = "termite"
 dmenu_command = "dmenu_run"
 
 keys = [
