@@ -37,6 +37,7 @@ Plug 'hrsh7th/cmp-buffer'
 Plug 'hrsh7th/cmp-vsnip'
 Plug 'hrsh7th/cmp-path'
 Plug 'josa42/nvim-lightline-lsp'
+Plug 'mfussenegger/nvim-jdtls'
 
 " flutter
 Plug 'akinsho/flutter-tools.nvim'
@@ -81,7 +82,7 @@ call plug#end()
 "*****************************************************************************"
 
 set termguicolors
-set wildmode=list,full
+"set wildmode=list,full
 set wildmenu
 
 "" Encoding

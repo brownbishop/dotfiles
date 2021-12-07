@@ -56,13 +56,13 @@ capabilities.textDocument.completion.completionItem.resolveSupport = {
 capabilities = require('cmp_nvim_lsp').update_capabilities(capabilities)
 -- Use a loop to conveniently call 'setup' on multiple servers and
 -- map buffer local keybindings when the language server attaches
-local servers = { "bashls", "clangd", "pyright", "tsserver", "hls", "gopls", "racket_langserver" }
+local servers = { "bashls", "clangd", "jedi_language_server", "tsserver", "hls", "rust_analyzer"}
 for _, lsp in ipairs(servers) do
   nvim_lsp[lsp].setup({
     on_attach = on_attach,
-    flags = {
-      debounce_text_changes = 150,
-    },
+    --flags = {
+    --  debounce_text_changes = 150,
+    --},
     capabilities = capabilities
   })
 end
