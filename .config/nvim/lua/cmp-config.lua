@@ -1,4 +1,5 @@
 local cmp = require('cmp')
+local luasnip = require('luasnip')
 
 local has_words_before = function()
   local line, col = unpack(vim.api.nvim_win_get_cursor(0))
@@ -17,8 +18,7 @@ cmp.setup {
 
    snippet = {
         expand = function(args)
-            -- You must install `vim-vsnip` if you use the following as-is.
-            vim.fn['vsnip#anonymous'](args.body)
+            luasnip.lsp_expand(args.body)
         end
     },
 
@@ -34,31 +34,33 @@ cmp.setup {
             behavior = cmp.ConfirmBehavior.Insert,
             select = true,
         }),
---        ["<Tab>"] = cmp.mapping(function(fallback)
---            if cmp.visible() then
---                cmp.select_next_item()
---            elseif vim.fn["vsnip#available"](1) == 1 then
---                feedkey("<Plug>(vsnip-expand-or-jump)", "")
---            elseif has_words_before() then
---                cmp.complete()
---            else
---                fallback() -- The fallback function sends a already mapped key. In this case, it's probably `<Tab>`.
---            end
---        end, { "i", "s" }),
---
---        ["<S-Tab>"] = cmp.mapping(function()
---            if cmp.visible() then
---                cmp.select_prev_item()
---            elseif vim.fn["vsnip#jumpable"](-1) == 1 then
---                feedkey("<Plug>(vsnip-jump-prev)", "")
---            end
---        end, { "i", "s" }),
+        ["<Tab>"] = cmp.mapping(function(fallback)
+          if cmp.visible() then
+            cmp.select_next_item()
+          elseif luasnip.expand_or_jumpable() then
+            luasnip.expand_or_jump()
+          elseif has_words_before() then
+            cmp.complete()
+          else
+            fallback()
+          end
+        end, { "i", "s" }),
+
+        ["<S-Tab>"] = cmp.mapping(function(fallback)
+          if cmp.visible() then
+            cmp.select_prev_item()
+          elseif luasnip.jumpable(-1) then
+            luasnip.jump(-1)
+          else
+            fallback()
+          end
+        end, { "i", "s" }),
     },
 
 -- You should specify your *installed* sources.
     sources = {
       { name = 'nvim_lsp' },
-      { name = 'vsnip' },
+      { name = 'luasnip' },
       { name = 'buffer' },
       { name = 'path' },
     }

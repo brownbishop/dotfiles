@@ -34,7 +34,7 @@ Plug 'ray-x/lsp_signature.nvim'
 Plug 'hrsh7th/nvim-cmp'
 Plug 'hrsh7th/cmp-nvim-lsp'
 Plug 'hrsh7th/cmp-buffer'
-Plug 'hrsh7th/cmp-vsnip'
+Plug 'saadparwaiz1/cmp_luasnip'
 Plug 'hrsh7th/cmp-path'
 Plug 'josa42/nvim-lightline-lsp'
 Plug 'mfussenegger/nvim-jdtls'
@@ -43,7 +43,7 @@ Plug 'mfussenegger/nvim-jdtls'
 Plug 'akinsho/flutter-tools.nvim'
 
 " snippets
-Plug 'hrsh7th/vim-vsnip'
+Plug 'L3MON4D3/LuaSnip'
 Plug 'rafamadriz/friendly-snippets'
 
 " pairs
@@ -229,8 +229,8 @@ lua require('lsp-settings')
 lua require('cmp-config')
 
 " Expand or jump for snippets
-imap <expr> <C-l>   vsnip#available(1)  ? '<Plug>(vsnip-expand-or-jump)' : '<C-l>'
-smap <expr> <C-l>   vsnip#available(1)  ? '<Plug>(vsnip-expand-or-jump)' : '<C-l>'
+imap <expr> <C-l>   luasnip#expand_or_jumpable() ? '<Plug>luasnip-expand-or-jump' : '<C-l>'
+smap <expr> <C-l>   luasnip#expand_or_jumpable() ? '<Plug>luasnip-expand-or-jump' : '<C-l>'
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => lsp_signature
