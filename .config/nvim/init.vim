@@ -39,9 +39,6 @@ Plug 'hrsh7th/cmp-path'
 Plug 'josa42/nvim-lightline-lsp'
 Plug 'mfussenegger/nvim-jdtls'
 
-" flutter
-Plug 'akinsho/flutter-tools.nvim'
-
 " snippets
 Plug 'L3MON4D3/LuaSnip'
 Plug 'rafamadriz/friendly-snippets'
