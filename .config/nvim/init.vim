@@ -63,9 +63,6 @@ Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}  " We recommend upda
 " html snippets
 " Plug 'mattn/emmet-vim'
 
-" markdown
-Plug 'suan/vim-instant-markdown', {'for': 'markdown'}
-
 
 Plug 'kyazdani42/nvim-web-devicons'
 
@@ -118,6 +115,8 @@ set relativenumber
 "let no_buffers_menu=1
 colorscheme gruvbox
 set background=dark
+" blue line numbers
+highlight LineNr guifg=#5eacd3
 
 set mousemodel=popup
 set mouse=a

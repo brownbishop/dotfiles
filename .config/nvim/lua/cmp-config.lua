@@ -1,6 +1,26 @@
 local cmp = require('cmp')
 local luasnip = require('luasnip')
 
+local snippets_paths = function()
+	local plugins = { "friendly-snippets" }
+	local paths = {}
+	local path
+	local root_path = vim.env.HOME .. ".config/nvim/plugged/"
+	for _, plug in ipairs(plugins) do
+		path = root_path .. plug
+		if vim.fn.isdirectory(path) ~= 0 then
+			table.insert(paths, path)
+		end
+	end
+	return paths
+end
+
+require("luasnip.loaders.from_vscode").lazy_load({
+	paths = snippets_paths(),
+	include = nil, -- Load all languages
+	exclude = {},
+})
+
 local has_words_before = function()
   local line, col = unpack(vim.api.nvim_win_get_cursor(0))
   return col ~= 0 and vim.api.nvim_buf_get_lines(0, line - 1, line, true)[1]:sub(col, col):match("%s") == nil
@@ -30,7 +50,7 @@ cmp.setup {
         ['<C-f>'] = cmp.mapping.scroll_docs(4),
         ['<C-Space>'] = cmp.mapping.complete(),
         ['<C-e>'] = cmp.mapping.close(),
-        ['<C-y>'] = cmp.mapping.confirm({
+        ['<CR>'] = cmp.mapping.confirm({
             behavior = cmp.ConfirmBehavior.Insert,
             select = true,
         }),
