@@ -5,7 +5,7 @@
     "modules-right": ["sway/language","cpu", "memory", "temperature", "backlight", "network", "pulseaudio", "clock", "battery", "tray"],
     // Modules configuration
 	"sway/workspaces": {
-		"disable-scroll": true,
+		"disable-scroll": false,
 		"all-outputs": true,
 		"format": "{icon}",
 	 	"persistent_workspaces": {
@@ -68,7 +68,7 @@
     "backlight": {
         "device": "intel_backlight",
         "format": "{icon} {percent}%",
-        "format-icons": ["", ""]
+        "format-icons": ["", " ", ""]
     },
      "temperature": {
         // "thermal-zone": 2,
