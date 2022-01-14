@@ -65,6 +65,7 @@ Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}  " We recommend upda
 
 
 Plug 'kyazdani42/nvim-web-devicons'
+Plug 'kyazdani42/nvim-tree.lua'
 
 " games
 Plug 'ThePrimeagen/vim-be-good'
@@ -262,6 +263,14 @@ let g:lightline = {
 
 " register compoments:
 call lightline#lsp#register()
+
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => nvim-tree
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+lua require('nvim-tree').setup()
+nnoremap <M-e> :NvimTreeToggle<CR>
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => coc.nvim
