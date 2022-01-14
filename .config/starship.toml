@@ -23,6 +23,7 @@ disabled = false
 [directory]
 disabled = false
 style = "bold red"
+truncation_length = 2
 
 [character]
 disabled = false
