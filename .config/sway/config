@@ -201,6 +201,8 @@ mode "resize" {
 }
 bindsym $mod+r mode "resize"
 
+gaps inner 2
+
 #
 # Special keys
 #
@@ -221,5 +223,8 @@ bar {
     swaybar_command waybar
 }
 
+# my programs
+exec copyq &
+exec /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1 &
 
 include /etc/sway/config.d/*
