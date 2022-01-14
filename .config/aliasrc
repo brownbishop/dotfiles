@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 # Use neovim for vim if present.
 if [ -x "$(command -v nvim)" ]
