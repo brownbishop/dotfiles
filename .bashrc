@@ -1,6 +1,6 @@
 shopt -s cdspell
 
-#set -o vi
+set -o vi
 
 # Load aliases and shortcuts if existent.
 [ -f "${XDG_CONFIG_HOME:-$HOME/.config}/aliasrc" ] && source "${XDG_CONFIG_HOME:-$HOME/.config}/aliasrc"
@@ -22,6 +22,7 @@ export PATH=$PATH:$ANDROID_HOME/platform-tools
 
 eval "$(starship init bash)"
 
+bind 'set show-mode-in-prompt on'
 
 # BEGIN_KITTY_SHELL_INTEGRATION
 if test -n "$KITTY_INSTALLATION_DIR" -a -e "$KITTY_INSTALLATION_DIR/shell-integration/bash/kitty.bash"; then source "$KITTY_INSTALLATION_DIR/shell-integration/bash/kitty.bash"; fi
