@@ -44,6 +44,7 @@ Plug 'L3MON4D3/LuaSnip'
 Plug 'rafamadriz/friendly-snippets'
 
 " pairs
+Plug 'windwp/nvim-autopairs'
 
 " Keep it here in case I need it
 " Use release branch :(Recommend)
@@ -70,6 +71,7 @@ Plug 'kyazdani42/nvim-tree.lua'
 " games
 Plug 'ThePrimeagen/vim-be-good'
 
+Plug 'norcalli/nvim-colorizer.lua'
 call plug#end()
 
 "*****************************************************************************
@@ -271,6 +273,12 @@ call lightline#lsp#register()
 
 lua require('nvim-tree').setup()
 nnoremap <M-e> :NvimTreeToggle<CR>
+
+" colorizer
+lua require'colorizer'.setup()
+
+" pairs
+lua require('nvim-autopairs').setup{}
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => coc.nvim
