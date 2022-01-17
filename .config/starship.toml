@@ -7,6 +7,7 @@ $username\
 $hostname\
 $directory\
 $battery\
+$line_break\
 $character"""
 
 [username]
@@ -23,10 +24,11 @@ disabled = false
 [directory]
 disabled = false
 style = "bold red"
-truncation_length = 2
+truncation_length = 3
 
 [character]
 disabled = false
+vicmd_symbol = "[❮](bold green)"
 
 [battery]
 disabled = false
@@ -37,3 +39,6 @@ discharging_symbol = " "
 [[battery.display]]
 threshold = 35
 style = "bold red"
+
+[line_break]
+disabled = false
