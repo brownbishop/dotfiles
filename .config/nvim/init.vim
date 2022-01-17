@@ -195,9 +195,6 @@ noremap <silent> <C-Right> :vertical resize -2<CR>
 noremap <silent> <C-Up> :resize +2<CR>
 noremap <silent> <C-Down> :resize -2<CR>
 
-" set jj to esc, no language I know uses jj
-imap jj <Esc>
-
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => telesope
