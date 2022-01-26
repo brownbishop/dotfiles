@@ -10,7 +10,7 @@ from typing import List
 
 # set mod key to mod(also known as the Windows key)
 mod = "mod4"
-myTerm = "xterm"
+myTerm = "kitty"
 dmenu_command = "dmenu_run"
 
 keys = [
@@ -36,7 +36,7 @@ keys = [
     Key([mod], "b", lazy.hide_show_bar("top")),
 
     # Web browser shortcut
-    Key([mod], "w", lazy.spawn("chromium")),
+    Key([mod], "w", lazy.spawn("brave")),
 
     # Toggle screensaver
     Key([mod], "s", lazy.spawn("i3lock -i ./wall.png")),
@@ -297,9 +297,7 @@ def create_widgets():
                    'Button1': lambda qtile: qtile.cmd_spawn(myTerm + ' -e htop')},
                padding=5
            ),
-           widget.Net(
-               interface="wlan0",
-               format=' {down} {up}',
+           widget.Wlan(
                foreground=colors[6],
                background=colors[0],
                padding=5
