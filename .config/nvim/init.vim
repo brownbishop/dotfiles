@@ -72,6 +72,9 @@ Plug 'kyazdani42/nvim-tree.lua'
 Plug 'ThePrimeagen/vim-be-good'
 
 Plug 'norcalli/nvim-colorizer.lua'
+
+Plug 'numToStr/Comment.nvim'
+
 call plug#end()
 
 "*****************************************************************************
@@ -276,6 +279,9 @@ lua require'colorizer'.setup()
 
 " pairs
 lua require('nvim-autopairs').setup{}
+
+" Comment
+lua require('Comment').setup()
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => coc.nvim
