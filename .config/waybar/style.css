@@ -54,8 +54,8 @@ window#waybar.hidden {
 }
 
 #workspaces button {
-    padding: 5px 5px;
-    margin: 0px 2px;
+    padding: 0px 5px;
+    margin: 0px 0px;
     background-color: @bg;
     color: @blue;
 }
@@ -143,11 +143,12 @@ window#waybar.hidden {
 #battery.critical:not(.charging) {
     background-color: @red;
     color: @fg;
-    animation-name: blink;
+    /* animation-name: blink;
     animation-duration: 0.5s;
     animation-timing-function: linear;
     animation-iteration-count: infinite;
     animation-direction: alternate;
+    */
 }
 
 label:focus {
