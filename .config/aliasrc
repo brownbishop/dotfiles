@@ -4,25 +4,21 @@
 if [ -x "$(command -v nvim)" ]
 then
     alias vim="nvim" \
-        vimdiff="nvim -d" \
-        vi="nvim -u NORC"
+        #vi="nvim -u NORC" \
+        vimdiff="nvim -d"
 fi
 
 # Verbosity and settings that you pretty much just always are going to want.
 alias \
-	cp="cp -iv" \
+	cp="cp -v" \
 	mv="mv -iv" \
 	rm="rm -vI" \
-	mkd="mkdir -pv" \
-	yt="youtube-dl --add-metadata -i" \
-	yta="yt -x -f bestaudio/best"
 
 # Colorize commands when possible.
 alias \
-	ls="ls -hN --color=auto --group-directories-first" \
+	ls="ls --color=auto --group-directories-first" \
 	grep="grep --color=auto" \
-	diff="diff --color=auto" \
-	ccat="highlight --out-format=ansi"
+	diff="diff --color=auto"
 
 alias objdump="objdump -M intel"
 alias mhz='watch -n 1 "cat /proc/cpuinfo | grep MHz"'
