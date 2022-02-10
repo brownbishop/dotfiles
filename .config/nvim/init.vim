@@ -30,10 +30,11 @@ Plug 'nvim-telescope/telescope-fzy-native.nvim'
 
 " lsp and autocompletion
 Plug 'neovim/nvim-lspconfig'
-Plug 'ray-x/lsp_signature.nvim'
+"Plug 'ray-x/lsp_signature.nvim'
 Plug 'hrsh7th/nvim-cmp'
 Plug 'hrsh7th/cmp-nvim-lsp'
 Plug 'hrsh7th/cmp-buffer'
+Plug 'hrsh7th/cmp-nvim-lsp-signature-help'
 Plug 'saadparwaiz1/cmp_luasnip'
 Plug 'hrsh7th/cmp-path'
 Plug 'josa42/nvim-lightline-lsp'
@@ -235,7 +236,7 @@ smap <expr> <C-l>   luasnip#expand_or_jumpable() ? '<Plug>luasnip-expand-or-jump
 " => lsp_signature
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-lua require('lsp-signature-config')
+"lua require('lsp-signature-config')
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => status line
@@ -271,8 +272,8 @@ call lightline#lsp#register()
 " => nvim-tree
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-lua require('nvim-tree').setup()
-nnoremap <M-e> :NvimTreeToggle<CR>
+"lua require('nvim-tree').setup()
+"nnoremap <M-e> :NvimTreeToggle<CR>
 
 " colorizer
 lua require'colorizer'.setup()
