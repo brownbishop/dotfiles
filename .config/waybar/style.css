@@ -41,7 +41,7 @@
 }
 
 window#waybar {
-    background-color: @bg_h;
+    background-color: @bg;
     border: transparent;
     color: @fg3;
     transition-property: background-color;
@@ -90,16 +90,18 @@ window#waybar.hidden {
 #pulseaudio,
 #window {
     padding: 0 10px;
-    margin: 4px 2px 4px 2px;
+    margin: 0px;
+   /*  margin: 4px 2px 4px 2px; */
 }
 
 #clock {
     padding: 0 10px;
-    margin: 4px 4px 4px 2px;
+    margin: 0px;
+    /* margin: 4px 4px 4px 2px; */
 }
 
 #workspaces {
-    margin: 4px 0px 4px 0px;
+    /* margin: 4px 0px 4px 0px; */
 }
 
 /* #workspaces {
