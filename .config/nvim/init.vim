@@ -53,6 +53,7 @@ Plug 'windwp/nvim-autopairs'
 
 " themes
 Plug 'crusoexia/vim-monokai'
+Plug 'doums/darcula' " the looks of intellij
 Plug 'gruvbox-community/gruvbox'
 Plug 'severij/vadelma'
 
@@ -74,6 +75,7 @@ Plug 'ThePrimeagen/vim-be-good'
 
 Plug 'norcalli/nvim-colorizer.lua'
 
+" fast commenting
 Plug 'numToStr/Comment.nvim'
 
 call plug#end()
@@ -107,7 +109,6 @@ set smartindent
 set incsearch
 
 set hidden
-set noerrorbells
 set colorcolumn=80
 set fileformats=unix,dos,mac
 
@@ -127,6 +128,10 @@ highlight LineNr guifg=#5eacd3
 
 set mousemodel=popup
 set mouse=a
+"set signcolumn=yes
+
+" I find it annoying
+set nohlsearch
 
 "" Status bar
 "set laststatus=2
@@ -180,7 +185,6 @@ vnoremap J :m '>+1<CR>gv=gv
 vnoremap K :m '<-2<CR>gv=gv
 inoremap <C-j> <esc>:m .+1<CR>==
 inoremap <C-k> <esc>:m .-2<CR>==
-nnoremap <leader>k :m .-2<CR>==
 nnoremap <leader>j :m .+1<CR>==
 
 nnoremap Y y$
