@@ -10,8 +10,8 @@ from typing import List
 
 # set mod key to mod(also known as the Windows key)
 mod = "mod4"
-myTerm = "kitty"
-dmenu_command = "dmenu_run"
+myTerm = "xterm"
+dmenu_command = "bemenu-run"
 
 keys = [
     # Launch terminal emulator
@@ -159,11 +159,11 @@ layouts = [
     # layout.Zoomy(**layout_theme),
     layout.MonadTall(**layout_theme),
     layout.Max(**layout_theme),
+    layout.Floating(**layout_theme),
     layout.RatioTile(**layout_theme),
     layout.Tile(shift_windows=True, **layout_theme),
     layout.Stack(num_stacks=2),
     layout.Columns(**layout_theme),
-    layout.Floating(**layout_theme)
 ]
 
 # colors = [["#282828", "#282828"], # panel background
@@ -285,9 +285,16 @@ def create_widgets():
                        background=colors[0],
                        foreground=colors[3],
                        format=' {freq_current}GHz {load_percent}%',
-                       padding=5
+                       padding=5,
+                       update_interval=5.0
                    ),
                ],
+           ),
+           widget.Wallpaper(
+               directory='~/repos/wallpapers/',
+               wallpaper_command=None,
+               foreground=colors[1],
+               background=colors[0]
            ),
            widget.Memory(
                foreground=colors[4],
