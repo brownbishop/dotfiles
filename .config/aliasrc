@@ -3,22 +3,27 @@
 # Use neovim for vim if present.
 if [ -x "$(command -v nvim)" ]
 then
-    alias vim="nvim" \
-        #vi="nvim -u NORC" \
-        vimdiff="nvim -d"
+    alias vim='nvim' \
+        vimdiff='nvim -d'
 fi
 
-# Verbosity and settings that you pretty much just always are going to want.
-alias \
-	cp="cp -v" \
-	mv="mv -iv" \
-	rm="rm -vI" \
+# enable color support of ls and also add handy aliases
+if [ -x /usr/bin/dircolors ]; then
+    test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
+    alias ls='ls --color=auto'
+    #alias dir='dir --color=auto'
+    #alias vdir='vdir --color=auto'
 
-# Colorize commands when possible.
-alias \
-	ls="ls --color=auto --group-directories-first" \
-	grep="grep --color=auto" \
-	diff="diff --color=auto"
+    alias grep='grep --color=auto'
+    alias fgrep='fgrep --color=auto'
+    alias egrep='egrep --color=auto'
+	alias diff="diff --color=auto"
+fi
 
-alias objdump="objdump -M intel"
+# some more ls aliases
+alias ll='ls -alF'
+alias la='ls -A'
+alias l='ls -CF'
+
+alias objdump='objdump -M intel'
 alias mhz='watch -n 1 "cat /proc/cpuinfo | grep MHz"'

@@ -1,7 +1,9 @@
 shopt -s cdspell
 
 set -o vi
-#set -o histappend
+
+shopt -s histappend
+shopt -s checkwinsize
 
 # Load aliases and shortcuts if existent.
 [ -f "${XDG_CONFIG_HOME:-$HOME/.config}/aliasrc" ] && source "${XDG_CONFIG_HOME:-$HOME/.config}/aliasrc"
