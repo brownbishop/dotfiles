@@ -38,7 +38,7 @@ Plug 'hrsh7th/cmp-nvim-lsp-signature-help'
 Plug 'saadparwaiz1/cmp_luasnip'
 Plug 'hrsh7th/cmp-path'
 Plug 'josa42/nvim-lightline-lsp'
-Plug 'mfussenegger/nvim-jdtls'
+Plug 'kosayoda/nvim-lightbulb'
 
 " snippets
 Plug 'L3MON4D3/LuaSnip'
@@ -215,6 +215,8 @@ nnoremap <leader>ff <cmd>Telescope find_files<cr>
 nnoremap <leader>fg <cmd>Telescope live_grep<cr>
 nnoremap <leader>fb <cmd>Telescope buffers<cr>
 nnoremap <leader>fh <cmd>Telescope help_tags<cr>
+nnoremap <leader>fr <cmd>Telescope lsp_range_code_actions<cr>
+nnoremap <leader>fa <cmd>Telescope lsp_code_actions<cr>
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => treesitter
@@ -226,6 +228,7 @@ lua require('treesitter-config')
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 lua require('lsp-settings')
 
+autocmd CursorHold,CursorHoldI * lua require'nvim-lightbulb'.update_lightbulb()
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => completion
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
