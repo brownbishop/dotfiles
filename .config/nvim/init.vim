@@ -80,73 +80,7 @@ Plug 'numToStr/Comment.nvim'
 
 call plug#end()
 
-"*****************************************************************************
-"" Basic Setup
-"*****************************************************************************"
-
-set termguicolors
-"set wildmode=list,full
-set wildmenu
-
-"" Encoding
-set encoding=utf-8
-set fileencoding=utf-8
-set fileencodings=utf-8
-
-" custom rc
-set exrc
-
-"" Tabs. May be overridden by autocmd rules
-set tabstop=4
-set softtabstop=4
-set shiftwidth=4
-set expandtab
-
-"" Indentation settings
-set smartindent
-
-"" Searching
-set incsearch
-
-set hidden
-set colorcolumn=80
-set fileformats=unix,dos,mac
-
-"*****************************************************************************
-"" Visual Settings
-"*****************************************************************************
-syntax enable
-set ruler
-set number
-set relativenumber
-
-"let no_buffers_menu=1
-colorscheme gruvbox
-set background=dark
-" blue line numbers
-highlight LineNr guifg=#5eacd3
-
-set mousemodel=popup
-set mouse=a
-"set signcolumn=yes
-
-" I find it annoying
-set nohlsearch
-
-"" Status bar
-"set laststatus=2
-
-" Disable visualbell
-set noerrorbells visualbell t_vb=
-if has('autocmd')
-  autocmd GUIEnter * set visualbell t_vb=
-endif
-
-"" Copy/Paste/Cut
-if has('unnamedplus')
-  set clipboard=unnamed,unnamedplus
-endif
-
+lua require("sets")
 "*****************************************************************************
 "" Abbreviations
 "*****************************************************************************
