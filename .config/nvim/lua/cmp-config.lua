@@ -4,26 +4,7 @@ local cmp_autopairs = require('nvim-autopairs.completion.cmp')
 
 cmp.event:on( 'confirm_done', cmp_autopairs.on_confirm_done({  map_char = { tex = '' } }))
 
--- load snippets
-local snippets_paths = function()
-	local plugins = { "friendly-snippets" }
-	local paths = {}
-	local path
-	local root_path = vim.env.HOME .. ".config/nvim/plugged/"
-	for _, plug in ipairs(plugins) do
-		path = root_path .. plug
-		if vim.fn.isdirectory(path) ~= 0 then
-			table.insert(paths, path)
-		end
-	end
-	return paths
-end
-
-require("luasnip.loaders.from_vscode").lazy_load({
-	paths = snippets_paths(),
-	include = nil, -- Load all languages
-	exclude = {},
-})
+require("luasnip.loaders.from_vscode").lazy_load()
 
 local has_words_before = function()
   local line, col = unpack(vim.api.nvim_win_get_cursor(0))
@@ -76,8 +57,8 @@ cmp.setup {
 -- You should specify your *installed* sources.
     sources = {
       { name = 'nvim_lsp' },
-      { name = 'nvim_lsp_signature_help'},
       { name = 'luasnip' },
+      { name = 'nvim_lsp_signature_help'},
       { name = 'buffer' },
       { name = 'path' },
     },
