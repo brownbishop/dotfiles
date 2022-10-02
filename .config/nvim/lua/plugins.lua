@@ -6,9 +6,9 @@ vim.cmd [[packadd packer.nvim]]
 return require('packer').startup(function(use)
     -- Packer can manage itself
     use 'wbthomason/packer.nvim'
-    use 'tpope/vim-fugitive'
 
-    use 'itchyny/lightline.vim'
+    use 'antoinemadec/FixCursorHold.nvim'
+    use 'tpope/vim-fugitive'
 
     use 'tpope/vim-surround'
 
@@ -18,25 +18,22 @@ return require('packer').startup(function(use)
     use 'nvim-telescope/telescope-fzy-native.nvim'
 
     use 'neovim/nvim-lspconfig'
-    -- "use 'ray-x/lsp_signature.nvim'
+
     use 'hrsh7th/nvim-cmp'
     use 'hrsh7th/cmp-nvim-lsp'
     use 'hrsh7th/cmp-buffer'
     use 'hrsh7th/cmp-nvim-lsp-signature-help'
     use 'saadparwaiz1/cmp_luasnip'
     use 'hrsh7th/cmp-path'
-    use 'josa42/nvim-lightline-lsp'
-    use 'kosayoda/nvim-lightbulb'
 
-    use 'L3MON4D3/LuaSnip'
+    use {"L3MON4D3/LuaSnip", tag = "v<CurrentMajor>.*"}
     use 'rafamadriz/friendly-snippets'
 
     use 'windwp/nvim-autopairs'
 
-    use 'crusoexia/vim-monokai'
-    use 'doums/darcula'
+    -- colorschemes
+    use 'folke/tokyonight.nvim'
     use 'gruvbox-community/gruvbox'
-    use 'severij/vadelma'
 
     use('nvim-treesitter/nvim-treesitter', {run = ':TSUpdate'})
 
@@ -49,5 +46,8 @@ return require('packer').startup(function(use)
 
     use 'numToStr/Comment.nvim'
 
-
+    use {
+      'nvim-lualine/lualine.nvim',
+      requires = { 'kyazdani42/nvim-web-devicons', opt = true }
+    }
 end)
