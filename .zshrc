@@ -33,6 +33,7 @@ export VISUAL=nvim
 # Color man pages
 export LESS='-R --use-color -Dd+r$Du+b'
 export CGO_ENABLED=0
+export PATH="$PATH:$HOME/.local/bin"
 # Android dev tools for React Native
 export ANDROID_HOME=$HOME/Android/Sdk
 export PATH="$PATH:$ANDROID_HOME/emulator"
