@@ -34,8 +34,8 @@ vim.opt.clipboard:append("unnamedplus")
 vim.opt.mouse = "a"
 vim.cmd [[
     colorscheme gruvbox
-    set background=dark
     " blue line numbers
-    highlight LineNr guifg=#5eacd3
+    "highlight LineNr guifg=#5eacd3
 ]]
 
+vim.opt.updatetime = 40
