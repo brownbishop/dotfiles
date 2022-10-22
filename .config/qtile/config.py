@@ -7,7 +7,16 @@ from libqtile.lazy import lazy
 from libqtile import layout, bar, widget, hook
 
 from typing import List
+from libqtile.backend.wayland.inputs import InputConfig
 
+wayland_libinput_config = {
+        "*": InputConfig(tap=True, dwt=True, scroll_method="edge")
+}
+
+wl_input_rules = {
+    "1267:12377:ELAN1300:00 04F3:3059 Touchpad": InputConfig(pointer_accel=True, tap=True, dwt=True, scroll_method="edge"),
+    "*": InputConfig(pointer_accel=True, tap=True, dwt=True, scroll_method="edge"),
+}
 # set mod key to mod(also known as the Windows key)
 mod = "mod4"
 myTerm = "xterm"
@@ -69,6 +78,11 @@ keys = [
     Key([mod, "control"], "j", lazy.layout.grow_down(), desc="Grow window down"),
     Key([mod, "control"], "k", lazy.layout.grow_up(), desc="Grow window up"),
     Key([mod], "n", lazy.layout.normalize(), desc="Reset all window sizes"),
+    # Toggle between split and unsplit sides of stack.
+    # Split = all windows displayed
+    # Unsplit = 1 window displayed, like Max layout, but still with
+    # multiple stack panes
+    Key([mod], "n", lazy.layout.normalize(), desc="Reset all window sizes"),
     Key([mod], "m", lazy.layout.maximize(), desc='toggle window between minimum and maximum sizes'),
     Key([mod], "space",
         lazy.layout.next(),
@@ -118,10 +132,10 @@ for i in groups:
         # # mod1 + shift + letter of group = move focused window to group
         # Key([mod, "shift"], i.name, lazy.window.togroup(i.name)),
     ])
-layout_theme = {"border_width": 2,
-                "margin": 3,
-                "border_focus": "e1acff",
-                "border_normal": "1D2330"
+layout_theme = {"border_width": 1,
+                "margin": 0,
+                "border_focus": "689d6a",
+                "border_normal": "3c3836"
                 }
 
 layouts = [
@@ -132,11 +146,11 @@ layouts = [
     # layout.Matrix(**layout_theme),
     # layout.Zoomy(**layout_theme),
     layout.MonadTall(**layout_theme),
-    layout.Max(**layout_theme),
+    layout.Max(border_width=0),
     layout.Floating(**layout_theme),
-    layout.RatioTile(**layout_theme),
-    layout.Tile(shift_windows=True, **layout_theme),
-    layout.Stack(num_stacks=2),
+    # layout.RatioTile(**layout_theme),
+    # layout.Tile(shift_windows=True, **layout_theme),
+    # layout.Stack(num_stacks=2),
     layout.Columns(**layout_theme),
 ]
 
@@ -156,7 +170,7 @@ prompt = "{0}@{1}: ".format(os.environ["USER"], socket.gethostname())
 widget_defaults = dict(
     font="Mononoki Nerd Font",
     fontsize=14,
-    padding=2,
+    # padding=2,
     background=colors[2]
 )
 extension_defaults = widget_defaults.copy()
@@ -270,7 +284,12 @@ def create_widgets():
                    'Button1': lambda qtile: qtile.cmd_spawn(myTerm + ' -e htop')},
                padding=5
            ),
-           widget.Wlan(
+           # widget.Wlan(
+           #     foreground=colors[6],
+           #     background=colors[0],
+           #     padding=5
+           # ),
+           widget.Net(
                foreground=colors[6],
                background=colors[0],
                padding=5
@@ -279,6 +298,7 @@ def create_widgets():
                foreground=colors[5],
                background=colors[0],
                fmt=' {}',
+               #emoji=True,
                padding=5
            ),
            widget.CurrentLayoutIcon(
@@ -329,12 +349,6 @@ screens = [
             24,
         ),
     ),
-#    Screen(
-#        top=bar.Bar(
-#            create_widgets(),
-#            24,
-#        ),
-#    ),
 ]
 
 
