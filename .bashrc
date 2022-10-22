@@ -35,8 +35,20 @@ bind 'set show-mode-in-prompt on'
 bind 'set vi-ins-mode-string "\1\e[1;33m\2I\1\e[0m\2"'
 bind 'set vi-cmd-mode-string "\1\e[1;31m\2N\1\e[0m\2"'
 
-bind 'set show-all-if-unmodified on'
-bind 'set show-all-if-ambiguous on'
+## SMARTER TAB-COMPLETION (Readline bindings) ##
+
+# Perform file completion in a case insensitive fashion
+bind "set completion-ignore-case on"
+
+# Treat hyphens and underscores as equivalent
+bind "set completion-map-case on"
+
+# Display matches for ambiguous patterns at first tab press
+bind "set show-all-if-ambiguous on"
+
+# Immediately add a trailing slash when autocompleting symlinks to directories
+bind "set mark-symlinked-directories on"
+
 bind 'set menu-complete-display-prefix on'
 bind 'TAB: menu-complete'
 # Color files by types
@@ -44,8 +56,6 @@ bind 'TAB: menu-complete'
 bind 'set colored-stats On'
 # Append char to indicate type
 bind 'set visible-stats On'
-# Mark symlinked directories
-bind 'set mark-symlinked-directories On'
 # Color the common prefix
 bind 'set colored-completion-prefix On'
 # Color the common prefix in menu-complete
