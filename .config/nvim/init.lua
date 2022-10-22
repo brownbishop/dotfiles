@@ -10,7 +10,6 @@ require("cmp-config")
 
 -- using defaults
 require("colorizer").setup()
-require("nvim-autopairs").setup()
 require("Comment").setup()
 
 vim.api.nvim_create_autocmd({"BufWritePre"}, {
