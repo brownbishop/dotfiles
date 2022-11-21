@@ -8,6 +8,7 @@ from libqtile import layout, bar, widget, hook
 
 from typing import List
 from libqtile.backend.wayland.inputs import InputConfig
+from libqtile.log_utils import logger
 
 wayland_libinput_config = {
         "*": InputConfig(tap=True, dwt=True, scroll_method="edge")
@@ -388,8 +389,7 @@ auto_minimize = True
 
 @hook.subscribe.startup_once
 def autostart():
-    home = os.path.expanduser('~')
-    subprocess.call([home + '/.config/qtile/autostart.sh'])
+   subprocess.call(['picom', '-b'])
 
 
 # XXX: Gasp! We're lying here. In fact, nobody really uses or cares about this
