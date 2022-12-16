@@ -1,5 +1,4 @@
-#shopt -s cdspell
-
+shopt -s cdspell
 set -o vi
 
 shopt -s histappend
@@ -29,6 +28,7 @@ export PATH="$PATH:~/go/bin/"
 
 export _JAVA_AWT_WM_NONREPARENTIN=1
 
+# borrowed from https://github.com/rwxrob/dot/blob/main/.bashrc
 # --------------------------- smart prompt ---------------------------
 #                 (keeping in bashrc for portability)
 
@@ -67,7 +67,7 @@ __ps1() {
 }
 
 PROMPT_COMMAND="__ps1"
-# eval "$(starship init bash)"
+
 # BEGIN_KITTY_SHELL_INTEGRATION
 if test -n "$KITTY_INSTALLATION_DIR" -a -e "$KITTY_INSTALLATION_DIR/shell-integration/bash/kitty.bash"; then source "$KITTY_INSTALLATION_DIR/shell-integration/bash/kitty.bash"; fi
 # END_KITTY_SHELL_INTEGRATION
