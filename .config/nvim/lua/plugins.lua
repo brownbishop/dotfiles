@@ -32,7 +32,13 @@ return require('packer').startup(function(use)
     -- colorschemes
     use 'folke/tokyonight.nvim'
     use 'gruvbox-community/gruvbox'
-
+    use({
+        'rose-pine/neovim',
+        as = 'rose-pine',
+        config = function()
+            vim.cmd('colorscheme rose-pine')
+        end
+    })
     use('nvim-treesitter/nvim-treesitter', {run = ':TSUpdate'})
 
     use 'kyazdani42/nvim-web-devicons'

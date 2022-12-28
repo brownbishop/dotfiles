@@ -50,3 +50,14 @@ telescope.setup{
     }
 }
 telescope.load_extension('fzy_native')
+
+local telescope_pickers = require('telescope.builtin')
+vim.keymap.set("n", "<leader>ff", telescope_pickers.find_files)
+vim.keymap.set("n", "<leader>fg", telescope_pickers.live_grep)
+vim.keymap.set("n", "<leader>fb", telescope_pickers.buffers)
+vim.keymap.set("n", "<leader>fh", telescope_pickers.help_tags)
+vim.keymap.set("n", "<leader>fd", telescope_pickers.diagnostics)
+vim.keymap.set("n", "<leader>fs", telescope_pickers.lsp_document_symbols)
+vim.keymap.set("n", "<leader>ft", telescope_pickers.treesitter)
+vim.keymap.set("n", "<leader>fp", telescope_pickers.planets)
+

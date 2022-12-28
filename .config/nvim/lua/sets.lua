@@ -32,10 +32,8 @@ vim.opt.visualbell = false
 vim.opt.clipboard:append("unnamedplus")
 
 vim.opt.mouse = "a"
-vim.cmd [[
-    colorscheme gruvbox
-    " blue line numbers
-    "highlight LineNr guifg=#5eacd3
-]]
+vim.cmd.colorscheme("gruvbox")
+vim.api.nvim_set_hl(0, "Normal", { bg = "none" })
+vim.api.nvim_set_hl(0, "NormalFloat", { bg = "none" })
 
-vim.opt.updatetime = 40
+vim.opt.updatetime = 50
