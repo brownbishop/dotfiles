@@ -2,26 +2,21 @@ import os
 import socket
 import subprocess
 
-from libqtile.config import Key, Screen, Group, Drag, Click, Match
-from libqtile.lazy import lazy
-from libqtile import layout, bar, widget, hook
-
-from typing import List
+from libqtile import bar, hook, layout, widget
 from libqtile.backend.wayland.inputs import InputConfig
-from libqtile.log_utils import logger
-
-wayland_libinput_config = {
-        "*": InputConfig(tap=True, dwt=True, scroll_method="edge")
-}
+from libqtile.config import Click, Drag, Group, Key, Match, Screen
+from libqtile.lazy import lazy
+from libqtile.widget import base
 
 wl_input_rules = {
-    "1267:12377:ELAN1300:00 04F3:3059 Touchpad": InputConfig(pointer_accel=True, tap=True, dwt=True, scroll_method="edge"),
+    "1267:12377:ELAN1300:00 04F3:3059 Touchpad": InputConfig(
+        pointer_accel=True, tap=True, dwt=True, scroll_method="edge"),
     "*": InputConfig(pointer_accel=True, tap=True, dwt=True, scroll_method="edge"),
 }
 # set mod key to mod(also known as the Windows key)
 mod = "mod4"
 myTerm = "xterm"
-dmenu_command = "bemenu-run"
+dmenu_command = "rofi -show drun"
 
 keys = [
     # Launch terminal emulator
@@ -49,7 +44,8 @@ keys = [
     Key([mod], "w", lazy.spawn("brave")),
 
     # Toggle screensaver
-    Key([mod], "s", lazy.spawn("i3lock -i ./wall.png")),
+    Key([mod], "s", lazy.spawn(
+        "i3lock -i ~/.config/i3lock/wall.png")),
 
     # Toggle fullscreen for selected window
     Key([mod], "f", lazy.window.toggle_fullscreen()),
@@ -60,6 +56,8 @@ keys = [
     # Close focused window
     Key([mod], "q", lazy.window.kill()),
 
+    # A list of available commands that can be bound to keys can be found
+    # at https://docs.qtile.org/en/latest/manual/config/lazy.html
     # Switch between windows
     Key([mod], "h", lazy.layout.left(), desc="Move focus to left"),
     Key([mod], "l", lazy.layout.right(), desc="Move focus to right"),
@@ -68,8 +66,8 @@ keys = [
     Key([mod], "space", lazy.layout.next(), desc="Move window focus to other window"),
     # Move windows between left/right columns or move up/down in current stack.
     # Moving out of range in Columns layout will create new column.
-    Key([mod, "shift"], "h", lazy.layout.shuffle_left(), desc="Move window to the left"),
-    Key([mod, "shift"], "l", lazy.layout.shuffle_right(), desc="Move window to the right"),
+    Key([mod, "shift"], "h", lazy.layout.swap_left(), desc="Move window to the left"),
+    Key([mod, "shift"], "l", lazy.layout.swap_right(), desc="Move window to the right"),
     Key([mod, "shift"], "j", lazy.layout.shuffle_down(), desc="Move window down"),
     Key([mod, "shift"], "k", lazy.layout.shuffle_up(), desc="Move window up"),
     # Grow windows. If current window is on the edge of screen and direction
@@ -78,32 +76,30 @@ keys = [
     Key([mod, "control"], "l", lazy.layout.grow_right(), desc="Grow window to the right"),
     Key([mod, "control"], "j", lazy.layout.grow_down(), desc="Grow window down"),
     Key([mod, "control"], "k", lazy.layout.grow_up(), desc="Grow window up"),
+    Key([mod], "i", lazy.layout.grow()),
+    Key([mod], "m", lazy.layout.shrink()),
+    Key([mod], "o", lazy.layout.maximize()),
     Key([mod], "n", lazy.layout.normalize(), desc="Reset all window sizes"),
     # Toggle between split and unsplit sides of stack.
     # Split = all windows displayed
     # Unsplit = 1 window displayed, like Max layout, but still with
     # multiple stack panes
-    Key([mod], "n", lazy.layout.normalize(), desc="Reset all window sizes"),
-    Key([mod], "m", lazy.layout.maximize(), desc='toggle window between minimum and maximum sizes'),
-    Key([mod], "space",
-        lazy.layout.next(),
-        desc='Switch window focus to other pane(s) of stack'
-        ),
-
     Key(
         [mod, "shift"],
         "Return",
         lazy.layout.toggle_split(),
         desc="Toggle between split and unsplit sides of stack",
     ),
-    #Key([mod], ",", lazy.to_screen(0)),
-    #Key([mod], ".", lazy.to_screen(1)),
+    # Key([mod], ",", lazy.to_screen(0)),
+    # Key([mod], ".", lazy.to_screen(1)),
     # Volume controls
-    Key([], "XF86AudioMute", lazy.spawn("pamixer -t")),
+    Key([], "XF86AudioMute", lazy.spawn("amixer sset Master toggle")),
     Key([], "XF86AudioLowerVolume", lazy.spawn(
-        "pamixer -d 5")),
+        "amixer -q sset Master 5%-")),
+    # "pamixer -d 3")),
     Key([], "XF86AudioRaiseVolume", lazy.spawn(
-        "pamixer -i 5")),
+        "amixer -q sset Master 5%+")),
+    # "pamixer -i 3")),
 
     # Music
     Key([], "XF86AudioPlay", lazy.spawn("playerctl play-pause")),
@@ -140,30 +136,21 @@ layout_theme = {"border_width": 1,
                 }
 
 layouts = [
-    # layout.MonadWide(**layout_theme),
-    # layout.Bsp(**layout_theme),
-    # layout.Stack(stacks=2, **layout_theme),
-    # layout.VerticalTile(**layout_theme),
-    # layout.Matrix(**layout_theme),
-    # layout.Zoomy(**layout_theme),
     layout.MonadTall(**layout_theme),
     layout.Max(border_width=0),
     layout.Floating(**layout_theme),
-    # layout.RatioTile(**layout_theme),
-    # layout.Tile(shift_windows=True, **layout_theme),
-    # layout.Stack(num_stacks=2),
     layout.Columns(**layout_theme),
 ]
 
 # colors Gruvbox
-colors = [[ "#282828", "#282828" ], # black
-          [ "#a89983", "#a89983" ], # white
-          [ "#cc231c", "#cc231c" ], # red
-          [ "#989719", "#989719" ], # green
-          [ "#d79920", "#d79920" ], # yellow
-          [ "#448488", "#448488" ], # blue
-          [ "#b16185", "#b16185" ], # magenta
-          [ "#689d69", "#689d69" ]] # cyan
+colors = [["#282828", "#282828"],  # black
+          ["#a89983", "#a89983"],  # white
+          ["#cc231c", "#cc231c"],  # red
+          ["#989719", "#989719"],  # green
+          ["#d79920", "#d79920"],  # yellow
+          ["#448488", "#448488"],  # blue
+          ["#b16185", "#b16185"],  # magenta
+          ["#689d69", "#689d69"]]  # cyan
 
 prompt = "{0}@{1}: ".format(os.environ["USER"], socket.gethostname())
 
@@ -176,177 +163,167 @@ widget_defaults = dict(
 )
 extension_defaults = widget_defaults.copy()
 
-def create_widgets():
-    return [
-           # widget.Sep(
-           #     linewidth=0,
-           #     padding=3,
-           #     foreground=colors[0],
-           #     background=colors[0],
-           # ),
-           widget.Image(
-               filename="~/.config/qtile/icons/python.png",
-               mouse_callbacks={
-                   'Button1': lambda: lazy.spawncmd()
-               },
-               background=colors[0]
-           ),
-           widget.GroupBox(
-                  font = "Mononoki Nerd Font Bold",
-                  fontsize = 11,
-                  margin_y = 3,
-                  margin_x = 0,
-                  padding_y = 5,
-                  padding_x = 3,
-                  borderwidth = 3,
-                  active = colors[2],
-                  inactive = colors[2],
-                  rounded = False,
-                  highlight_color = colors[5],
-                  highlight_method = "line",
-                  this_current_screen_border = colors[6],
-                  this_screen_border = colors [4],
-                  other_current_screen_border = colors[6],
-                  other_screen_border = colors[4],
-                  foreground = colors[2],
-                  background = colors[0]
-                  ),
-           widget.Prompt(
-               prompt=prompt,
-               font="Mononoki Nerd Font",
-               padding=10,
-               foreground=colors[5],
-               background=colors[0]
-           ),
-           widget.Sep(
-               linewidth=0,
-               padding=40,
-               foreground=colors[2],
-               background=colors[0]
-           ),
-           widget.WindowName(
-               foreground=colors[3],
-               background=colors[0],
-               padding=0
-           ),
-           widget.WidgetBox(
-               background=colors[0],
-               foreground=colors[4],
-               widgets= [
-                   # widget.OpenWeather(
-                   #     coordinates={"longitude": "45.1833", "latitude": "23.8"},
-                   #     background=colors[0],
-                   #     foreground=colors[4],
-                   # ),
-                   widget.KeyboardLayout(
-                       background=colors[0],
-                       foreground=colors[5],
-                       configured_keyboards=['us','ro'],
-                   ),
-                   widget.Backlight(
-                       backlight_name="intel_backlight",
-                       format=' {percent:2.0%}',
-                       foreground=colors[6],
-                       background=colors[0],
-                   ),
-                   widget.TextBox(
-                       text="",
-                       padding=2,
-                       foreground=colors[7],
-                       background=colors[0],
-                       fontsize=13
-                   ),
-                   widget.ThermalSensor(
-                       foreground=colors[7],
-                       background=colors[0],
-                       threshold=90,
-                       padding=5
-                   ),
-                   widget.CPU(
-                       background=colors[0],
-                       foreground=colors[3],
-                       format=' {freq_current}GHz {load_percent}%',
-                       padding=5,
-                       update_interval=5.0
-                   ),
-               ],
-           ),
-           widget.Wallpaper(
-               directory='~/repos/wallpapers/',
-               wallpaper_command=None,
-               foreground=colors[1],
-               background=colors[0]
-           ),
-           widget.Memory(
-               foreground=colors[4],
-               background=colors[0],
-               format='{MemUsed: .0f}M/{MemTotal: .0f}M',
-               mouse_callbacks={
-                   'Button1': lambda qtile: qtile.cmd_spawn(myTerm + ' -e htop')},
-               padding=5
-           ),
-           # widget.Wlan(
-           #     foreground=colors[6],
-           #     background=colors[0],
-           #     padding=5
-           # ),
-           widget.Net(
-               foreground=colors[6],
-               background=colors[0],
-               padding=5
-           ),
-           widget.Volume(
-               foreground=colors[5],
-               background=colors[0],
-               fmt=' {}',
-               #emoji=True,
-               padding=5
-           ),
-           widget.CurrentLayoutIcon(
-               # custom_icon_paths=[os.path.expanduser("~/.config/qtile/icons")],
-               foreground=colors[7],
-               background=colors[0],
-               padding=0,
-               scale=0.7
-           ),
-           widget.CurrentLayout(
-               foreground=colors[1],
-               background=colors[0],
-               padding=5
-           ),
-           widget.Clock(
-               foreground=colors[3],
-               background=colors[0],
-               format=" %Y-%m-%d  %H:%M",
-               font="Mononoki Nerd Font"
-           ),
-           widget.Sep(
-               linewidth=0,
-               padding=2,
-               foreground=colors[4],
-               background=colors[0]
-           ),
-           widget.Battery(
-               foreground=colors[2],
-               background=colors[0],
-               format='{char} {percent:2.0%}',
-               charge_char='',
-               discharge_char='',
-               full_char='',
-               empty_char='',
-               update_interval=5,
-           ),
-           widget.Systray(
-                   foreground=colors[2],
-                   background=colors[0],
-                   icon_size=20,
-                   padding=5
-           ),
-       ]
+
+class PowerProfilesStatus(base.InLoopPollText):
+    def __init__(self, **config):
+        base.InLoopPollText.__init__(self, **config)
+
+    def poll(self) -> str:
+        powerprofilesctl_output = subprocess.run(
+            ["powerprofilesctl", "get"], capture_output=True)
+        status: str = powerprofilesctl_output.stdout.decode.strip()
+        with open("~/qtilelog", "w") as f:
+            f.write(status)
+        return status
+
+
+widgets = [
+    widget.Image(
+        filename="~/.config/qtile/icons/python.png",
+        mouse_callbacks={
+            'Button1': lambda: lazy.spawncmd()
+        },
+        background=colors[0]
+    ),
+    widget.GroupBox(
+        font="Mononoki Nerd Font Bold",
+        fontsize=11,
+        margin_y=3,
+        margin_x=0,
+        padding_y=5,
+        padding_x=3,
+        borderwidth=3,
+        active=colors[2],
+        inactive=colors[2],
+        rounded=False,
+        highlight_color=colors[5],
+        highlight_method="line",
+        this_current_screen_border=colors[6],
+        this_screen_border=colors[4],
+        other_current_screen_border=colors[6],
+        other_screen_border=colors[4],
+        foreground=colors[2],
+        background=colors[0]
+    ),
+    widget.Prompt(
+        prompt=prompt,
+        font="Mononoki Nerd Font",
+        padding=10,
+        foreground=colors[5],
+        background=colors[0]
+    ),
+    widget.Sep(
+        linewidth=0,
+        padding=40,
+        foreground=colors[2],
+        background=colors[0]
+    ),
+    widget.WindowName(
+        foreground=colors[3],
+        background=colors[0],
+        padding=0
+        ),
+    # widget.Net(
+        #     foreground=colors[6],
+        #     background=colors[0],
+        #     padding=5
+        # ),
+    widget.TextBox(
+            text="",
+            padding=2,
+            foreground=colors[7],
+            background=colors[0],
+            fontsize=13
+            ),
+    widget.ThermalSensor(
+            foreground=colors[7],
+            background=colors[0],
+            threshold=90,
+            padding=5
+            ),
+    widget.CPU(
+            background=colors[0],
+            foreground=colors[3],
+            format=' {load_percent}%',
+            padding=5,
+            update_interval=15,
+            ),
+    widget.Memory(
+            foreground=colors[4],
+            background=colors[0],
+            format='{MemUsed: .0f}M/{MemTotal: .0f}M',
+            mouse_callbacks={
+                'Button1': lambda qtile: qtile.cmd_spawn(myTerm + ' -e htop')},
+            padding=5
+            ),
+    widget.Wallpaper(
+        directory='~/repos/wallpapers/',
+        wallpaper_command=None,
+        foreground=colors[1],
+        background=colors[0]
+        ),
+    widget.KeyboardLayout(
+            background=colors[0],
+            foreground=colors[5],
+            configured_keyboards=['us', 'ro'],
+            ),
+    widget.Backlight(
+            backlight_name="intel_backlight",
+            format=' {percent:2.0%}',
+            foreground=colors[6],
+            background=colors[0],
+            ),
+    widget.PulseVolume(
+        foreground=colors[5],
+        background=colors[0],
+        fmt=' {}',
+        # emoji=True,
+        padding=5,
+    ),
+    widget.CurrentLayoutIcon(
+        foreground=colors[7],
+        background=colors[0],
+        padding=0,
+        scale=0.7
+    ),
+    widget.CurrentLayout(
+        foreground=colors[1],
+        background=colors[0],
+        padding=5
+    ),
+    widget.Clock(
+        foreground=colors[3],
+        background=colors[0],
+        format=" %Y-%m-%d  %H:%M",
+        font="Mononoki Nerd Font"
+    ),
+    widget.Sep(
+        linewidth=0,
+        padding=2,
+        foreground=colors[4],
+        background=colors[0]
+    ),
+    widget.Battery(
+        foreground=colors[2],
+        background=colors[0],
+        format='{char} {percent:2.0%}',
+        charge_char='',
+        discharge_char='',
+        full_char='',
+        empty_char='',
+        update_interval=30,
+    ),
+    widget.Systray(
+        foreground=colors[2],
+        background=colors[0],
+        icon_size=20,
+        padding=5
+    ),
+]
 screens = [
     Screen(
         top=bar.Bar(
-            create_widgets(),
+            widgets,
             24,
         ),
     ),
@@ -355,8 +332,10 @@ screens = [
 
 # Drag floating layouts.
 mouse = [
-    Drag([mod], "Button1", lazy.window.set_position_floating(), start=lazy.window.get_position()),
-    Drag([mod], "Button3", lazy.window.set_size_floating(), start=lazy.window.get_size()),
+    Drag([mod], "Button1", lazy.window.set_position_floating(),
+         start=lazy.window.get_position()),
+    Drag([mod], "Button3", lazy.window.set_size_floating(),
+         start=lazy.window.get_size()),
     Click([mod], "Button2", lazy.window.bring_to_front()),
 ]
 
@@ -386,10 +365,13 @@ reconfigure_screens = True
 auto_minimize = True
 
 # hooks
+def spawn(*args):
+    subprocess.call(list(args))
 
 @hook.subscribe.startup_once
 def autostart():
-   subprocess.call(['picom', '-b'])
+    spawn('picom', '-b')
+    spawn('switch-profile')
 
 
 # XXX: Gasp! We're lying here. In fact, nobody really uses or cares about this
