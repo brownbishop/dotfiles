@@ -3,17 +3,19 @@ import socket
 import subprocess
 
 from libqtile import bar, hook, layout, widget
-from libqtile.backend.wayland.inputs import InputConfig
+# from libqtile.backend.wayland.inputs import InputConfig
 from libqtile.config import Click, Drag, Group, Key, Match, Screen
 from libqtile.lazy import lazy
 from libqtile.widget import base
 
-wl_input_rules = {
-    "1267:12377:ELAN1300:00 04F3:3059 Touchpad": InputConfig(
-        pointer_accel=True, tap=True, dwt=True, scroll_method="edge"),
-    "*": InputConfig(pointer_accel=True, tap=True, dwt=True, scroll_method="edge"),
-}
-# set mod key to mod(also known as the Windows key)
+from typing import List
+
+# wl_input_rules = {
+#     "1267:12377:ELAN1300:00 04F3:3059 Touchpad": InputConfig(
+#         pointer_accel=True, tap=True, dwt=True, scroll_method="edge",
+#     "*": InputConfig(pointer_accel=True, tap=True, dwt=True, scroll_method="edge"),
+# }
+# # set mod key to mod(also known as the Windows key)
 mod = "mod4"
 myTerm = "xterm"
 dmenu_command = "rofi -show drun"
@@ -45,7 +47,7 @@ keys = [
 
     # Toggle screensaver
     Key([mod], "s", lazy.spawn(
-        "i3lock -i ~/.config/i3lock/wall.png")),
+        "i3lock -i ./wall.png")),
 
     # Toggle fullscreen for selected window
     Key([mod], "f", lazy.window.toggle_fullscreen()),
@@ -131,15 +133,14 @@ for i in groups:
     ])
 layout_theme = {"border_width": 1,
                 "margin": 0,
-                "border_focus": "689d6a",
-                "border_normal": "3c3836"
+                "border_focus": "#689d6a",
+                "border_normal": "#3c3836"
                 }
 
 layouts = [
-    layout.MonadTall(**layout_theme),
+    layout.Columns(**layout_theme),
     layout.Max(border_width=0),
     layout.Floating(**layout_theme),
-    layout.Columns(**layout_theme),
 ]
 
 # colors Gruvbox
@@ -163,18 +164,18 @@ widget_defaults = dict(
 )
 extension_defaults = widget_defaults.copy()
 
-
-class PowerProfilesStatus(base.InLoopPollText):
-    def __init__(self, **config):
-        base.InLoopPollText.__init__(self, **config)
-
-    def poll(self) -> str:
-        powerprofilesctl_output = subprocess.run(
-            ["powerprofilesctl", "get"], capture_output=True)
-        status: str = powerprofilesctl_output.stdout.decode.strip()
-        with open("~/qtilelog", "w") as f:
-            f.write(status)
-        return status
+#
+# class PowerProfilesStatus(base.InLoopPollText):
+#     def __init__(self, **config):
+#         base.InLoopPollText.__init__(self, **config)
+#
+#     def poll(self) -> str:
+#         powerprofilesctl_output = subprocess.run(
+#             ["powerprofilesctl", "get"], capture_output=True)
+#         status: str = powerprofilesctl_output.stdout.decode.strip()
+#         with open("~/qtilelog", "w") as f:
+#             f.write(status)
+#         return status
 
 
 widgets = [
@@ -244,7 +245,7 @@ widgets = [
     widget.CPU(
             background=colors[0],
             foreground=colors[3],
-            format=' {load_percent}%',
+            format=' {freq_current}GHz {load_percent}%',
             padding=5,
             update_interval=15,
             ),
@@ -273,7 +274,7 @@ widgets = [
             foreground=colors[6],
             background=colors[0],
             ),
-    widget.PulseVolume(
+    widget.Volume(
         foreground=colors[5],
         background=colors[0],
         fmt=' {}',
@@ -295,7 +296,6 @@ widgets = [
         foreground=colors[3],
         background=colors[0],
         format=" %Y-%m-%d  %H:%M",
-        font="Mononoki Nerd Font"
     ),
     widget.Sep(
         linewidth=0,
@@ -307,11 +307,12 @@ widgets = [
         foreground=colors[2],
         background=colors[0],
         format='{char} {percent:2.0%}',
-        charge_char='',
-        discharge_char='',
-        full_char='',
-        empty_char='',
+        charge_char='🔌',
+        discharge_char='⚡🔋',
+        full_char='🔋',
+        empty_char='🪫',
         update_interval=30,
+        font="Mononoki Nerd Font",
     ),
     widget.Systray(
         foreground=colors[2],
@@ -365,14 +366,11 @@ reconfigure_screens = True
 auto_minimize = True
 
 # hooks
-def spawn(*args):
-    subprocess.call(list(args))
 
 @hook.subscribe.startup_once
 def autostart():
-    spawn('picom', '-b')
-    spawn('switch-profile')
-
+    home = os.path.expanduser('~/.config/qtile/autostart.sh')
+    subprocess.Popen([home])
 
 # XXX: Gasp! We're lying here. In fact, nobody really uses or cares about this
 # string besides java UI toolkits; you can see several discussions on the
