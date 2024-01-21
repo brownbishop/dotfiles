@@ -1,57 +1,31 @@
--- This file can be loaded by calling `lua require('plugins')` from your init.vim
+-- lazy nvim plugins
+return {
+    {"nvim-treesitter/nvim-treesitter", build = ":TSUpdate"},
 
--- Only required if you have packer configured as `opt`
-vim.cmd [[packadd packer.nvim]]
+    'neovim/nvim-lspconfig',
+    'hrsh7th/cmp-nvim-lsp',
+    'hrsh7th/cmp-nvim-lsp-signature-help',
+    'hrsh7th/cmp-buffer',
+    'hrsh7th/cmp-path',
+    'hrsh7th/cmp-cmdline',
+    'hrsh7th/nvim-cmp',
 
-return require('packer').startup(function(use)
-    -- Packer can manage itself
-    use 'wbthomason/packer.nvim'
+    'L3MON4D3/LuaSnip',
+    'saadparwaiz1/cmp_luasnip',
 
-    use 'antoinemadec/FixCursorHold.nvim'
-    use 'tpope/vim-fugitive'
+    {
+    'nvim-telescope/telescope.nvim', tag = '0.1.5',
+      dependencies = { 'nvim-lua/plenary.nvim' }
+    },
+    { 'nvim-telescope/telescope-fzf-native.nvim', build = 'make' },
 
-    use 'tpope/vim-surround'
+    'numToStr/Comment.nvim',
+    {
+    'nvim-lualine/lualine.nvim',
+      dependncies = { 'kyazdani42/nvim-web-devicons' }
+    },
 
-    use 'nvim-lua/popup.nvim'
-    use 'nvim-lua/plenary.nvim'
-    use 'nvim-telescope/telescope.nvim'
-    use 'nvim-telescope/telescope-fzy-native.nvim'
-
-    use 'neovim/nvim-lspconfig'
-
-    use 'hrsh7th/nvim-cmp'
-    use 'hrsh7th/cmp-nvim-lsp'
-    use 'hrsh7th/cmp-buffer'
-    use 'hrsh7th/cmp-nvim-lsp-signature-help'
-    use 'saadparwaiz1/cmp_luasnip'
-    use 'hrsh7th/cmp-path'
-
-    use {"L3MON4D3/LuaSnip", tag = "v<CurrentMajor>.*"}
-    use 'rafamadriz/friendly-snippets'
-
-    -- colorschemes
-    use 'folke/tokyonight.nvim'
-    use 'gruvbox-community/gruvbox'
-    use({
-        'rose-pine/neovim',
-        as = 'rose-pine',
-        config = function()
-            vim.cmd('colorscheme rose-pine')
-        end
-    })
-    use('nvim-treesitter/nvim-treesitter', {run = ':TSUpdate'})
-
-    use 'kyazdani42/nvim-web-devicons'
-    use 'kyazdani42/nvim-tree.lua'
-
-    use 'ThePrimeagen/vim-be-good'
-
-    use 'norcalli/nvim-colorizer.lua'
-
-    use 'numToStr/Comment.nvim'
-
-    use {
-      'nvim-lualine/lualine.nvim',
-      requires = { 'kyazdani42/nvim-web-devicons', opt = true }
-    }
-end)
+    'folke/tokyonight.nvim',
+    'ellisonleao/gruvbox.nvim',
+    'rose-pine/neovim',
+}
