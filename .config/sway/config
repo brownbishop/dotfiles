@@ -14,24 +14,18 @@ set $down j
 set $up k
 set $right l
 # Your preferred terminal emulator
-set $term kitty
+set $term foot
 # Your preferred application launcher
 # Note: pass the final command to swaymsg so that the resulting window can be opened
 # on the original workspace that the command was run on.
-set $menu bemenu-run
+set $menu rofi -steal-focus -show drun
 
-# class                   border  backgr. text    indic.   child_border
-  client.focused          #556064 #556064 #80FFF9 #FDF6E3
-  client.focused_inactive #2F3D44 #2F3D44 #AD69AF #454948
-  client.unfocused        #2F3D44 #2F3D44 #AD69AF #454948
-  client.urgent           #CB4B16 #FDF6E3 #AD69AF #268BD2
-  client.placeholder      #000000 #0c0c0c #ffffff #000000
+set $lockscreen swaylock -i $(find ~/repos/wallpapers -name "*jpg" | shuf -n 1)
 
-  client.background       #2B2C2B
 ### Output configuration
 #
 # Default wallpaper (more resolutions are available in /usr/share/backgrounds/sway/)
-output * bg ~/repos/wallpapers/0250.jpg fill
+output * bg /home/catalin/repos/wallpapers/0250.jpg fill
 #
 # Example configuration:
 #
@@ -52,6 +46,11 @@ output * bg ~/repos/wallpapers/0250.jpg fill
 # your displays after another 300 seconds, and turn your screens back on when
 # resumed. It will also lock your screen before your computer goes to sleep.
 
+exec swayidle -w \
+         timeout 300 'swaylock -f' \
+         timeout 600 'swaymsg "output * dpms off"' resume 'swaymsg "output * dpms on"' \
+         before-sleep 'swaylock -f'
+
 ### Input configuration
 #
 # Example configuration:
@@ -71,7 +70,10 @@ input type:touchpad {
     scroll_method edge
 }
 
-input * xkb_layout us,ro
+input * {
+    xkb_layout us,ro
+    xkb_options grp:rctrl_toggle
+}
 
 ### Key bindings
 #
@@ -85,7 +87,9 @@ input * xkb_layout us,ro
 
     # Start your launcher
     bindsym $mod+p exec $menu
+    bindsym $mod+d exec bemenu-run
 
+    bindsym $mod+Shift+b exec swaymsg output \"*\" bg $(find ~/repos/wallpapers -name \"*jpg\" | shuf -n 1) fill
     bindsym Mod1+space xkb_switch_layout next
 
     # Drag floating windows by holding down $mod and left mouse button.
@@ -169,7 +173,7 @@ input * xkb_layout us,ro
     bindsym $mod+f fullscreen
 
     # Toggle the current focus between tiling and floating mode
-    bindsym $mod+Shift+space floating toggle
+    bindsym $mod+Shift+f floating toggle
 
     # Swap focus between the tiling area and the floating area
     bindsym $mod+space focus mode_toggle
@@ -222,25 +226,86 @@ bindsym $mod+r mode "resize"
     bindsym --locked XF86AudioMute exec pamixer -t
     bindsym --locked XF86AudioLowerVolume exec pamixer -d 5
     bindsym --locked XF86AudioRaiseVolume exec pamixer -i 5
-    bindsym --locked XF86AudioMicMute exec pactl set-source-mute @DEFAULT_SOURCE@ toggle
-
-default_border pixel 3
-gaps inner 2
+    bindsym --locked XF86AudioMicMute exec pamixer --default-source -t
+    bindsym --locked XF86AudioPlay exec playerctl play-pause
+    bindsym --locked XF86AudioNext exec playerctl next
+    bindsym --locked XF86AudioPrev exec playerctl prev
+    bindsym --locked Pause exec gnome-screenshot
+    bindsym XF86Search exec $menu
+    bindsym $mod+Shift+s exec $lockscreen
+default_border pixel 1
+# gaps inner 2
 #smart_gaps on
 smart_borders on
 
 for_window [class="XTerm"] opacity 0.9
 
-#
-# Status Bar:
-#
-# Read `man 5 sway-bar` for more information about this section.
-bar {
-    swaybar_command waybar
-}
+# Colors - Gruvbox
+set $background #282828
+set $foreground #ebdbb2
+set $color0     #282828
+set $color1     #cc241d
+set $color2     #98971a
+set $color3     #d79921
+set $color4     #458588
+set $color5     #b16286
+set $color6     #689d6a
+set $color7     #a89984
+set $color8     #928374
+set $color9     #fb4934
+set $color10    #b8bb26
+set $color11    #fabd2f
+set $color12    #83a598
+set $color13    #d3869b
+set $color14    #8ec07c
+set $color15    #ebdbb2
 
+# Theme colors
+# class                 border  	backgr. 	text    	indic.  	child_border
+client.focused         	$color6  	$color6	    $foreground	$color6		$color6
+client.unfocused       	$color0	    $color0	    $foreground	$color0     $color0
+client.focused_inactive	$color3	    $color3  	$foreground	$color3		$color3
+client.urgent		    $color1	    $color1 	$foreground	$color1		$color1
+client.placeholder	    $color4	    $color4	    $foreground	$color4		$color4
+client.background	    $background
+
+
+# Start i3bar to display a workspace bar (plus the system information i3status
+# finds out, if available)
+
+# bar {
+#     font pango:ComicShannsMono Nerd Font, FontAwesome 12
+#     position top
+#     status_command while date +'%Y-%m-%d %I:%M:%S %p'; do sleep 1; done
+#
+#     colors {
+#         separator $color7
+#         background $background
+#         statusline $foreground
+#         focused_workspace $color4 $color4 $foreground
+#         active_workspace $color0 $color0 $color15
+#         inactive_workspace $color0 $color0 $color7
+#         urgent_workspace $color0 $color1 $color15
+#     }
+# }
+
+bar swaybar_command waybar
+
+set $gnome-schema org.gnome.desktop.interface
+
+exec_always {
+    gsettings set $gnome-schema gtk-theme 'Adwaita-dark'
+    gsettings set $gnome-schema icon-theme 'Papirus-Dark'
+    gsettings set $gnome-schema cursor-theme 'Adwaita'
+    gsettings set $gnome-schema font-name 'Noto-Sans, 10'
+}
 # my programs
-exec copyq &
 exec /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1 &
+exec --no-startup-id xrdb ~/.Xresources
+exec --no-startup-id ~/.cargo/bin/switch-profile
+exec --no-startup-id systemctl --user set-environment MOZ_ENABLE_WAYLAND=1
+exec dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP=sway
+
+for_window [class="^Brave$"] inhibit_idle fullscreen
 
 include /etc/sway/config.d/*
