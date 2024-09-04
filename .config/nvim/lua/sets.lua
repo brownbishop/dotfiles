@@ -9,7 +9,8 @@ vim.opt.tabstop = 4
 vim.opt.softtabstop = 4
 vim.opt.shiftwidth = 4
 vim.opt.expandtab = true
-vim.opt.smartindent = true
+vim.opt.autoindent = false
+vim.opt.smartindent = false
 vim.opt.incsearch = true
 vim.opt.hlsearch = false
 vim.opt.hidden = true
@@ -29,11 +30,12 @@ vim.opt.nu = true
 vim.opt.relativenumber = true
 
 vim.opt.visualbell = false
-vim.opt.clipboard:append("unnamedplus")
+-- vim.opt.clipboard:append("unnamedplus")
 
 vim.opt.mouse = "a"
+-- vim.o.background = "dark"
 vim.cmd.colorscheme("gruvbox")
 vim.api.nvim_set_hl(0, "Normal", { bg = "none" })
-vim.api.nvim_set_hl(0, "NormalFloat", { bg = "none" })
+-- vim.api.nvim_set_hl(0, "NormalFloat", { bg = "none" })
 
-vim.opt.updatetime = 50
+-- vim.opt.updatetime = 50
