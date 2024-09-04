@@ -4,6 +4,8 @@ set -o vi
 shopt -s histappend
 shopt -s checkwinsize
 
+[[ -f ~/.profile ]] && source ~/.profile
+
 # Load aliases and shortcuts if existent.
 [ -f "${XDG_CONFIG_HOME:-$HOME/.config}/aliasrc" ] && source "${XDG_CONFIG_HOME:-$HOME/.config}/aliasrc"
 
@@ -16,15 +18,21 @@ export VISUAL=nvim
 # Color man pages
 export LESS='-R --use-color -Dd+r$Du+b'
 
-export PATH="$PATH:$HOME/.local/bin"
+export PATH="$HOME/.local/bin:$PATH"
 # Android dev tools for React Native
 export ANDROID_HOME=$HOME/Android/Sdk
 export PATH="$PATH:$ANDROID_HOME/emulator"
 export PATH="$PATH:$ANDROID_HOME/tools"
 export PATH="$PATH:$ANDROID_HOME/tools/bin"
 export PATH="$PATH:$ANDROID_HOME/platform-tools"
-export PATH="$PATH:~/tmp/server/bin"
-export PATH="$PATH:~/go/bin/"
+export PATH="$PATH:$HOME/go/bin/"
+export PATH="$PATH:$HOME/.cargo/bin/"
+export PATH="$PATH:$HOME/flutter/bin/"
+export PATH=$PATH:$HOME/.local/go/bin
+export PATH=$PATH:$HOME/.zig
+export GO_PATH="$HOME/go"
+export CGO_ENABLED=1
+
 
 export _JAVA_AWT_WM_NONREPARENTIN=1
 
@@ -66,9 +74,37 @@ __ps1() {
   fi
 }
 
-PROMPT_COMMAND="__ps1"
+__prompt_compute() {
+    # use ligtht colors
+    local red='\[\e[91m\]' \
+        green='\[\e[92m\]' \
+        yellow='\[\e[93m\]' \
+        blue='\[\e[94m\]' \
+        purple='\[\e[95m\]' \
+        cyan='\[\e[96m\]' \
+        grey='\[\e[97m\]' \
+        reset='\[\e[0m\]'
+    branch=$(git branch --show-current 2>/dev/null)
+    [[ -n "$branch" ]] && branch="$grey($red$branch$grey)"
+    PS1="$red[$yellow\u$green@$blue\h$grey:$purple\W $branch$red]$reset\$ "
+}
+
+PROMPT_COMMAND="__prompt_compute"
 
 # BEGIN_KITTY_SHELL_INTEGRATION
 if test -n "$KITTY_INSTALLATION_DIR" -a -e "$KITTY_INSTALLATION_DIR/shell-integration/bash/kitty.bash"; then source "$KITTY_INSTALLATION_DIR/shell-integration/bash/kitty.bash"; fi
 # END_KITTY_SHELL_INTEGRATION
 
+
+# pnpm
+export PNPM_HOME="/home/catalin//.local/share/pnpm/"
+export PATH="$PNPM_HOME:$PATH"
+# pnpm end
+
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+. "$HOME/.cargo/env"
+
+export VCPKG_ROOT="$HOME/.vcpkg/vcpkg"
+export PATH="$VCPKG_ROOT:$PATH"
