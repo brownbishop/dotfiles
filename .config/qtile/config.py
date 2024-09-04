@@ -2,22 +2,25 @@ import os
 import socket
 import subprocess
 
-from libqtile import bar, hook, layout, widget
-# from libqtile.backend.wayland.inputs import InputConfig
+from libqtile import bar, hook, layout, widget, qtile
 from libqtile.config import Click, Drag, Group, Key, Match, Screen
 from libqtile.lazy import lazy
 from libqtile.widget import base
 
+# from libqtile.backend.wayland.inputs import InputConfig
 from typing import List
 
 # wl_input_rules = {
 #     "1267:12377:ELAN1300:00 04F3:3059 Touchpad": InputConfig(
-#         pointer_accel=True, tap=True, dwt=True, scroll_method="edge",
-#     "*": InputConfig(pointer_accel=True, tap=True, dwt=True, scroll_method="edge"),
+#         tap=True, dwt=True, scroll_method="edge"),
+#     "*": InputConfig(tap=True, dwt=True, scroll_method="edge"),
 # }
 # # set mod key to mod(also known as the Windows key)
 mod = "mod4"
 myTerm = "xterm"
+
+if qtile.core.name == "wayland":
+    term = "foot"
 dmenu_command = "rofi -show drun"
 
 keys = [
@@ -45,6 +48,7 @@ keys = [
     # Web browser shortcut
     Key([mod], "w", lazy.spawn("brave")),
 
+    Key([mod], "z", lazy.spawn("/home/catalin/.local/bin/boomer")),
     # Toggle screensaver
     Key([mod], "s", lazy.spawn(
         "i3lock -i ./wall.png")),
@@ -114,7 +118,12 @@ keys = [
     Key([], "XF86MonBrightnessDown", lazy.spawn("brightnessctl set 5%-")),
 
     # Screenshot
-    Key([], "Print", lazy.spawn("gnome-screenshot"))
+    Key([], "Print", lazy.spawn("gnome-screenshot")),
+
+    # Switch focus of monitors
+    Key([mod], "period", lazy.next_screen(), desc='Move focus to next monitor'),
+    Key([mod], "comma", lazy.prev_screen(), desc='Move focus to prev monitor'),
+
 ]
 
 groups = [Group(i) for i in "123456789"]
@@ -328,6 +337,12 @@ screens = [
             24,
         ),
     ),
+    Screen(
+        top=bar.Bar(
+            widgets,
+            24,
+        ),
+    ),
 ]
 
 
@@ -369,6 +384,8 @@ auto_minimize = True
 
 @hook.subscribe.startup_once
 def autostart():
+    if qtile.core.name == "wayland":
+        return
     home = os.path.expanduser('~/.config/qtile/autostart.sh')
     subprocess.Popen([home])
 
