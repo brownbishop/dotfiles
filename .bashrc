@@ -1,10 +1,9 @@
+# useful settings
 shopt -s cdspell
 set -o vi
 
 shopt -s histappend
 shopt -s checkwinsize
-
-[[ -f ~/.profile ]] && source ~/.profile
 
 # Load aliases and shortcuts if existent.
 [ -f "${XDG_CONFIG_HOME:-$HOME/.config}/aliasrc" ] && source "${XDG_CONFIG_HOME:-$HOME/.config}/aliasrc"
@@ -12,6 +11,12 @@ shopt -s checkwinsize
 [ -f "/usr/share/bash-completion/bash_completion" ] && source "/usr/share/bash-completion/bash_completion"
 
 complete -c man which
+
+# Environment variables
+
+if [ "$XDG_SESSION_TYPE" = "wayland" ]; then
+    export MOZ_ENABLE_WAYLAND=1
+fi
 
 export EDITOR=nvim
 export VISUAL=nvim
@@ -36,6 +41,7 @@ export CGO_ENABLED=1
 
 export _JAVA_AWT_WM_NONREPARENTIN=1
 
+# Prompt
 # borrowed from https://github.com/rwxrob/dot/blob/main/.bashrc
 # --------------------------- smart prompt ---------------------------
 #                 (keeping in bashrc for portability)
@@ -91,20 +97,4 @@ __prompt_compute() {
 
 PROMPT_COMMAND="__prompt_compute"
 
-# BEGIN_KITTY_SHELL_INTEGRATION
-if test -n "$KITTY_INSTALLATION_DIR" -a -e "$KITTY_INSTALLATION_DIR/shell-integration/bash/kitty.bash"; then source "$KITTY_INSTALLATION_DIR/shell-integration/bash/kitty.bash"; fi
-# END_KITTY_SHELL_INTEGRATION
 
-
-# pnpm
-export PNPM_HOME="/home/catalin//.local/share/pnpm/"
-export PATH="$PNPM_HOME:$PATH"
-# pnpm end
-
-export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
-. "$HOME/.cargo/env"
-
-export VCPKG_ROOT="$HOME/.vcpkg/vcpkg"
-export PATH="$VCPKG_ROOT:$PATH"

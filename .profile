@@ -1,6 +1,5 @@
 #!/bin/sh
 export EDITOR=/usr/bin/nvim
-export alias vscode=code-oss
 # export QT_STYLE_OVERRIDE=kvantum
 export _JAVA_AWT_WM_NONREPARENTING=1
 
@@ -11,4 +10,4 @@ if [ "$XDG_SESSION_TYPE" = "x11" ]; then
     export MOZ_ENABLE_WAYLAND=""
     unset MOZ_ENABLE_WAYLAND
 fi
-. "$HOME/.cargo/env"
+# . "$HOME/.cargo/env"
