@@ -22,10 +22,9 @@ font pango: UbuntuMono Nerd Font 10
 # exec --no-startup-id dex --autostart --environment i3
 
 # picom
-exec --no-startup-id ~/.local/bin/picom
+exec --no-startup-id picom
 
 # Wallpaper
-set $i3lock_wall ~/.config/i3lock/wall.png
 exec --no-startup-id feh --bg-scale --randomize ~/repos/wallpapers
 
 
@@ -34,7 +33,9 @@ exec --no-startup-id feh --bg-scale --randomize ~/repos/wallpapers
 
 # xss-lock grabs a logind suspend inhibit lock and will use i3lock to lock the
 # screen before suspend. Use loginctl lock-session to lock your screen.
-exec --no-startup-id xss-lock --transfer-sleep-lock -- i3lock --nofork -i $i3lock_wall
+
+exec --no-startup-id magick $(find ~/repos/wallpapers/ -type f -name *jpg | shuf -n 1) ~/cache/i3lock_wall.png
+exec --no-startup-id xss-lock --transfer-sleep-lock -- i3lock --nofork -i ~/.cache/i3lock_wall.png
 
 
 exec --no-startup-id dex -ae i3 -s ~/.config/autostart
@@ -90,7 +91,7 @@ bindsym Mod4+p exec --no-startup-id "rofi -modi drun,run -show drun"
 bindsym Mod4+d exec --no-startup-id i3-dmenu-desktop
 
 bindsym Mod4+Shift+b exec --no-startup-id feh --bg-scale --randomize ~/repos/wallpapers
-bindsym Mod4+Shift+s exec --no-startup-id i3lock $i3lock_wall
+bindsym Mod4+Shift+s exec --no-startup-id i3lock -i ~/.cache/i3lock_wall.png
 # change focus
 bindsym Mod4+$left focus left
 bindsym Mod4+$down focus down
@@ -252,23 +253,24 @@ client.urgent		    $color1	    $color1 	$foreground	$color1		$color1
 client.placeholder	    $color4	    $color4	    $foreground	$color4		$color4
 client.background	    $background
 
-# exec_always --no-startup-id $HOME/.config/polybar/launch.sh
+exec_always --no-startup-id $HOME/.config/polybar/launch.sh
+exec_always --no-startup-id nm-applet
 # Start i3bar to display a workspace bar (plus the system information i3status
 # finds out, if available)
-bar {
-    font pango:ComicShannsMono Nerd Font, FontAwesome 12
-    position top
-    status_command i3status-rs
-    colors {
-        separator $color7
-        background $background
-        statusline $foreground
-        focused_workspace $color4 $color4 $foreground
-        active_workspace $color0 $color0 $color15
-        inactive_workspace $color0 $color0 $color7
-        urgent_workspace $color0 $color1 $color15
-    }
-}
+# bar {
+#     font pango:ComicShannsMono Nerd Font, FontAwesome 12
+#     position top
+#     status_command i3status-rs
+#     colors {
+#         separator $color7
+#         background $background
+#         statusline $foreground
+#         focused_workspace $color4 $color4 $foreground
+#         active_workspace $color0 $color0 $color15
+#         inactive_workspace $color0 $color0 $color7
+#         urgent_workspace $color0 $color1 $color15
+#     }
+# }
 #
 default_border pixel 2
 #end of window title bars & borders section
