@@ -45,7 +45,7 @@ local capabilities = require('cmp_nvim_lsp').default_capabilities()
 capabilities.textDocument.completion.completionItem.insertReplaceSupport = false
 -- Use a loop to conveniently call 'setup' on multiple servers and
 -- map buffer local keybindings when the language server attaches
-local servers = { "clangd", "pyright", "tsserver", "rust_analyzer", "dartls", "zls"}
+local servers = { "clangd", "arduino_language_server", "pyright", "ts_ls", "rust_analyzer", "dartls", "zls"}
 for _, lsp in ipairs(servers) do
     nvim_lsp[lsp].setup({
         on_attach = on_attach,
