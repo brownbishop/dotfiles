@@ -34,7 +34,7 @@ exec --no-startup-id feh --bg-scale --randomize ~/repos/wallpapers
 # xss-lock grabs a logind suspend inhibit lock and will use i3lock to lock the
 # screen before suspend. Use loginctl lock-session to lock your screen.
 
-exec --no-startup-id magick $(find ~/repos/wallpapers/ -type f -name *jpg | shuf -n 1) ~/cache/i3lock_wall.png
+exec --no-startup-id magick $(find ~/repos/wallpapers/ -type f -name *jpg | shuf -n 1) ~/.cache/i3lock_wall.png
 exec --no-startup-id xss-lock --transfer-sleep-lock -- i3lock --nofork -i ~/.cache/i3lock_wall.png
 
 
