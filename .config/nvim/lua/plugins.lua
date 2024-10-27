@@ -24,8 +24,12 @@ return {
     'nvim-lualine/lualine.nvim',
       dependncies = { 'kyazdani42/nvim-web-devicons' }
     },
-
+    {
+    "rcarriga/nvim-dap-ui",
+      dependencies = {"mfussenegger/nvim-dap", "nvim-neotest/nvim-nio"}
+    },
     'folke/tokyonight.nvim',
     'ellisonleao/gruvbox.nvim',
     'rose-pine/neovim',
+    'norcalli/nvim-colorizer.lua',
 }
