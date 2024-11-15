@@ -19,7 +19,7 @@ font pango: UbuntuMono Nerd Font 10
 
 # Start XDG autostart .desktop files using dex. See also
 # https://wiki.archlinux.org/index.php/XDG_Autostart
-# exec --no-startup-id dex --autostart --environment i3
+exec --no-startup-id dex --autostart --environment i3
 
 # picom
 exec --no-startup-id picom
@@ -34,13 +34,11 @@ exec --no-startup-id feh --bg-scale --randomize ~/repos/wallpapers
 # xss-lock grabs a logind suspend inhibit lock and will use i3lock to lock the
 # screen before suspend. Use loginctl lock-session to lock your screen.
 
-exec --no-startup-id magick $(find ~/repos/wallpapers/ -type f -name *jpg | shuf -n 1) ~/.cache/i3lock_wall.png
-exec --no-startup-id xss-lock --transfer-sleep-lock -- i3lock --nofork -i ~/.cache/i3lock_wall.png
+exec_always --no-startup-id magick $(find ~/repos/wallpapers/ -type f -name *jpg | shuf -n 1) ~/.cache/i3lock_wall.png
+exec --no-startup-id xss-lock --transfer-sleep-lock -- i3lock -t --nofork -i ~/.cache/i3lock_wall.png
 
-
-exec --no-startup-id dex -ae i3 -s ~/.config/autostart
 # exec /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1 &
-exec --no-startup-id switch-profile
+# exec --no-startup-id switch-profile
 
 # NetworkManager is the most popular way to manage wireless networks on Linux,
 # and nm-applet is a desktop environment-independent system tray GUI for it.
@@ -59,7 +57,7 @@ bindsym XF86AudioPrev exec --no-startup-id playerctl prev
 bindsym XF86MonBrightnessUp exec --no-startup-id brightnessctl set +5%
 bindsym XF86MonBrightnessDown  exec --no-startup-id brightnessctl set 5%-
 
-bindsym Print exec --no-startup-id gnome-screenshot
+bindsym Print exec --no-startup-id flameshot gui
 
 
 # use these keys for focus, movement, and resize directions when reaching for
@@ -85,13 +83,13 @@ bindsym Mod4+q kill
 # start dmenu (a program launcher)
 # bindsym Mod4+d exec --no-startup-id dmenu_run
 # A more modern dmenu replacement is rofi:
-bindsym Mod4+p exec --no-startup-id "rofi -modi drun,run -show drun"
+bindsym Mod4+p exec --no-startup-id "rofi -modi drun\, run -show drun"
 # There also is i3-dmenu-desktop which only displays applications shipping a
 # .desktop file. It is a wrapper around dmenu, so you need that installed.
 bindsym Mod4+d exec --no-startup-id i3-dmenu-desktop
 
 bindsym Mod4+Shift+b exec --no-startup-id feh --bg-scale --randomize ~/repos/wallpapers
-bindsym Mod4+Shift+s exec --no-startup-id i3lock -i ~/.cache/i3lock_wall.png
+bindsym Mod4+Shift+s exec --no-startup-id i3lock -t -i ~/.cache/i3lock_wall.png
 # change focus
 bindsym Mod4+$left focus left
 bindsym Mod4+$down focus down
@@ -258,9 +256,9 @@ exec_always --no-startup-id nm-applet
 # Start i3bar to display a workspace bar (plus the system information i3status
 # finds out, if available)
 # bar {
-#     font pango:ComicShannsMono Nerd Font, FontAwesome 12
+#     font pango:Mononoki Nerd Font, FontAwesome 12
 #     position top
-#     status_command i3status-rs
+#     status_command py3status
 #     colors {
 #         separator $color7
 #         background $background
@@ -271,7 +269,7 @@ exec_always --no-startup-id nm-applet
 #         urgent_workspace $color0 $color1 $color15
 #     }
 # }
-#
+
 default_border pixel 2
 #end of window title bars & borders section
 
