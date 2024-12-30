@@ -45,7 +45,7 @@ local capabilities = require('cmp_nvim_lsp').default_capabilities()
 capabilities.textDocument.completion.completionItem.insertReplaceSupport = false
 -- Use a loop to conveniently call 'setup' on multiple servers and
 -- map buffer local keybindings when the language server attaches
-local servers = { "clangd", "arduino_language_server", "pyright", "ts_ls", "rust_analyzer", "dartls", "zls"}
+local servers = { "clangd", "basedpyright", "ts_ls", "rust_analyzer", "dartls", "zls", "html", "cssls", "eslint", "jsonls"}
 for _, lsp in ipairs(servers) do
     nvim_lsp[lsp].setup({
         on_attach = on_attach,
@@ -69,6 +69,26 @@ nvim_lsp["gopls"].setup {
         rangeVariableTypes = true,
     },
     single_file = true,
+}
+
+local arduino_capabilities = vim.lsp.protocol.make_client_capabilities()
+arduino_capabilities.textDocument.semanticTokens = vim.NIL
+arduino_capabilities.workspace.semanticTokens = vim.NIL
+
+nvim_lsp["arduino_language_server"].setup {
+    on_attach = on_attach,
+    flags = lsp_flags,
+    capabilities = arduino_capabilities,
+    cmd = {
+			"arduino-language-server",
+			"-clangd",
+			"/usr/bin/clangd", -- I have also tried Mason's clangd, no use either.
+			"-cli-config",
+			"/home/catalin/.arduino15/arduino-cli.yaml",
+			"-cli",
+			"/home/catalin/.local/bin/arduino-cli",
+			"-fqbn",
+			"arduino:avr:nano"}
 }
 
 -- nvim_lsp.lua_ls.setup {
