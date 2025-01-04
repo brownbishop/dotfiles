@@ -275,10 +275,10 @@ widgets = [
     widget.KeyboardLayout(
             background=colors[0],
             foreground=colors[5],
-            configured_keyboards=['us', 'ro'],
+            configured_keyboards=['us', 'ro std'],
             ),
     widget.Backlight(
-            backlight_name="intel_backlight",
+            backlight_name="amdgpu_bl1",
             format=' {percent:2.0%}',
             foreground=colors[6],
             background=colors[0],
