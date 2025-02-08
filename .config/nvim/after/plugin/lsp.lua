@@ -41,8 +41,8 @@ local lsp_flags = {
     debounce_text_changes = 150,
 }
 
-local capabilities = require('cmp_nvim_lsp').default_capabilities()
-capabilities.textDocument.completion.completionItem.insertReplaceSupport = false
+local capabilities = require('blink.cmp').get_lsp_capabilities()
+-- capabilities.textDocument.completion.completionItem.insertReplaceSupport = false
 -- Use a loop to conveniently call 'setup' on multiple servers and
 -- map buffer local keybindings when the language server attaches
 local servers = { "clangd", "basedpyright", "ts_ls", "rust_analyzer", "dartls", "zls", "html", "cssls", "eslint", "jsonls", "texlab"}
