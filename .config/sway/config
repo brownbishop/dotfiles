@@ -47,9 +47,9 @@ output * bg /home/catalin/repos/wallpapers/0250.jpg fill
 # resumed. It will also lock your screen before your computer goes to sleep.
 
 exec swayidle -w \
-         timeout 300 'swaylock -f' \
+         timeout 300 'swaylock -i $(find ~/repos/wallpapers/ -name "*jpg" | shuf -n 1) -f' \
          timeout 600 'swaymsg "output * dpms off"' resume 'swaymsg "output * dpms on"' \
-         before-sleep 'swaylock -f'
+         before-sleep 'swaylock -i $(find ~/repos/wallpapers/ -name "*jpg" | shuf -n 1) -f'
 
 ### Input configuration
 #
@@ -227,10 +227,22 @@ bindsym $mod+r mode "resize"
 #
     bindsym --locked XF86MonBrightnessDown exec brightnessctl set 5%-
     bindsym --locked XF86MonBrightnessUp exec brightnessctl set 5%+
+    # bindsym --locked XF86AudioMute exec pamixer -t
+    # bindsym --locked XF86AudioLowerVolume exec pamixer -d 5
+    # bindsym --locked XF86AudioRaiseVolume exec pamixer -i 5
+    # bindsym --locked XF86AudioMicMute exec pamixer --default-source -t
+
+    bindsym XF86AudioRaiseVolume exec --no-startup-id amixer set Master 5%+ unmute
+    bindsym XF86AudioLowerVolume exec --no-startup-id amixer set Master 5%- unmute
+    bindsym XF86AudioMute exec --no-startup-id amixer set Master toggle
+    bindsym XF86AudioMicMute exec --no-startup-id pactl set-source-mute @DEFAULT_SOURCE@ toggle
+
+
     bindsym --locked XF86AudioMute exec pamixer -t
     bindsym --locked XF86AudioLowerVolume exec pamixer -d 5
     bindsym --locked XF86AudioRaiseVolume exec pamixer -i 5
     bindsym --locked XF86AudioMicMute exec pamixer --default-source -t
+
     bindsym --locked XF86AudioPlay exec playerctl play-pause
     bindsym --locked XF86AudioNext exec playerctl next
     bindsym --locked XF86AudioPrev exec playerctl prev
@@ -242,8 +254,34 @@ default_border pixel 1
 #smart_gaps on
 smart_borders on
 
+# Window rules
 for_window [class="XTerm"] opacity 0.9
 
+# Auto float apps
+for_window [app_id="(?i)mpv"] floating enable
+for_window [app_id="pavucontrol"] floating enable
+for_window [app_id="gnome-(calendar|calculator|power-statistics|control-center)"] floating enable
+for_window [app_id="org.gnome.(Nautilus|Weather)"] floating enable
+for_window [app_id="(pavucontrol|psensor)"] floating enable
+for_window [title="^Open File$"] floating enable
+
+# default floating
+for_window [window_role="pop-up"] floating enable
+for_window [window_role="bubble"] floating enable
+for_window [window_role="task_dialog"] floating enable
+for_window [window_role="Preferences"] floating enable
+for_window [window_type="dialog"] floating enable
+for_window [window_type="menu"] floating enable
+for_window [instance="update_installer"] floating enable
+
+# float terminal menu
+for_window [title="^launcher$"] floating enable, border none, opacity 0.8, resize set 400 300, move position center
+
+# Tag xwayland windows as such
+for_window [shell="xwayland"] title_format "<span>[X] %title</span>"
+
+for_window [class="^Brave$"] inhibit_idle fullscreen
+#
 # Colors - Gruvbox
 set $background #282828
 set $foreground #ebdbb2
@@ -299,9 +337,9 @@ set $gnome-schema org.gnome.desktop.interface
 
 exec_always {
     gsettings set $gnome-schema gtk-theme 'Adwaita-dark'
-    gsettings set $gnome-schema icon-theme 'Papirus-Dark'
-    gsettings set $gnome-schema cursor-theme 'Adwaita'
-    gsettings set $gnome-schema font-name 'Noto-Sans, 10'
+        gsettings set $gnome-schema icon-theme 'Papirus-Dark'
+        gsettings set $gnome-schema cursor-theme 'Adwaita'
+        gsettings set $gnome-schema font-name 'Noto-Sans, 10'
 }
 # my programs
 exec /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1 &
@@ -310,6 +348,6 @@ exec --no-startup-id ~/.cargo/bin/switch-profile
 exec --no-startup-id systemctl --user set-environment MOZ_ENABLE_WAYLAND=1
 exec dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP=sway
 
-for_window [class="^Brave$"] inhibit_idle fullscreen
+
 
 include /etc/sway/config.d/*
