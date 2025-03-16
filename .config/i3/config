@@ -35,7 +35,7 @@ exec --no-startup-id feh --bg-scale --randomize ~/repos/wallpapers
 # xss-lock grabs a logind suspend inhibit lock and will use i3lock to lock the
 # screen before suspend. Use loginctl lock-session to lock your screen.
 
-exec_always --no-startup-id convert $(find ~/repos/wallpapers/ -type f -name "*jpg" | shuf -n 1) ~/.cache/i3lock_wall.png
+exec_always --no-startup-id magick $(find ~/repos/wallpapers/ -type f -name "*jpg" | shuf -n 1) ~/.cache/i3lock_wall.png
 exec --no-startup-id xss-lock --transfer-sleep-lock -- i3lock -t --nofork -i ~/.cache/i3lock_wall.png
 
 
@@ -220,6 +220,28 @@ mode "resize" {
 }
 
 bindsym Mod4+r mode "resize"
+
+# Auto float apps
+for_window [class="(?i)mpv"] floating enable
+for_window [class="gnome-(calendar|calculator|power-statistics|control-center)"] floating enable
+for_window [class="(pavucontrol|psensor)"] floating enable
+for_window [title="^Open File$"] floating enable
+for_window [window_role="GtkFileChooserDialog"] resize set 800 600
+for_window [window_role="GtkFiileChooserDialog"] move position center
+
+# default floating
+for_window [window_role="pop-up"] floating enable
+for_window [window_role="bubble"] floating enable
+for_window [window_role="task_dialog"] floating enable
+for_window [window_role="Preferences"] floating enable
+for_window [window_type="dialog"] floating enable
+for_window [window_type="menu"] floating enable
+for_window [instance="update_installer"] floating enable
+
+# float terminal menu
+for_window [title="^launcher$"] floating enable, border none, opacity 0.8, resize set 400 300, move position center
+
+# Tag xwayland windows as such
 
 smart_borders on
 
