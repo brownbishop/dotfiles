@@ -44,9 +44,9 @@ exec --no-startup-id xss-lock --transfer-sleep-lock -- i3lock -t --nofork -i ~/.
 # exec --no-startup-id nm-applet
 
 # Use pactl to adjust volume in PulseAudio.
-bindsym XF86AudioRaiseVolume exec --no-startup-id amixer set Master 5%+ unmute
-bindsym XF86AudioLowerVolume exec --no-startup-id amixer set Master 5%- unmute
-bindsym XF86AudioMute exec --no-startup-id amixer set Master toggle
+bindsym XF86AudioRaiseVolume exec --no-startup-id pamixer -i 5
+bindsym XF86AudioLowerVolume exec --no-startup-id pamixer -d 5
+bindsym XF86AudioMute exec --no-startup-id pamixer -t
 bindsym XF86AudioMicMute exec --no-startup-id pactl set-source-mute @DEFAULT_SOURCE@ toggle
 
 bindsym XF86AudioPlay exec --no-startup-id playerctl play-pause
