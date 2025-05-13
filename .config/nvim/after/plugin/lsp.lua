@@ -45,16 +45,16 @@ local capabilities = require('blink.cmp').get_lsp_capabilities()
 -- capabilities.textDocument.completion.completionItem.insertReplaceSupport = false
 -- Use a loop to conveniently call 'setup' on multiple servers and
 -- map buffer local keybindings when the language server attaches
-local servers = { "clangd", "basedpyright", "ts_ls", "rust_analyzer", "dartls", "zls", "html", "cssls", "eslint", "jsonls", "texlab", "tinymist"}
+local servers = { "clangd", "basedpyright", "ts_ls", "rust_analyzer", "dartls", "zls", "html", "cssls", "eslint", "jsonls", "texlab", "tinymist", "csharp_ls"}
 for _, lsp in ipairs(servers) do
-    nvim_lsp[lsp].setup({
+    vim.lsp.config(lsp, {
         on_attach = on_attach,
         flags = lsp_flags,
         capabilities = capabilities,
     })
 end
 
-nvim_lsp["gopls"].setup {
+vim.lsp.config("gopls", {
     on_attach = on_attach,
     flags = lsp_flags,
     capabilities = capabilities,
@@ -69,13 +69,13 @@ nvim_lsp["gopls"].setup {
         rangeVariableTypes = true,
     },
     single_file = true,
-}
+})
 
 local arduino_capabilities = vim.lsp.protocol.make_client_capabilities()
 arduino_capabilities.textDocument.semanticTokens = vim.NIL
 arduino_capabilities.workspace.semanticTokens = vim.NIL
 
-nvim_lsp["arduino_language_server"].setup {
+vim.lsp.config("arduino_language_server", {
     on_attach = on_attach,
     flags = lsp_flags,
     capabilities = arduino_capabilities,
@@ -89,9 +89,9 @@ nvim_lsp["arduino_language_server"].setup {
 			"/home/catalin/.local/bin/arduino-cli",
 			"-fqbn",
 			"arduino:avr:nano"}
-}
+})
 
-nvim_lsp["tinymist"].setup {
+vim.lsp.config("tinymist",  {
     on_attach = on_attach,
     flags = lsp_flags,
     -- capabilities = tinymist_capabilities,
@@ -100,7 +100,8 @@ nvim_lsp["tinymist"].setup {
         exportPdf = "onType",
         semanticTokens = "disable"
     }
-}
+})
+
 
 -- nvim_lsp.lua_ls.setup {
 --   settings = {
