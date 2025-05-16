@@ -52,6 +52,7 @@ for _, lsp in ipairs(servers) do
         flags = lsp_flags,
         capabilities = capabilities,
     })
+    vim.lsp.enable(lsp)
 end
 
 vim.lsp.config("gopls", {
@@ -70,6 +71,7 @@ vim.lsp.config("gopls", {
     },
     single_file = true,
 })
+vim.lsp.enable("gopls")
 
 local arduino_capabilities = vim.lsp.protocol.make_client_capabilities()
 arduino_capabilities.textDocument.semanticTokens = vim.NIL
@@ -90,6 +92,7 @@ vim.lsp.config("arduino_language_server", {
 			"-fqbn",
 			"arduino:avr:nano"}
 })
+vim.lsp.enable("arduino_language_server")
 
 vim.lsp.config("tinymist",  {
     on_attach = on_attach,
@@ -101,6 +104,7 @@ vim.lsp.config("tinymist",  {
         semanticTokens = "disable"
     }
 })
+vim.lsp.enable("tinymist")
 
 
 -- nvim_lsp.lua_ls.setup {
