@@ -19,8 +19,9 @@
 
 * {
     /* `otf-font-awesome` is required to be installed for icons */
-    font-family: FontAwesome, Mononoki Nerd Font, RobotoMono, Helvetica, Arial, sans-serif;
+    font-family: "Mononoki Nerd Font", "Font Awesome 6 Free";
     font-size: 13px;
+    min-height: 0;
 }
 
 window#waybar {
@@ -104,7 +105,7 @@ button:hover {
 #pulseaudio,
 #wireplumber,
 #custom-media,
-#tray,
+
 #mode,
 #idle_inhibitor,
 #scratchpad,
@@ -118,6 +119,9 @@ button:hover {
     margin: 0 4px;
 }
 
+#tray {
+    background-color: @Black;
+}
 /* If workspaces is the leftmost module, omit left margin */
 .modules-left > widget:first-child > #workspaces {
     margin-left: 0;
