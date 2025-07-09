@@ -36,7 +36,7 @@ exec --no-startup-id feh --bg-scale --randomize ~/repos/wallpapers
 # screen before suspend. Use loginctl lock-session to lock your screen.
 
 exec_always --no-startup-id magick $(find ~/repos/wallpapers/ -type f -name "*jpg" | shuf -n 1) ~/.cache/i3lock_wall.png
-exec --no-startup-id xss-lock --transfer-sleep-lock -- i3lock -t --nofork -i ~/.cache/i3lock_wall.png
+exec --no-startup-id xss-lock --transfer-sleep-lock -- i3lock -t --nofork -i ~/.cache/i3lock_wall.png -k
 
 
 # NetworkManager is the most popular way to manage wireless networks on Linux,
