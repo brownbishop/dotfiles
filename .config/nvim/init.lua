@@ -1,5 +1,7 @@
 vim.cmd [[ filetype plugin indent on ]]
 
+vim.g.mapleader = " "
+
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not vim.loop.fs_stat(lazypath) then
   vim.fn.system({
@@ -31,5 +33,3 @@ vim.api.nvim_create_autocmd({"BufWritePre"}, {
     pattern = "*",
     command = "%s/\\s\\+$//e",
 })
-
-
