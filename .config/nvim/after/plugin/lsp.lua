@@ -45,7 +45,7 @@ local capabilities = require('blink.cmp').get_lsp_capabilities()
 -- capabilities.textDocument.completion.completionItem.insertReplaceSupport = false
 -- Use a loop to conveniently call 'setup' on multiple servers and
 -- map buffer local keybindings when the language server attaches
-local servers = { "clangd", "basedpyright", "ts_ls", "rust_analyzer", "dartls", "zls", "html", "cssls", "eslint", "jsonls", "texlab", "tinymist", "csharp_ls"}
+local servers = { "clangd", "basedpyright", "ts_ls", "rust_analyzer", "dartls", "zls", "html", "cssls", "eslint", "jsonls", "texlab", "tinymist" , "jdtls" }
 for _, lsp in ipairs(servers) do
     vim.lsp.config(lsp, {
         on_attach = on_attach,
@@ -72,6 +72,11 @@ vim.lsp.config("gopls", {
     single_file = true,
 })
 vim.lsp.enable("gopls")
+
+vim.lsp.config("omnisharp", {
+    cmd = { "OmniSharp", "-z", "--hostPID", "12345", "DotNet:enablePackageRestore=false", "--encoding", "utf-8", "--languageserver" }
+})
+vim.lsp.enable("omnisharp")
 
 local arduino_capabilities = vim.lsp.protocol.make_client_capabilities()
 arduino_capabilities.textDocument.semanticTokens = vim.NIL
