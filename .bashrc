@@ -33,11 +33,15 @@ export PATH="$PATH:$ANDROID_HOME/platform-tools"
 export PATH="$PATH:$HOME/go/bin/"
 export PATH="$PATH:$HOME/.cargo/bin/"
 export PATH="$PATH:$HOME/flutter/bin/"
-export PATH=$PATH:$HOME/.local/go/bin
-export PATH=$PATH:$HOME/.zig
+export PATH="$PATH:$HOME/.local/go/bin"
+export PATH="$PATH:$HOME/.zig"
+export PATH="$PATH:$HOME/.omnisharp"
+export PATH="$PATH:$HOME/.jdt-language-server/bin/"
 export GO_PATH="$HOME/go"
-export CGO_ENABLED=1
+export CGO_ENABLED=0
 
+export VCPKG_ROOT="$HOME/repos/vcpkg"
+export PATH=$VCPKG_ROOT:$PATH
 
 export _JAVA_AWT_WM_NONREPARENTIN=1
 
