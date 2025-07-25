@@ -70,3 +70,6 @@ end
 dap.listeners.before.event_exited.dapui_config = function()
     ui.close()
 end
+
+require('dap-go').setup()
+

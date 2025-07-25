@@ -23,7 +23,7 @@ require('lualine').setup {
     },
     sections = {
         lualine_a = {'mode'},
-        lualine_b = {'branch', 'diff', 'diagnostics'},
+        lualine_b = {'branch', 'diff', 'diagnostics', 'g:coc_status'},
         lualine_c = {'filename'},
         lualine_x = {getWords, 'encoding', 'fileformat', 'filetype'},
         lualine_y = {'progress'},

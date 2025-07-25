@@ -3,9 +3,7 @@
     "diagnostic.displayByAle": false,
     "coc.preferences.colorSupport": true,
     "coc.preferences.extensionUpdateCheck": "weekly",
-    "java.import.gradle.java.home": "/usr/bin/jvm/default",
-    "java.trace.server": "verbose",
-    "java.home": "/usr/lib/jvm/default/"
+    "snippets.ultisnips.pythonPrompt": false,
 }
 
 
