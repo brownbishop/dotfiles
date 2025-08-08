@@ -1,7 +1,7 @@
 vim.opt.termguicolors = true
 vim.opt.wildmenu = true
 vim.opt.encoding = "utf-8"
-vim.opt.fileencoding = "utf-8"
+-- vim.opt.fileencoding = "utf-8"
 
 vim.opt.exrc = true
 
