@@ -17,32 +17,6 @@
 # text rendering and scalability on retina/hidpi displays (thanks to pango).
 font pango: UbuntuMono Nerd Font 10
 
-# Start XDG autostart .desktop files using dex. See also
-# https://wiki.archlinux.org/index.php/XDG_Autostart
-exec_always --no-startup-id dex --autostart --environment i3
-
-exec_always --no-startup-id lxpolkit
-# picom
-# exec --no-startup-id picom
-exec --no-startup-id /usr/libexec/gsd-xsettings
-# Wallpaper
-exec --no-startup-id feh --bg-scale --randomize ~/repos/wallpapers
-
-
-# The combination of xss-lock, nm-applet and pactl is a popular choice, so
-# they are included here as an example. Modify as you see fit.
-
-# xss-lock grabs a logind suspend inhibit lock and will use i3lock to lock the
-# screen before suspend. Use loginctl lock-session to lock your screen.
-
-exec_always --no-startup-id magick $(find ~/repos/wallpapers/ -type f -name "*jpg" | shuf -n 1) ~/.cache/i3lock_wall.png
-exec --no-startup-id xss-lock --transfer-sleep-lock -- i3lock -t --nofork -i ~/.cache/i3lock_wall.png -k
-
-
-# NetworkManager is the most popular way to manage wireless networks on Linux,
-# and nm-applet is a desktop environment-independent system tray GUI for it.
-# exec --no-startup-id nm-applet
-
 # Use pactl to adjust volume in PulseAudio.
 bindsym XF86AudioRaiseVolume exec --no-startup-id pamixer -i 5
 bindsym XF86AudioLowerVolume exec --no-startup-id pamixer -d 5
@@ -306,6 +280,34 @@ exec_always --no-startup-id nm-applet
 
 default_border pixel 2
 #end of window title bars & borders section
+
+# Start XDG autostart .desktop files using dex. See also
+# https://wiki.archlinux.org/index.php/XDG_Autostart
+exec --no-startup-id dex --autostart --environment i3
+
+exec_always --no-startup-id lxpolkit
+# picom
+# exec --no-startup-id picom
+# exec --no-startup-id /usr/libexec/gsd-xsettings
+# Wallpaper
+exec --no-startup-id feh --bg-scale --randomize ~/repos/wallpapers
+
+
+# The combination of xss-lock, nm-applet and pactl is a popular choice, so
+# they are included here as an example. Modify as you see fit.
+
+# xss-lock grabs a logind suspend inhibit lock and will use i3lock to lock the
+# screen before suspend. Use loginctl lock-session to lock your screen.
+
+exec_always --no-startup-id magick $(find ~/repos/wallpapers/ -type f -name "*jpg" | shuf -n 1) ~/.cache/i3lock_wall.png
+exec --no-startup-id xss-lock --transfer-sleep-lock -- i3lock -t --nofork -i ~/.cache/i3lock_wall.png -k
+
+
+# NetworkManager is the most popular way to manage wireless networks on Linux,
+# and nm-applet is a desktop environment-independent system tray GUI for it.
+# exec --no-startup-id nm-applet
+
+
 
 # smart_gaps on
 # gaps inner 2
