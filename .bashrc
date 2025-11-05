@@ -37,6 +37,8 @@ export PATH="$PATH:$HOME/.local/go/bin"
 export PATH="$PATH:$HOME/.zig"
 export PATH="$PATH:$HOME/.omnisharp"
 export PATH="$PATH:$HOME/.jdt-language-server/bin/"
+export PATH="$PATH:$HOME/odin"
+export PATH="$PATH:$HOME/.dotnet/tools"
 export GO_PATH="$HOME/go"
 export CGO_ENABLED=0
 
@@ -115,3 +117,4 @@ fi
 #THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
 export SDKMAN_DIR="$HOME/.sdkman"
 [[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]] && source "$HOME/.sdkman/bin/sdkman-init.sh"
+export PATH=$HOME/.dotnet/tools:$PATH
