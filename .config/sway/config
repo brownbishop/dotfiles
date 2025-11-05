@@ -4,6 +4,7 @@
 #
 # Read `man 5 sway` for a complete reference.
 
+
 ### Variables
 #
 # Logo key. Use Mod1 for Alt.
@@ -241,7 +242,9 @@ bindsym $mod+r mode "resize"
     bindsym --locked Pause exec gnome-screenshot
     bindsym XF86Search exec $menu
     bindsym $mod+Shift+s exec $lockscreen
-    bindsym Print exec --no-startup-id flameshot gui
+    # bindsym Print exec --no-startup-id flameshot gui
+    bindsym Print exec grim -g "$(slurp)" -t png - | wl-copy -t image/png
+    bindsym $mod+Shift+P exec grim -g "$(slurp)" -t png - | wl-copy -t image/png
 
 default_border pixel 1
 # gaps inner 2
@@ -355,5 +358,9 @@ exec --no-startup-id mate-polkit
 exec --no-startup-id systemctl --user set-environment MOZ_ENABLE_WAYLAND=1 _JAVA_AWT_WM_NONREPARENTING=1
 exec wl-clip-persist --clipboard both
 exec --no-startup-id wmname LG3D
+exec dex -ae sway
+
+exec pkill xdg
 
 include /etc/sway/config.d/*
+exec /usr/libexec/xdg-desktop-portal
