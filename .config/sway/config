@@ -15,7 +15,7 @@ set $down j
 set $up k
 set $right l
 # Your preferred terminal emulator
-set $term foot
+set $term kitty
 # Your preferred application launcher
 # Note: pass the final command to swaymsg so that the resulting window can be opened
 # on the original workspace that the command was run on.
@@ -41,8 +41,7 @@ output * bg /home/catalin/repos/wallpapers/0250.jpg fill
 exec swayidle -w \
          timeout 300 'swaylock -i $(find ~/repos/wallpapers/ -name "*jpg" | shuf -n 1) -f' \
          timeout 600 'swaymsg "output * dpms off"' resume 'swaymsg "output * dpms on"' \
-         before-sleep 'gtklock -b $(find ~/repos/wallpapers/ -name "*jpg" | shuf -n 1) -f'
-
+         before-sleep 'dms ipc call lock lock'
 
 ### Input configuration
 #
@@ -81,7 +80,7 @@ input * {
 
     # Start your launcher
     bindsym $mod+p exec $menu
-    bindsym $mod+d exec bemenu-run
+    # bindsym $mod+d exec bemenu-run
 
     bindsym $mod+Shift+b exec swaymsg output \"*\" bg $(find ~/repos/wallpapers -name \"*jpg\" | shuf -n 1) fill
     bindsym Mod1+space xkb_switch_layout next
@@ -189,6 +188,13 @@ input * {
     # Show the next scratchpad window or hide the focused scratchpad window.
     # If there are multiple scratchpad windows, this command cycles through them.
     bindsym $mod+minus scratchpad show
+
+
+    # DMS Keybindings
+    bindsym $mod+d exec dms ipc call spotlight toggle
+    bindsym $mod+Shift+v exec dms ipc call clipboard toggle
+    bindsym $mod+m exec dms ipc call processlist focusOrToggle
+    bindsym $mod+n exec dms ipc call settings focusOrToggle
 #
 # Resizing containers:
 #
@@ -218,22 +224,32 @@ bindsym $mod+r mode "resize"
 #
 # Special keys
 #
-    bindsym --locked XF86MonBrightnessDown exec brightnessctl set 5%-
-    bindsym --locked XF86MonBrightnessUp exec brightnessctl set 5%+
-    # bindsym --locked XF86AudioMute exec pamixer -t
+
+    # Audio controls
+    bindsym XF86AudioRaiseVolume exec dms ipc call audio increment 3
+    bindsym XF86AudioLowerVolume exec dms ipc call audio decrement 3
+    bindsym XF86AudioMute exec dms ipc call audio mute
+
+    # Brightness controls
+    bindsym XF86MonBrightnessUp exec dms ipc call brightness increment 5
+    bindsym XF86MonBrightnessDown exec dms ipc call brightness decrement 5
+
+    # bindsym --locked XF86MonBrightnessDown exec brightnessctl set 5%-
+    # bindsym --locked XF86MonBrightnessUp exec brightnessctl set 5%+
+    # # bindsym --locked XF86AudioMute exec pamixer -t
     # bindsym --locked XF86AudioLowerVolume exec pamixer -d 5
     # bindsym --locked XF86AudioRaiseVolume exec pamixer -i 5
     # bindsym --locked XF86AudioMicMute exec pamixer --default-source -t
+    #
+    # bindsym XF86AudioRaiseVolume exec --no-startup-id amixer set Master 5%+ unmute
+    # bindsym XF86AudioLowerVolume exec --no-startup-id amixer set Master 5%- unmute
+    # bindsym XF86AudioMute exec --no-startup-id amixer set Master toggle
+    # bindsym XF86AudioMicMute exec --no-startup-id pactl set-source-mute @DEFAULT_SOURCE@ toggle
 
-    bindsym XF86AudioRaiseVolume exec --no-startup-id amixer set Master 5%+ unmute
-    bindsym XF86AudioLowerVolume exec --no-startup-id amixer set Master 5%- unmute
-    bindsym XF86AudioMute exec --no-startup-id amixer set Master toggle
-    bindsym XF86AudioMicMute exec --no-startup-id pactl set-source-mute @DEFAULT_SOURCE@ toggle
 
-
-    bindsym --locked XF86AudioMute exec pamixer -t
-    bindsym --locked XF86AudioLowerVolume exec pamixer -d 5
-    bindsym --locked XF86AudioRaiseVolume exec pamixer -i 5
+    # bindsym --locked XF86AudioMute exec pamixer -t
+    # bindsym --locked XF86AudioLowerVolume exec pamixer -d 5
+    # bindsym --locked XF86AudioRaiseVolume exec pamixer -i 5
     bindsym --locked XF86AudioMicMute exec pamixer --default-source -t
 
     bindsym --locked XF86AudioPlay exec playerctl play-pause
@@ -241,12 +257,13 @@ bindsym $mod+r mode "resize"
     bindsym --locked XF86AudioPrev exec playerctl prev
     bindsym --locked Pause exec gnome-screenshot
     bindsym XF86Search exec $menu
-    bindsym $mod+Shift+s exec $lockscreen
-    # bindsym Print exec --no-startup-id flameshot gui
-    bindsym Print exec grim -g "$(slurp)" -t png - | wl-copy -t image/png
+    bindsym $mod+Shift+s exec dms ipc call lock lock
+    bindsym Print exec --no-startup-id flameshot gui
+    # bindsym Print exec grim -g "$(slurp)" -t png - | wl-copy -t image/png
     bindsym $mod+Shift+P exec grim -g "$(slurp)" -t png - | wl-copy -t image/png
 
-default_border pixel 1
+default_border pixel 2
+default_floating_border pixel 4
 # gaps inner 2
 #smart_gaps on
 smart_borders on
@@ -341,26 +358,30 @@ client.background	    $background
 #     }
 # }
 
-bar swaybar_command waybar
+# bar swaybar_command waybar
 
 set $gnome-schema org.gnome.desktop.interface
 
 exec_always {
-    gsettings set $gnome-schema gtk-theme 'Adwaita-dark'
+    gsettings set $gnome-schema gtk-theme 'Yaru-dark'
         gsettings set $gnome-schema icon-theme 'Papirus-Dark'
-        gsettings set $gnome-schema cursor-theme 'Adwaita'
-        gsettings set $gnome-schema font-name 'Noto-Sans, 10'
+        gsettings set $gnome-schema cursor-theme 'Yaru'
+        gsettings set $gnome-schema font-name 'Noto-Sans, 12'
 }
+
+# Startup
+exec dms run
+exec wl-paste --watch cliphist store
 # my programs
 exec --no-startup-id xrdb ~/.Xresources
 exec --no-startup-id ~/.cargo/bin/switch-profile
-exec --no-startup-id mate-polkit
+exec --no-startup-id lxpolkit
 exec --no-startup-id systemctl --user set-environment MOZ_ENABLE_WAYLAND=1 _JAVA_AWT_WM_NONREPARENTING=1
-exec wl-clip-persist --clipboard both
+# exec wl-clip-persist --clipboard both
 exec --no-startup-id wmname LG3D
 exec dex -ae sway
 
-exec pkill xdg
+# exec pkill xdg
 
 include /etc/sway/config.d/*
-exec /usr/libexec/xdg-desktop-portal
+exec systemctl --user restart xdg-desktop-portal.service
