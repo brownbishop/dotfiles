@@ -77,4 +77,5 @@ return {
         ft = 'typst',
         lazy=false,
     },
+    'nvim-tree/nvim-tree.lua',
 }
