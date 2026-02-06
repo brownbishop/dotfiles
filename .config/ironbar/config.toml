@@ -1,0 +1,75 @@
+# icon_theme = "Paper"
+position = "top"
+
+[[start]]
+type = "menu"
+label = "󱓞"
+
+[[start]]
+type = "workspaces"
+
+[[start]]
+type = "launcher"
+
+[start.truncate]
+mode = "end"
+max_length = 30
+
+[[start]]
+type = "bindmode"
+truncate = "start"
+
+[[center]]
+type = "clock"
+
+[[end]]
+type = "keyboard"
+show_scroll = false
+
+[end.icons]
+caps_on = "󰪛"
+
+[[end]]
+type = "sys_info"
+format = [
+    "{temp_c@max}°C",
+    "{cpu_percent}% ",
+    "{memory_used}GB ",
+]
+
+[end.interval]
+cpu = 1
+
+[[end]]
+type = "clipboard"
+max_items = 5
+
+[end.truncate]
+mode = "end"
+length = 30
+
+[[end]]
+type = "volume"
+
+
+[[end]]
+type = "battery"
+show_if = "ls /sys/class/power_supply/ | grep --quiet '^BAT'"
+
+[[end]]
+type = "custom"
+name = "power-menu"
+class = "power-menu"
+
+[[end.bar]]
+type = "button"
+name = "power-btn"
+label = ""
+on_click = "!wlogout"
+
+[[end]]
+type = "tray"
+
+[[end]]
+type = "notifications"
+
